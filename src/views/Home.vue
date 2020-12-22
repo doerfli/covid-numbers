@@ -26,7 +26,8 @@ export default class Home extends Vue {
   }
 
   get casesZh(): Array<DailyData> {
-    return this.$store.state.cases.casesZh;
+    // return this.$store.state.cases.casesZh;
+    return this.$store.getters['cases/newCasesZh'];
   }
 
   @Watch('casesZh')
@@ -39,7 +40,7 @@ export default class Home extends Vue {
     const margin = 60;
     const width = this.$refs.chart.clientWidth - 2 * margin;
     const height = this.$refs.chart.clientHeight - 2 * margin;
-    const max = cases.map(e => e.confCases).reduce((a, b) => Math.max(a, b));
+    const max = cases.map(e => e.newCases).reduce((a, b) => Math.max(a, b));
 
 
     const svg = d3.select('#chart');
@@ -75,8 +76,8 @@ export default class Home extends Vue {
       .append('rect')
       .attr('class', 'bar')
       .attr('x', (s) => xScale(s.date) as (number | null))
-      .attr('y', (s) => yScale(s.confCases))
-      .attr('height', (s) => height - yScale(s.confCases))
+      .attr('y', (s) => yScale(s.newCases))
+      .attr('height', (s) => height - yScale(s.newCases))
       .attr('width', xScale.bandwidth())
       // hover effect
       .on('mouseenter', function (actual, i) {

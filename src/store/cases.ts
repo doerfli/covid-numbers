@@ -8,6 +8,20 @@ const casesModule: Module<any, any> = {
   state: {
     casesZh: []
   },
+  getters: {
+    newCasesZh: (state) => {
+      return state.casesZh.map((value: DailyData, idx: number, arr: DailyData[]) => {
+        if (idx == 0) {
+          return null;
+        }
+        const n = value.confCases - arr[idx - 1].confCases;
+        return {
+          date: value.date,
+          newCases: n
+        } as DailyData;
+      }).filter((v: DailyData | null) => v != null);
+    }
+  },
   mutations: {
     saveRecords(state, payload) {
       state.casesZh = payload.records.map((val: any) => {

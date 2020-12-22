@@ -3,6 +3,7 @@ interface DailyData {
   confCases: number;
   currHosp: number;
   currIcu: number;
+  newCases: number;
 }
 
 export default DailyData;
