@@ -16,6 +16,10 @@ import * as d3 from "d3";
 })
 export default class Home extends Vue {
 
+  public $refs!: {
+    chart: HTMLFormElement;
+  };
+
   public mounted() {
     console.log("Home.mounted");
     this.$store.dispatch("cases/fetchZh");
@@ -33,8 +37,8 @@ export default class Home extends Vue {
     console.log(cases);
 
     const margin = 60;
-    const width = 1500 - 2 * margin;
-    const height = 800 - 2 * margin;
+    const width = this.$refs.chart.clientWidth - 2 * margin;
+    const height = this.$refs.chart.clientHeight - 2 * margin;
     const max = cases.map(e => e.confCases).reduce((a, b) => Math.max(a, b));
 
 
@@ -89,7 +93,7 @@ export default class Home extends Vue {
 <style>
   #chart {
     height: 900px;
-    width: 1500px;
+    width: 1300px;
   }
   .bar {
     fill: #4289b9;
