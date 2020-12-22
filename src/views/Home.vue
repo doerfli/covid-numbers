@@ -35,6 +35,8 @@ export default class Home extends Vue {
     const margin = 60;
     const width = 1500 - 2 * margin;
     const height = 800 - 2 * margin;
+    const max = cases.map(e => e.confCases).reduce((a, b) => Math.max(a, b));
+
 
     const svg = d3.select('#chart');
     const chart = svg.append('g')
@@ -42,7 +44,7 @@ export default class Home extends Vue {
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, 65000]);
+      .domain([0, max]);
     chart.append('g')
       .call(d3.axisLeft(yScale)
       .scale(yScale)
