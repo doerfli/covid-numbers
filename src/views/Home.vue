@@ -44,7 +44,9 @@ export default class Home extends Vue {
       .range([height, 0])
       .domain([0, 65000]);
     chart.append('g')
-      .call(d3.axisLeft(yScale));
+      .call(d3.axisLeft(yScale)
+      .scale(yScale)
+      .tickSize(-width));
 
     const xScale = d3.scaleBand()
       .range([0, width])
@@ -53,17 +55,30 @@ export default class Home extends Vue {
 
     chart.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale))
+      .selectAll("text")
+      .attr("y", -5)
+      .attr("x", 9)
+      .attr("transform", "rotate(90)")
+      .style("text-anchor", "start");
 
     chart
       .selectAll()
       .data(cases)
       .enter()
       .append('rect')
+      .attr('class', 'bar')
       .attr('x', (s) => xScale(s.date) as (number | null))
       .attr('y', (s) => yScale(s.confCases))
       .attr('height', (s) => height - yScale(s.confCases))
       .attr('width', xScale.bandwidth())
+      // hover effect
+      .on('mouseenter', function (actual, i) {
+        d3.select(this).attr("opacity", 0.5)
+      })
+      .on("mouseleave", function (actual, i) {
+        d3.select(this).attr("opacity", 1)
+      });
   }
 
 }
@@ -73,5 +88,8 @@ export default class Home extends Vue {
   #chart {
     height: 900px;
     width: 1500px;
+  }
+  .bar {
+    fill: #4289b9;
   }
 </style>
