@@ -25,7 +25,6 @@ export default class Home extends Vue {
   }
 
   get casesZh(): Array<DailyData> {
-    // return this.$store.state.cases.casesZh;
     return this.$store.getters['cases/newCasesZh'].slice(-60).map((x: DailyData) => {
       return {
         xValue: x.date,
