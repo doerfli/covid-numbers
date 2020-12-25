@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    Hello
-    <svg ref="chart" id="chart"></svg>
+    <BarChart id="chart"
+      v-bind:data="casesZh" />
   </div>
 </template>
 
@@ -9,16 +9,15 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import DailyData from '@/model/dailydata'
 import * as d3 from "d3";
+import BarChart from '@/components/charts/BarChart.vue'
+import DataPoint from '@/model/datapoint'
 
 @Component({
   components: {
+    BarChart
   }
 })
 export default class Home extends Vue {
-
-  public $refs!: {
-    chart: HTMLFormElement;
-  };
 
   public mounted() {
     console.log("Home.mounted");
@@ -27,65 +26,12 @@ export default class Home extends Vue {
 
   get casesZh(): Array<DailyData> {
     // return this.$store.state.cases.casesZh;
-    return this.$store.getters['cases/newCasesZh'];
-  }
-
-  @Watch('casesZh')
-  casesZhChanged(value: Array<DailyData>, oldValue: Array<DailyData>) {
-    // console.log("casesZhChanged");
-    // console.log(value);
-    const cases = value.slice(value.length - 60);
-    console.log(cases);
-
-    const margin = 60;
-    const width = this.$refs.chart.clientWidth - 2 * margin;
-    const height = this.$refs.chart.clientHeight - 2 * margin;
-    const max = cases.map(e => e.newCases).reduce((a, b) => Math.max(a, b));
-
-
-    const svg = d3.select('#chart');
-    const chart = svg.append('g')
-      .attr('transform', `translate(${margin}, ${margin})`);
-
-    const yScale = d3.scaleLinear()
-      .range([height, 0])
-      .domain([0, max]);
-    chart.append('g')
-      .call(d3.axisLeft(yScale)
-      .scale(yScale)
-      .tickSize(-width));
-
-    const xScale = d3.scaleBand()
-      .range([0, width])
-      .domain(cases.map((s) => s.date))
-      .padding(0.2)
-
-    chart.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale))
-      .selectAll("text")
-      .attr("y", -5)
-      .attr("x", 9)
-      .attr("transform", "rotate(90)")
-      .style("text-anchor", "start");
-
-    chart
-      .selectAll()
-      .data(cases)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (s) => xScale(s.date) as (number | null))
-      .attr('y', (s) => yScale(s.newCases))
-      .attr('height', (s) => height - yScale(s.newCases))
-      .attr('width', xScale.bandwidth())
-      // hover effect
-      .on('mouseenter', function (actual, i) {
-        d3.select(this).attr("opacity", 0.5)
-      })
-      .on("mouseleave", function (actual, i) {
-        d3.select(this).attr("opacity", 1)
-      });
+    return this.$store.getters['cases/newCasesZh'].slice(-60).map((x: DailyData) => {
+      return {
+        xValue: x.date,
+        yValue: x.newCases
+      } as DataPoint
+    });
   }
 
 }
