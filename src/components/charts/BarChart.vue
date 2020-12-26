@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg ref="chart" class="chart"></svg>
+    <svg ref="chart" :id="chartId" class="chart"></svg>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default class BarChart extends Vue {
   @Prop()
   private data!: Array<DataPoint>
   private margin = 60;
+  private eid = Math.floor(Math.random() * 10000);
 
   public $refs!: {
     chart: HTMLFormElement;
@@ -24,6 +25,10 @@ export default class BarChart extends Vue {
 
   public mounted() {
     console.log("BarChart.mounted");
+  }
+
+  get chartId() {
+    return `chart${this.eid}`;
   }
 
   @Watch('data')
@@ -36,7 +41,7 @@ export default class BarChart extends Vue {
     const max = (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01;
     console.log(max);
 
-    const svg = d3.select('.chart');
+    const svg = d3.select(`#${this.chartId}`);
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.margin)}, ${(this.margin)})`);
 
