@@ -1,0 +1,97 @@
+<template>
+  <div>
+    <h1>{{ getCanton }}</h1>
+    <BarChart class="barchart"
+              v-bind:data="newCases" />
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import DailyData from '@/model/dailydata'
+import DataPoint from '@/model/datapoint'
+import BarChart from '@/components/charts/BarChart.vue'
+import CantonData from '@/model/cantondata'
+
+@Component({
+  components: { BarChart }
+})
+export default class Cases extends Vue {
+
+  @Prop()
+  private canton!: string;
+  private cases: Array<DailyData> = new Array<DailyData>()
+
+  get getCanton() {
+    return this.canton;
+  }
+
+  public mounted() {
+    console.log("Home.mounted");
+    this.$store.dispatch("cases/fetch", { canton: this.getCanton });
+  }
+
+  // get casesPerCanton() {
+  //   console.log(1);
+  //   console.log(this.getCanton);
+  //   return this.$store.getters['cases/newCases'](this.getCanton);
+  // }
+
+  get getCases(): Array<CantonData> {
+    const t = this.$store.state.cases.cases;
+    console.log(t);
+    return t.filter((x: CantonData) => { return x.canton == this.getCanton});
+  }
+
+  @Watch("getCases", { deep: true} )
+  casesMapChanged(casesNew: Array<CantonData>, casesOld: Array<CantonData>) {
+    console.log("casesMapChanged");
+    console.log(casesNew);
+    this.cases = casesNew[0].data;
+  }
+
+  private calculateNewCases(cases: Array<DailyData>): Array<DailyData> {
+    console.log("newCases");
+    console.log(cases);
+      // console.log(state.cases);
+      // console.log(state.cases.has(canton));
+    const t = cases.map((value: DailyData, idx: number, arr: DailyData[]) => {
+      if (idx == 0) {
+        return null;
+      }
+      const n = value.confCases - arr[idx - 1].confCases;
+      return {
+        date: value.date,
+        newCases: n
+      } as DailyData;
+    });
+    return t.filter((v: DailyData | null) => v != null) as Array<DailyData>;
+  }
+
+  // @Watch("getCases")
+  get newCases(): Array<DataPoint> {
+    console.log("cases");
+
+    const all = this.cases;
+    const newCases1 = this.calculateNewCases(all).slice(-60);
+    console.log(newCases1);
+    return newCases1.map((x: DailyData) => {
+      return {
+        xValue: x.date,
+        yValue: x.newCases
+      } as DataPoint
+    });
+  }
+
+
+
+}
+</script>
+
+<style scoped>
+  .barchart {
+    height: 900px;
+    width: 1300px;
+  }
+</style>
+

@@ -83,7 +83,7 @@ export default class BarChart extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
   .chart {
     width: 100%;
     height: 100%;
