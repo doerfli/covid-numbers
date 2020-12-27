@@ -106,7 +106,10 @@ export default class BarChart extends Vue {
       });
 
     /** remove line around chart */
-    chart.selectAll(".domain").attr("stroke", "#fff0");
+    chart.selectAll(".domain")
+      .attr("stroke", "#fff0");
+    chart.selectAll("text")
+      .attr("class", "text-gray-300")
   }
 }
 </script>
@@ -117,16 +120,16 @@ export default class BarChart extends Vue {
     height: 100%;
 
     .bar {
-      fill: #6366F1; /* red-600 */
+      @apply fill-current text-teal-400;
       opacity: 0.9;
     }
 
     .bar.highlight {
-      opacity: 0.8;
+      opacity: 0.7;
     }
 
     .tick line {
-      stroke: #ccc;
+      stroke: #aaa;
     }
   }
 </style>
