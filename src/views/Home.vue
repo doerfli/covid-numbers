@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <Cases
       v-for="canton in cantons" :key="canton"
       v-bind:canton="canton"
