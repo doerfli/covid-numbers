@@ -83,13 +83,11 @@ export default class Cases extends Vue {
     console.log(newCases1);
     return newCases1.map((x: DailyData) => {
       return {
-        xValue: x.date,
+        xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
         yValue: x.newCases
       } as DataPoint
     });
   }
-
-
 
 }
 </script>

@@ -16,6 +16,8 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
+  @Prop({ default: 7 })
+  private xLabelDistance!: number;
   private margin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
@@ -39,7 +41,8 @@ export default class BarChart extends Vue {
     const width = this.$refs.chart.clientWidth - 2 * this.margin;
     const height = this.$refs.chart.clientHeight - 2 * this.margin;
     const max = (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01;
-    console.log(max);
+    const dataPointsSize = dataPoints.length;
+    // console.log(max);
 
     const svg = d3.select(`#${this.chartId}`);
 
@@ -63,10 +66,28 @@ export default class BarChart extends Vue {
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScale))
       .selectAll("text")
-      .attr("y", -5)
-      .attr("x", 9)
-      .attr("transform", "rotate(90)")
+      .attr('class', 'xlabel')
+      // .attr("y", -15)
+      .attr("x", -14)
+      // .attr("transform", "rotate(90)")
       .style("text-anchor", "start");
+
+    const outer = this;
+    const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`);
+    ticks.each(function(_,i){
+      console.log(i);
+      switch(i) {
+        case 0:
+        case dataPointsSize - 1:
+          // ignore
+          break;
+
+        default:
+          if (i % outer.xLabelDistance != 0) {
+            d3.select(this).remove();
+          }
+      }
+    });
 
     chart
       .selectAll()
