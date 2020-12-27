@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-wrap">
     <Cases
       v-for="canton in cantons" :key="canton"
       v-bind:canton="canton"

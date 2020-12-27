@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="case lg:w-1/3 md:w-1/2">
     <H4>{{ getCanton }}</H4>
-    <BarChart class="barchart"
+    <BarChart class="barchart w-full h-80"
               v-bind:data="newCases" />
   </div>
 </template>
@@ -93,9 +93,12 @@ export default class Cases extends Vue {
 </script>
 
 <style scoped>
+  .case {
+
+  }
   .barchart {
-    height: 900px;
-    width: 1300px;
+    /*width: 100%;*/
+    /*height: calc(100vw * 0.6)*/
   }
 </style>
 
