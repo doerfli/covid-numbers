@@ -11,9 +11,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import BarChart from '@/components/charts/BarChart.vue'
 import Cases from '@/components/Cases.vue'
+import Footer from '@/components/Footer.vue'
 
 @Component({
   components: {
+    Footer,
     Cases,
     BarChart
   }

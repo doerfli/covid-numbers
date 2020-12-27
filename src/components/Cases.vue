@@ -47,6 +47,9 @@ export default class Cases extends Vue {
   casesMapChanged(casesNew: Array<CantonData>, casesOld: Array<CantonData>) {
     console.log("casesMapChanged");
     console.log(casesNew);
+    if (casesNew.length == 0) {
+      return;
+    }
     this.cases = casesNew[0].data;
   }
 
