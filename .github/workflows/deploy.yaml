@@ -7,14 +7,13 @@ on:
 
 jobs:
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Yarn install
-        run: yarn install
-      - name: Yarn run build
-        run: yarn run build
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
       - name: Deploy to Github pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
