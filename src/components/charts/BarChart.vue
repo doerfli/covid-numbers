@@ -72,7 +72,7 @@ export default class BarChart extends Vue {
       // .attr("transform", "rotate(90)")
       .style("text-anchor", "start");
 
-    const outer = this;
+    const showEveryXthLabel = this.xLabelDistance;
     const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`);
     ticks.each(function(_,i){
       console.log(i);
@@ -83,7 +83,7 @@ export default class BarChart extends Vue {
           break;
 
         default:
-          if (i % outer.xLabelDistance != 0) {
+          if (i % showEveryXthLabel != 0) {
             d3.select(this).remove();
           }
       }
