@@ -18,7 +18,8 @@ export default class BarChart extends Vue {
   private data!: Array<DataPoint>
   @Prop({ default: 7 })
   private xLabelDistance!: number;
-  private margin = 20;
+  private xmargin = 40;
+  private ymargin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
   public $refs!: {
@@ -38,8 +39,8 @@ export default class BarChart extends Vue {
     console.log("dataChanged");
     console.log(dataPoints);
 
-    const width = this.$refs.chart.clientWidth - 2 * this.margin;
-    const height = this.$refs.chart.clientHeight - 2 * this.margin;
+    const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
+    const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
     const max = (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01;
     const dataPointsSize = dataPoints.length;
     // console.log(max);
@@ -47,7 +48,7 @@ export default class BarChart extends Vue {
     const svg = d3.select(`#${this.chartId}`);
 
     const chart = svg.append('g')
-      .attr('transform', `translate(${(this.margin)}, ${(this.margin)})`);
+      .attr('transform', `translate(${(this.xmargin)}, ${(this.ymargin)})`);
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
@@ -67,15 +68,12 @@ export default class BarChart extends Vue {
       .call(d3.axisBottom(xScale))
       .selectAll("text")
       .attr('class', 'xlabel')
-      // .attr("y", -15)
       .attr("x", -14)
-      // .attr("transform", "rotate(90)")
       .style("text-anchor", "start");
 
     const showEveryXthLabel = this.xLabelDistance;
     const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`);
     ticks.each(function(_,i){
-      console.log(i);
       switch(i) {
         case 0:
         case dataPointsSize - 1:
@@ -101,22 +99,35 @@ export default class BarChart extends Vue {
       .attr('width', xScale.bandwidth())
       // hover effect
       .on('mouseenter', function (actual, i) {
-        d3.select(this).attr("opacity", 0.5)
+        d3.select(this).attr("class", "bar highlight")
       })
       .on("mouseleave", function (actual, i) {
-        d3.select(this).attr("opacity", 1)
+        d3.select(this).attr("class", "bar")
       });
+
+    /** remove line around chart */
+    chart.selectAll(".domain").attr("stroke", "#fff0");
   }
 }
 </script>
 
-<style>
+<style lang="scss">
   .chart {
     width: 100%;
     height: 100%;
-  }
-  .bar {
-    fill: #4289b9;
+
+    .bar {
+      fill: #6366F1; /* red-600 */
+      opacity: 0.9;
+    }
+
+    .bar.highlight {
+      opacity: 0.8;
+    }
+
+    .tick line {
+      stroke: #ccc;
+    }
   }
 </style>
 
