@@ -16,7 +16,7 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
-  private margin = 60;
+  private margin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
   public $refs!: {

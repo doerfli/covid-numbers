@@ -12,7 +12,7 @@ import DailyData from '@/model/dailydata'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
-import H4 from '@/components/H4.vue'
+import H4 from '@/components/base/H4.vue'
 
 @Component({
   components: { H4, BarChart }

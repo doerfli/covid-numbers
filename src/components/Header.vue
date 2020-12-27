@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import H3 from '@/components/H3.vue'
+import H3 from '@/components/base/H3.vue'
 
 @Component({
   components: { H3 }

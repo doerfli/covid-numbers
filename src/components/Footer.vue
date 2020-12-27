@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <i>Covid-numbers</i> is hosted on <a href="https://github.com/doerfli/covid-numbers">Github</a>
-    | Twitter: <a href="https://twitter.com/doerfli">@doerfli</a>
-    | Data source: <a href="https://github.com/openZH/covid_19">OpenZH/Covid19</a>
+  <div class="mt-8">
+    <i>Covid-numbers</i> is hosted on <Ref uri="https://github.com/doerfli/covid-numbers/">Github</Ref>
+    | Twitter: <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
+    | Data source: <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import Ref from '@/components/base/Ref.vue'
 
 @Component({
-  components: {}
+  components: { Ref }
 })
 export default class Footer extends Vue {
 
