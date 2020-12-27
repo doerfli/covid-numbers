@@ -19,6 +19,8 @@ import H4 from '@/components/base/H4.vue'
 })
 export default class Cases extends Vue {
 
+  @Prop({ default: 28 })
+  private daysToShow!: number;
   @Prop()
   private canton!: string;
   private cases: Array<DailyData> = new Array<DailyData>()
@@ -77,7 +79,7 @@ export default class Cases extends Vue {
     console.log("cases");
 
     const all = this.cases;
-    const newCases1 = this.calculateNewCases(all).slice(-60);
+    const newCases1 = this.calculateNewCases(all).slice(-this.daysToShow);
     console.log(newCases1);
     return newCases1.map((x: DailyData) => {
       return {
