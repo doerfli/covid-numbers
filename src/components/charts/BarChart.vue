@@ -42,6 +42,7 @@ export default class BarChart extends Vue {
     console.log(max);
 
     const svg = d3.select(`#${this.chartId}`);
+
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.margin)}, ${(this.margin)})`);
 
