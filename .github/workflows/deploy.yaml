@@ -13,7 +13,8 @@ jobs:
       - name: Download built vue-app
         uses: actions/download-artifact@v2
         with:
-          name: dist
+          name: vue-app
+          path: dist
       - name: Deploy to Github pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
