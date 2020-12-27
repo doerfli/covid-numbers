@@ -1,5 +1,5 @@
 <template>
-  <h4 class="text-3xl font-normal leading-normal mt-0 mb-2 text-indigo-800">
+  <h4 class="text-3xl font-normal leading-normal mt-0 mb-2 text-teal-100">
     <slot></slot>
   </h4>
 </template>

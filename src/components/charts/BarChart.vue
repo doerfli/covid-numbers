@@ -16,7 +16,10 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
-  private margin = 20;
+  @Prop({ default: 7 })
+  private xLabelDistance!: number;
+  private xmargin = 40;
+  private ymargin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
   public $refs!: {
@@ -36,14 +39,16 @@ export default class BarChart extends Vue {
     console.log("dataChanged");
     console.log(dataPoints);
 
-    const width = this.$refs.chart.clientWidth - 2 * this.margin;
-    const height = this.$refs.chart.clientHeight - 2 * this.margin;
+    const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
+    const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
     const max = (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01;
-    console.log(max);
+    const dataPointsSize = dataPoints.length;
+    // console.log(max);
 
     const svg = d3.select(`#${this.chartId}`);
+
     const chart = svg.append('g')
-      .attr('transform', `translate(${(this.margin)}, ${(this.margin)})`);
+      .attr('transform', `translate(${(this.xmargin)}, ${(this.ymargin)})`);
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
@@ -62,10 +67,25 @@ export default class BarChart extends Vue {
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScale))
       .selectAll("text")
-      .attr("y", -5)
-      .attr("x", 9)
-      .attr("transform", "rotate(90)")
+      .attr('class', 'xlabel')
+      .attr("x", -14)
       .style("text-anchor", "start");
+
+    const showEveryXthLabel = this.xLabelDistance;
+    const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`);
+    ticks.each(function(_,i){
+      switch(i) {
+        case 0:
+        case dataPointsSize - 1:
+          // ignore
+          break;
+
+        default:
+          if (i % showEveryXthLabel != 0) {
+            d3.select(this).remove();
+          }
+      }
+    });
 
     chart
       .selectAll()
@@ -79,22 +99,38 @@ export default class BarChart extends Vue {
       .attr('width', xScale.bandwidth())
       // hover effect
       .on('mouseenter', function (actual, i) {
-        d3.select(this).attr("opacity", 0.5)
+        d3.select(this).attr("class", "bar highlight")
       })
       .on("mouseleave", function (actual, i) {
-        d3.select(this).attr("opacity", 1)
+        d3.select(this).attr("class", "bar")
       });
+
+    /** remove line around chart */
+    chart.selectAll(".domain")
+      .attr("stroke", "#fff0");
+    chart.selectAll("text")
+      .attr("class", "text-gray-300")
   }
 }
 </script>
 
-<style>
+<style lang="scss">
   .chart {
     width: 100%;
     height: 100%;
-  }
-  .bar {
-    fill: #4289b9;
+
+    .bar {
+      @apply fill-current text-teal-400;
+      opacity: 0.9;
+    }
+
+    .bar.highlight {
+      opacity: 0.7;
+    }
+
+    .tick line {
+      stroke: #aaa;
+    }
   }
 </style>
 
