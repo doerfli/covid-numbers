@@ -27,7 +27,7 @@ export default class BarChart extends Vue {
   };
 
   public mounted() {
-    console.log("BarChart.mounted");
+    // console.log("BarChart.mounted");
   }
 
   get chartId() {
@@ -36,8 +36,8 @@ export default class BarChart extends Vue {
 
   @Watch('data')
   dataChanged(dataPoints: Array<DataPoint>, oldPoints: Array<DataPoint>) {
-    console.log("dataChanged");
-    console.log(dataPoints);
+    // console.log("dataChanged");
+    // console.log(dataPoints);
 
     const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
     const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
