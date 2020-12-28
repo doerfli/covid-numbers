@@ -29,8 +29,7 @@ export  default class RecordsProcessor {
     "VS",
     "ZG",
     "ZH",
-    "FL",
-    "CH"
+    "FL"
   ]
 
   private initializedMap(): Map<string,Array<DailyData>> {
@@ -44,11 +43,16 @@ export  default class RecordsProcessor {
    */
   private completeDataMap (date: string, dataMap: Map<string, DailyData[]>) {
     this.CANTONS
-      .filter((canton) => ! dataMap.has(canton) || ( dataMap.get(canton)?.length ?? 0) == 0 || dataMap.get(canton)?.slice(-1)[0].date !== date)
+      .filter((canton) => {
+        if (! dataMap.has(canton) ) return true;
+        if ((dataMap.get(canton)?.length ?? 0) == 0) { return true; }
+        if (dataMap.get(canton)?.slice(-1)[0].date !== date) { return true; }
+        if (dataMap.get(canton)?.slice(-1)[0].confCases === 0) { return true; }
+      })
       .forEach((canton) => {
         const entries = dataMap.get(canton);
         if (entries !== undefined) {
-          if (entries.length == 0) {
+          if (entries.length == 0) { // first entry missing
             entries.push({
               date: date,
               confCases: 0,
@@ -57,12 +61,26 @@ export  default class RecordsProcessor {
             } as DailyData)
           } else {
             const lastEntry = entries[entries.length - 1];
-            entries.push({
-              date: date,
-              confCases: lastEntry.confCases,
-              currHosp: lastEntry.currHosp,
-              currIcu: lastEntry.currIcu
-            } as DailyData);
+            // console.log(date + " " + canton + " - " + lastEntry.confCases);
+            if (entries.length > 2 && lastEntry.date === date) { // last entry is current day
+              if (entries[entries.length - 1].date === date) { // and confCases == 0 (records contained 0 confCases entry instead of latest value) - duplicate latest value instead
+                entries.pop();
+                const dayBefore = entries[entries.length - 1];
+                entries.push({
+                  date: date,
+                  confCases: dayBefore.confCases,
+                  currHosp: dayBefore.currHosp,
+                  currIcu: dayBefore.currIcu
+                } as DailyData);
+              }
+            } else { // missing entry for this date (not contained in records) - copy latest one
+              entries.push({
+                date: date,
+                confCases: lastEntry.confCases,
+                currHosp: lastEntry.currHosp,
+                currIcu: lastEntry.currIcu
+              } as DailyData);
+            }
           }
         }
       });
@@ -78,27 +96,31 @@ export  default class RecordsProcessor {
 
     this.CANTONS.forEach((canton) => {
       const data = dataMap.get(canton)?.slice(-1)[0];
+      // console.log(canton);
+      // console.log(data);
       confCases += data?.confCases ?? 0;
       currHosp += data?.currHosp ?? 0;
       currIcu += data?.currIcu ?? 0;
     });
-    totalCh.push({
+    const d = {
       date: currentDay,
       confCases: confCases,
       currHosp: currHosp,
       currIcu: currIcu
-    } as DailyData);
+    } as DailyData;
+    // console.log(d);
+    totalCh.push(d);
   }
 
   /**
    * adds missing entries and calculates totals for day across all cantons
    */
-  private updateCurrentDayData (currentDay: string, data: DailyData, totalCh: DailyData[], dataMap: Map<string, DailyData[]>) {
-    if (data.date !== currentDay) {
+  private updateCurrentDayData (currentDay: string, recordDate: string, totalCh: DailyData[], dataMap: Map<string, DailyData[]>) {
+    if (recordDate !== currentDay) {
       // console.log(data.date + " <- " + currentDay)
       this.completeDataMap(currentDay, dataMap);
       this.calculateTotal(currentDay, dataMap, totalCh);
-      return data.date;
+      return recordDate;
     }
 
     return currentDay;
@@ -127,7 +149,7 @@ export  default class RecordsProcessor {
       const canton = val.abbreviation_canton_and_fl;
       const record = RecordsProcessor.parseRecord(val);
 
-      currentDay = this.updateCurrentDayData(currentDay, record, totalCh, dataMap);
+      currentDay = this.updateCurrentDayData(currentDay, record.date, totalCh, dataMap);
 
       const cantonData = dataMap.get(canton);
       if (dataMap.has(canton) && cantonData !== undefined) {
@@ -135,8 +157,9 @@ export  default class RecordsProcessor {
       } else {
         console.log("undefined dataMap entry for " + canton);
       }
-
     });
+
+    currentDay = this.updateCurrentDayData(currentDay, "2100-01-01", totalCh, dataMap);
 
     // set total ch data
     dataMap.set("CH", totalCh);
