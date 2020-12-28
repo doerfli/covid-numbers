@@ -51,6 +51,11 @@ export default class Home extends Vue {
     "ZH"
   ]
 
+  public mounted() {
+    console.log("Home.mounted");
+    this.$store.dispatch("cases/fetch");
+  }
+
   private get cantons() {
     return this.CANTONS;
   }
