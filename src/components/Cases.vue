@@ -50,11 +50,20 @@ export default class Cases extends Vue {
     // console.log(cases);
       // console.log(state.cases);
       // console.log(state.cases.has(canton));
+    let last = 0;
     const t = cases.map((value: DailyData, idx: number, arr: DailyData[]) => {
       if (idx == 0) {
+        last = value.confCases;
         return null;
       }
-      const n = value.confCases - arr[idx - 1].confCases;
+      if (value.confCases == 0) {
+        return {
+          date: value.date,
+          newCases: 0
+        } as DailyData;
+      }
+      const n = value.confCases - last;
+      last = value.confCases;
       return {
         date: value.date,
         newCases: n
