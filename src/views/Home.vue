@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-wrap">
     <Cases
+      canton="CH"
+    ></Cases>
+    <Cases
       v-for="canton in cantons" :key="canton"
       v-bind:canton="canton"
     ></Cases>
@@ -50,6 +53,11 @@ export default class Home extends Vue {
     "ZG",
     "ZH"
   ]
+
+  public mounted() {
+    console.log("Home.mounted");
+    this.$store.dispatch("cases/fetch");
+  }
 
   private get cantons() {
     return this.CANTONS;
