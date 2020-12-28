@@ -93,7 +93,7 @@ function calculateTotal(currentDay: string, dataMap: Map<string, DailyData[]>, t
  */
 function updateCurrentDayData (currentDay: string, data: DailyData, totalCh: DailyData[], dataMap: Map<string, DailyData[]>) {
   if (data.date !== currentDay) {
-    console.log(data.date + " <- " + currentDay)
+    // console.log(data.date + " <- " + currentDay)
     completeDataMap(currentDay, dataMap);
     calculateTotal(currentDay, dataMap, totalCh);
     return data.date;

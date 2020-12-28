@@ -37,7 +37,7 @@ export default class Cases extends Vue {
 
   @Watch("getCases", { deep: true} )
   casesMapChanged(casesNew: Array<CantonData>, casesOld: Array<CantonData>) {
-    console.log("casesMapChanged");
+    // console.log("casesMapChanged");
     // console.log(casesNew);
     if (casesNew.length == 0) {
       return;
@@ -46,7 +46,7 @@ export default class Cases extends Vue {
   }
 
   private calculateNewCases(cases: Array<DailyData>): Array<DailyData> {
-    console.log("newCases");
+    // console.log("newCases");
     // console.log(cases);
       // console.log(state.cases);
       // console.log(state.cases.has(canton));
@@ -72,10 +72,7 @@ export default class Cases extends Vue {
     return t.filter((v: DailyData | null) => v != null) as Array<DailyData>;
   }
 
-  // @Watch("getCases")
   get newCases(): Array<DataPoint> {
-    console.log("cases");
-
     const all = this.cases;
     const newCases1 = this.calculateNewCases(all).slice(-this.daysToShow);
     // console.log(newCases1);
