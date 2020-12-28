@@ -4,8 +4,6 @@ import parse from 'csv-parse/lib/sync'
 import DailyData from '@/model/dailydata'
 import CantonData from '@/model/cantondata'
 
-const totalCh = new Array<DailyData>();
-
 function initializedMap(): Map<string,Array<DailyData>> {
   const CANTONS = [
     "AG",
@@ -42,8 +40,9 @@ function initializedMap(): Map<string,Array<DailyData>> {
   return map;
 }
 
-function updateCurrentDay(currentDay: DailyData, data: DailyData) {
+function updateCurrentDay (currentDay: DailyData, data: DailyData, totalCh: DailyData[]) {
   if (data.date !== currentDay.date) {
+    console.log(data.date + " <- " + currentDay.date)
     totalCh.push(currentDay);
     return data;
   }
@@ -65,8 +64,10 @@ const casesModule: Module<any, any> = {
   },
   mutations: {
     saveRecords(state, payload) {
-      const dataMap = initializedMap();
+      // canton -> Array<DailyData>
+      const dataMap: Map<string, DailyData[]> = initializedMap();
       // console.log(payload.records);
+      const totalCh = new Array<DailyData>();
       let currentDay: DailyData = {
           date: payload.records[0].date,
           confCases: 0,
@@ -74,11 +75,18 @@ const casesModule: Module<any, any> = {
           currIcu: 0
       } as DailyData
 
+      // loop over all records and store in DailyData structure by canton
       payload.records.forEach((val: any) => {
         // console.log(val);
 
         const canton = val.abbreviation_canton_and_fl;
         const date = val.date;
+
+        // for debugging
+        if (date === "2020-12-05") {
+          console.log("2020-12-05");
+        }
+
         const record = {
           date: date,
           confCases: parseInt(val.ncumul_conf) | 0,
@@ -86,7 +94,7 @@ const casesModule: Module<any, any> = {
           currIcu: parseInt(val.current_icu) | 0
         } as DailyData;
 
-        currentDay = updateCurrentDay(currentDay, record);
+        currentDay = updateCurrentDay(currentDay, record, totalCh);
 
         const cantonData = dataMap.get(canton);
         if (dataMap.has(canton) && cantonData !== undefined) {
@@ -97,8 +105,10 @@ const casesModule: Module<any, any> = {
 
       });
 
+      // set total ch data
       dataMap.set("CH", totalCh);
 
+      // create array entry per canton
       const cases = new Array<CantonData>();
       dataMap.forEach((data, canton) => {
         cases.push({
@@ -106,6 +116,8 @@ const casesModule: Module<any, any> = {
           data: data
         } as CantonData)
       });
+
+      // update cases
       state.cases = cases;
       console.log("cases saved");
     }
