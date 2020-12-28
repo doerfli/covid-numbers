@@ -4,6 +4,8 @@ import parse from 'csv-parse/lib/sync'
 import DailyData from '@/model/dailydata'
 import CantonData from '@/model/cantondata'
 
+const totalCh = new Array<DailyData>();
+
 function initializedMap(): Map<string,Array<DailyData>> {
   const CANTONS = [
     "AG",
@@ -40,7 +42,7 @@ function initializedMap(): Map<string,Array<DailyData>> {
   return map;
 }
 
-function updateCurrentDay(currentDay: DailyData, data: DailyData, totalCh: Array<DailyData>) {
+function updateCurrentDay(currentDay: DailyData, data: DailyData) {
   if (data.date !== currentDay.date) {
     totalCh.push(currentDay);
     return data;
@@ -65,7 +67,6 @@ const casesModule: Module<any, any> = {
     saveRecords(state, payload) {
       const dataMap = initializedMap();
       // console.log(payload.records);
-      const totalCh = new Array<DailyData>();
       let currentDay: DailyData = {
           date: payload.records[0].date,
           confCases: 0,
@@ -85,7 +86,7 @@ const casesModule: Module<any, any> = {
           currIcu: parseInt(val.current_icu) | 0
         } as DailyData;
 
-        currentDay = updateCurrentDay(currentDay, record, totalCh);
+        currentDay = updateCurrentDay(currentDay, record);
 
         const cantonData = dataMap.get(canton);
         if (dataMap.has(canton) && cantonData !== undefined) {
