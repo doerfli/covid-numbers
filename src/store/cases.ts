@@ -58,10 +58,14 @@ function completeDataMap (date: string, dataMap: Map<string, DailyData[]>) {
             currIcu: 0
           } as DailyData)
         } else {
-          const lastEntry = entries.slice(-1)[0];
-          entries.push(lastEntry);
+          const lastEntry = entries[entries.length - 1];
+          entries.push({
+            date: date,
+            confCases: lastEntry.confCases,
+            currHosp: lastEntry.currHosp,
+            currIcu: lastEntry.currIcu
+          } as DailyData);
         }
-        dataMap.set(canton, entries);
       }
     });
 }
@@ -131,6 +135,8 @@ const casesModule: Module<any, any> = {
         const canton = val.abbreviation_canton_and_fl;
         const record = parseRecord(val);
 
+        currentDay = updateCurrentDayData(currentDay, record, totalCh, dataMap);
+
         const cantonData = dataMap.get(canton);
         if (dataMap.has(canton) && cantonData !== undefined) {
           cantonData.push(record);
@@ -138,7 +144,6 @@ const casesModule: Module<any, any> = {
           console.log("undefined dataMap entry for " + canton);
         }
 
-        currentDay = updateCurrentDayData(currentDay, record, totalCh, dataMap);
       });
 
       // set total ch data
