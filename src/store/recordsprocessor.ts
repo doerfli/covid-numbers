@@ -47,7 +47,6 @@ export  default class RecordsProcessor {
         if (! dataMap.has(canton) ) return true;
         if ((dataMap.get(canton)?.length ?? 0) == 0) { return true; }
         if (dataMap.get(canton)?.slice(-1)[0].date !== date) { return true; }
-        if (dataMap.get(canton)?.slice(-1)[0].confCases === 0) { return true; }
       })
       .forEach((canton) => {
         const entries = dataMap.get(canton);
@@ -62,25 +61,13 @@ export  default class RecordsProcessor {
           } else {
             const lastEntry = entries[entries.length - 1];
             // console.log(date + " " + canton + " - " + lastEntry.confCases);
-            if (entries.length > 2 && lastEntry.date === date) { // last entry is current day
-              if (entries[entries.length - 1].date === date) { // and confCases == 0 (records contained 0 confCases entry instead of latest value) - duplicate latest value instead
-                entries.pop();
-                const dayBefore = entries[entries.length - 1];
-                entries.push({
-                  date: date,
-                  confCases: dayBefore.confCases,
-                  currHosp: dayBefore.currHosp,
-                  currIcu: dayBefore.currIcu
-                } as DailyData);
-              }
-            } else { // missing entry for this date (not contained in records) - copy latest one
               entries.push({
                 date: date,
                 confCases: lastEntry.confCases,
                 currHosp: lastEntry.currHosp,
                 currIcu: lastEntry.currIcu
               } as DailyData);
-            }
+
           }
         }
       });
@@ -126,13 +113,21 @@ export  default class RecordsProcessor {
     return currentDay;
   }
 
-  private static parseRecord (val: any) {
+  private static parseRecord (val: any): DailyData {
+    if (val.ncumul_conf == "") {
+      return {
+        date: val.date,
+        confCases: -1,
+        currHosp: -1,
+        currIcu: -1
+      } as DailyData;
+    }
     return {
       date: val.date,
-      confCases: parseInt(val.ncumul_conf) | 0,
-      currHosp: parseInt(val.current_hosp) | 0,
-      currIcu: parseInt(val.current_icu) | 0
-    } as DailyData
+      confCases: parseInt(val.ncumul_conf),
+      currHosp: parseInt(val.current_hosp),
+      currIcu: parseInt(val.current_icu)
+    } as DailyData;
   }
 
   public process(records: any[]): Map<string, DailyData[]> {
@@ -147,7 +142,21 @@ export  default class RecordsProcessor {
       // console.log(val);
 
       const canton = val.abbreviation_canton_and_fl;
-      const record = RecordsProcessor.parseRecord(val);
+      let record = RecordsProcessor.parseRecord(val);
+
+      if (record.confCases == -1) {
+        const latest = dataMap.get(canton)?.slice(-1)[0] ?? {
+          confCases: 0,
+          currHosp: 0,
+          currIcu: 0
+        } as DailyData;
+        record = {
+          date: val.date,
+          confCases: latest.confCases,
+          currHosp: latest.currHosp,
+          currIcu: latest.currIcu
+        } as DailyData;
+      }
 
       currentDay = this.updateCurrentDayData(currentDay, record.date, totalCh, dataMap);
 
