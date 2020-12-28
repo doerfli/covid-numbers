@@ -29,27 +29,16 @@ export default class Cases extends Vue {
     return this.canton;
   }
 
-  public mounted() {
-    console.log("Home.mounted");
-    this.$store.dispatch("cases/fetch", { canton: this.getCanton });
-  }
-
-  // get casesPerCanton() {
-  //   console.log(1);
-  //   console.log(this.getCanton);
-  //   return this.$store.getters['cases/newCases'](this.getCanton);
-  // }
-
   get getCases(): Array<CantonData> {
     const t = this.$store.state.cases.cases;
-    console.log(t);
+    // console.log(t);
     return t.filter((x: CantonData) => { return x.canton == this.getCanton});
   }
 
   @Watch("getCases", { deep: true} )
   casesMapChanged(casesNew: Array<CantonData>, casesOld: Array<CantonData>) {
     console.log("casesMapChanged");
-    console.log(casesNew);
+    // console.log(casesNew);
     if (casesNew.length == 0) {
       return;
     }
@@ -58,14 +47,23 @@ export default class Cases extends Vue {
 
   private calculateNewCases(cases: Array<DailyData>): Array<DailyData> {
     console.log("newCases");
-    console.log(cases);
+    // console.log(cases);
       // console.log(state.cases);
       // console.log(state.cases.has(canton));
+    let last = 0;
     const t = cases.map((value: DailyData, idx: number, arr: DailyData[]) => {
       if (idx == 0) {
+        last = value.confCases;
         return null;
       }
-      const n = value.confCases - arr[idx - 1].confCases;
+      if (value.confCases == 0) {
+        return {
+          date: value.date,
+          newCases: 0
+        } as DailyData;
+      }
+      const n = value.confCases - last;
+      last = value.confCases;
       return {
         date: value.date,
         newCases: n
@@ -80,7 +78,7 @@ export default class Cases extends Vue {
 
     const all = this.cases;
     const newCases1 = this.calculateNewCases(all).slice(-this.daysToShow);
-    console.log(newCases1);
+    // console.log(newCases1);
     return newCases1.map((x: DailyData) => {
       return {
         xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
