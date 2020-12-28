@@ -40,6 +40,22 @@ function initializedMap(): Map<string,Array<DailyData>> {
   return map;
 }
 
+function updateCurrentDay(currentDay: DailyData, data: DailyData, totalCh: Array<DailyData>) {
+  if (data.date !== currentDay.date) {
+    totalCh.push(currentDay);
+    return data;
+  }
+
+  const c = {
+    date: currentDay.date,
+    confCases: currentDay.confCases + data.confCases,
+    currHosp: currentDay.currHosp + data.currHosp,
+    currIcu: currentDay.currIcu + data.currIcu
+  } as DailyData;
+  // console.log(c);
+  return c;
+}
+
 const casesModule: Module<any, any> = {
   namespaced: true as true,
   state: {
@@ -49,6 +65,14 @@ const casesModule: Module<any, any> = {
     saveRecords(state, payload) {
       const dataMap = initializedMap();
       // console.log(payload.records);
+      const totalCh = new Array<DailyData>();
+      let currentDay: DailyData = {
+          date: payload.records[0].date,
+          confCases: 0,
+          currHosp: 0,
+          currIcu: 0
+      } as DailyData
+
       payload.records.forEach((val: any) => {
         // console.log(val);
 
@@ -61,6 +85,8 @@ const casesModule: Module<any, any> = {
           currIcu: parseInt(val.current_icu) | 0
         } as DailyData;
 
+        currentDay = updateCurrentDay(currentDay, record, totalCh);
+
         const cantonData = dataMap.get(canton);
         if (dataMap.has(canton) && cantonData !== undefined) {
           cantonData.push(record);
@@ -69,6 +95,8 @@ const casesModule: Module<any, any> = {
         }
 
       });
+
+      dataMap.set("CH", totalCh);
 
       const cases = new Array<CantonData>();
       dataMap.forEach((data, canton) => {
