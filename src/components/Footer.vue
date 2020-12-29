@@ -1,8 +1,8 @@
 <template>
   <div class="py-6">
-    <i>Covid-numbers</i> is hosted on <Ref uri="https://github.com/doerfli/covid-numbers/">Github</Ref>
+    Data source: <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
     | Twitter: <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
-    | Data source: <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
+    | Github: <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
   </div>
 </template>
 
