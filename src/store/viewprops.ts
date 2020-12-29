@@ -7,15 +7,6 @@ const viewpropsModule: Module<any, any> = {
     cantons: [] as CantonConfig[]
   },
   getters: {
-    // cantons: (state) => {
-    //   const x = state.cantonsActive.keys() as Array<string>;
-    //   console.log(x);
-    //   return x;
-    // },
-    // cantonsSelected: (state) => {
-    //   const x = state.cantonsActive.entries() as Array<any>;
-    //   return Array.from(x).filter(([key, value]) => value).map(([key, value]) => key);
-    // }
   },
   mutations: {
     toggleCanton(state, payload) {
@@ -35,7 +26,7 @@ const viewpropsModule: Module<any, any> = {
   actions: {
     toggleCanton({commit}, payload) {
       const canton = payload.canton;
-      console.log("toggle " + canton);
+      // console.log("toggle " + canton);
       commit("toggleCanton", { canton });
     },
     init({commit}, payload) {

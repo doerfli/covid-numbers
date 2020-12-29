@@ -28,6 +28,7 @@ export default class BarChart extends Vue {
 
   public mounted() {
     // console.log("BarChart.mounted");
+    this.paintChart(this.data);
   }
 
   get chartId() {
@@ -38,25 +39,37 @@ export default class BarChart extends Vue {
   dataChanged(dataPoints: Array<DataPoint>, oldPoints: Array<DataPoint>) {
     // console.log("dataChanged");
     // console.log(dataPoints);
+    this.paintChart(dataPoints)
+  }
+
+  private paintChart (dataPoints: Array<DataPoint>) {
+    // clear existing contents
+    d3.selectAll(`#${this.chartId} *`).remove();
+    const dataPointsSize = dataPoints.length;
+
+    // don't paint anything when no data is available
+    if (dataPointsSize == 0) { return; }
 
     const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
     const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
-    const max = (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01;
-    const dataPointsSize = dataPoints.length;
+    const max = dataPoints.length > 0
+      ? (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01
+      : 1;
     // console.log(max);
 
-    const svg = d3.select(`#${this.chartId}`);
+    let svg = d3.select(`#${this.chartId}`);
+    svg = d3.select(`#${this.chartId}`);
 
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.xmargin)}, ${(this.ymargin)})`);
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, max]);
+      .domain([0, max])
     chart.append('g')
       .call(d3.axisLeft(yScale)
         .scale(yScale)
-        .tickSize(-width));
+        .tickSize(-width))
 
     const xScale = d3.scaleBand()
       .range([0, width])
@@ -66,26 +79,26 @@ export default class BarChart extends Vue {
     chart.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScale))
-      .selectAll("text")
+      .selectAll('text')
       .attr('class', 'xlabel')
-      .attr("x", -14)
-      .style("text-anchor", "start");
+      .attr('x', -14)
+      .style('text-anchor', 'start')
 
-    const showEveryXthLabel = this.xLabelDistance;
-    const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`);
-    ticks.each(function(_,i){
-      switch(i) {
+    const showEveryXthLabel = this.xLabelDistance
+    const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`)
+    ticks.each(function (_, i) {
+      switch (i) {
         case 0:
         case dataPointsSize - 1:
           // ignore
-          break;
+          break
 
         default:
           if (i % showEveryXthLabel != 0) {
-            d3.select(this).remove();
+            d3.select(this).remove()
           }
       }
-    });
+    })
 
     chart
       .selectAll()
@@ -99,17 +112,17 @@ export default class BarChart extends Vue {
       .attr('width', xScale.bandwidth())
       // hover effect
       .on('mouseenter', function (actual, i) {
-        d3.select(this).attr("class", "bar highlight")
+        d3.select(this).attr('class', 'bar highlight')
       })
-      .on("mouseleave", function (actual, i) {
-        d3.select(this).attr("class", "bar")
-      });
+      .on('mouseleave', function (actual, i) {
+        d3.select(this).attr('class', 'bar')
+      })
 
     /** remove line around chart */
-    chart.selectAll(".domain")
-      .attr("stroke", "#fff0");
-    chart.selectAll("text")
-      .attr("class", "text-gray-300")
+    chart.selectAll('.domain')
+      .attr('stroke', '#fff0')
+    chart.selectAll('text')
+      .attr('class', 'text-gray-300')
   }
 }
 </script>
