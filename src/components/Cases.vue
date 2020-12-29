@@ -26,7 +26,7 @@ export default class Cases extends Vue {
   private cases: Array<DailyData> = new Array<DailyData>();
 
   private created() {
-    console.log("created");
+    // console.log("created");
     const cases = this.getCases;
     if (cases.length > 0) {
       this.cases = cases[0].data;
