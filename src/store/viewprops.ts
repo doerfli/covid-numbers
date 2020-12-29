@@ -1,6 +1,10 @@
 import { Module } from 'vuex'
 import CantonConfig from '@/model/cantonconfig'
 
+function persistCantonsToLocalStorage (cantons: string[]) {
+  localStorage.setItem("selectedCantons", cantons.join(","));
+}
+
 // eslint-disable-next-line
 const viewpropsModule: Module<any, any> = {
   namespaced: true as true,
@@ -12,19 +16,28 @@ const viewpropsModule: Module<any, any> = {
   mutations: {
     toggleCanton(state, payload) {
       state.cantons.filter((c: CantonConfig) => c.name === payload.canton).forEach((c: CantonConfig) => c.show = ! c.show);
+      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.name));
     },
     init(state) {
+      const selectedCantons = localStorage.getItem("selectedCantons")?.split(",");
       state.cantons = [
         "CH", "AG", "AI", "AR", "BE", "BL", "BS", "FR", "GE", "GL", "GR", "JU",
         "LU", "NE", "NW", "OW", "SG", "SH", "SO", "SZ", "TG", "TI", "UR", "VD",
         "VS", "ZG", "ZH"
-      ].map((e) => { return {
-        name: e,
-        show: true
-      } as CantonConfig });
+      ].map((e) => {
+        let show = true;
+        if (selectedCantons != null && ! selectedCantons.includes(e)) {
+          show = false;
+        }
+        return {
+          name: e,
+          show: show
+        } as CantonConfig
+      });
     },
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
+      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.name));
     }
   },
   actions: {
