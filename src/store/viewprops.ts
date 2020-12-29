@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import CantonConfig from '@/model/cantonconfig'
 
+// eslint-disable-next-line
 const viewpropsModule: Module<any, any> = {
   namespaced: true as true,
   state: {
@@ -29,7 +30,7 @@ const viewpropsModule: Module<any, any> = {
       // console.log("toggle " + canton);
       commit("toggleCanton", { canton });
     },
-    init({commit}, payload) {
+    init({commit}) {
       commit("init");
     }
   },

@@ -36,7 +36,7 @@ export default class BarChart extends Vue {
   }
 
   @Watch('data')
-  dataChanged(dataPoints: Array<DataPoint>, oldPoints: Array<DataPoint>) {
+  dataChanged(dataPoints: Array<DataPoint>) {
     // console.log("dataChanged");
     // console.log(dataPoints);
     this.paintChart(dataPoints)
@@ -111,10 +111,10 @@ export default class BarChart extends Vue {
       .attr('height', (s) => height - yScale(s.yValue))
       .attr('width', xScale.bandwidth())
       // hover effect
-      .on('mouseenter', function (actual, i) {
+      .on('mouseenter', function () {
         d3.select(this).attr('class', 'bar highlight')
       })
-      .on('mouseleave', function (actual, i) {
+      .on('mouseleave', function () {
         d3.select(this).attr('class', 'bar')
       })
 
