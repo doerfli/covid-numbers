@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex flex-wrap bg-gray-800 p-2">
+  <div class="bg-gray-800 p-2">
+    <div class="flex flex-wrap">
       <div class="py-2 pr-2">Cantons: </div>
       <div v-for="canton in cantons"
            :key="canton.name"
@@ -10,6 +10,8 @@
         {{ canton.name }}
       </div>
     </div>
+    <div class="p-2 text-sm inline-block text-blue-500" @click="selectAll()">Select all</div>
+    <div class="p-2 text-sm inline-block text-blue-500" @click="selectNone()">Select none</div>
   </div>
 </template>
 
@@ -28,6 +30,14 @@ export default class CantonSelect extends Vue {
 
   private toggle(canton: string) {
     this.$store.dispatch("viewProps/toggleCanton", { canton: canton });
+  }
+
+  private selectAll() {
+    this.$store.dispatch("viewProps/selectAll");
+  }
+
+  private selectNone() {
+    this.$store.dispatch("viewProps/selectNone");
   }
 
 }

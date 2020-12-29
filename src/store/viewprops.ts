@@ -22,6 +22,9 @@ const viewpropsModule: Module<any, any> = {
         name: e,
         show: true
       } as CantonConfig });
+    },
+    setAll(state, payload) {
+      state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
     }
   },
   actions: {
@@ -29,6 +32,12 @@ const viewpropsModule: Module<any, any> = {
       const canton = payload.canton;
       // console.log("toggle " + canton);
       commit("toggleCanton", { canton });
+    },
+    selectAll({commit}) {
+      commit("setAll", { show: true} );
+    },
+    selectNone({commit}) {
+      commit("setAll", { show: false} );
     },
     init({commit}) {
       commit("init");

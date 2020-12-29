@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span @click="toggleCantonSelect" class="text-blue-500 cursor-pointer">Configure view</span>
+    <div @click="toggleCantonSelect" class="text-blue-500 cursor-pointer text-sm pb-1">Configure view</div>
     <Hideable :visible="showCantonSelect">
       <CantonSelect />
     </Hideable>
