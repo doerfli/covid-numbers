@@ -1,7 +1,10 @@
 <template>
   <div>
-    <CantonSelect />
-    <div class="flex flex-wrap">
+    <span @click="toggleCantonSelect" class="text-blue-500 cursor-pointer">Configure view</span>
+    <Hideable :visible="showCantonSelect">
+      <CantonSelect />
+    </Hideable>
+    <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"
         :key="canton.name"
@@ -18,9 +21,11 @@ import Cases from '@/components/Cases.vue'
 import Footer from '@/components/Footer.vue'
 import CantonSelect from '@/components/CantonSelect.vue'
 import CantonConfig from '@/model/cantonconfig'
+import Hideable from '@/components/base/Hideable.vue'
 
 @Component({
   components: {
+    Hideable,
     CantonSelect,
     Footer,
     Cases,
@@ -28,6 +33,8 @@ import CantonConfig from '@/model/cantonconfig'
   }
 })
 export default class Home extends Vue {
+
+  private showCantonSelect = false;
 
   public mounted() {
     console.log("Home.mounted");
@@ -41,6 +48,10 @@ export default class Home extends Vue {
 
   private get selectedCantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons.filter((c: CantonConfig) => c.show);
+  }
+
+  private toggleCantonSelect() {
+    this.showCantonSelect = ! this.showCantonSelect;
   }
 
 }
