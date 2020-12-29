@@ -23,7 +23,15 @@ export default class Cases extends Vue {
   private daysToShow!: number;
   @Prop()
   private canton!: string;
-  private cases: Array<DailyData> = new Array<DailyData>()
+  private cases: Array<DailyData> = new Array<DailyData>();
+
+  private created() {
+    // console.log("created");
+    const cases = this.getCases;
+    if (cases.length > 0) {
+      this.cases = cases[0].data;
+    }
+  }
 
   get getCanton() {
     return this.canton;
@@ -36,7 +44,7 @@ export default class Cases extends Vue {
   }
 
   @Watch("getCases", { deep: true} )
-  casesMapChanged(casesNew: Array<CantonData>, casesOld: Array<CantonData>) {
+  casesMapChanged(casesNew: Array<CantonData>) {
     // console.log("casesMapChanged");
     // console.log(casesNew);
     if (casesNew.length == 0) {
@@ -48,10 +56,8 @@ export default class Cases extends Vue {
   private calculateNewCases(cases: Array<DailyData>): Array<DailyData> {
     // console.log("newCases");
     // console.log(cases);
-      // console.log(state.cases);
-      // console.log(state.cases.has(canton));
     let last = 0;
-    const t = cases.map((value: DailyData, idx: number, arr: DailyData[]) => {
+    const t = cases.map((value: DailyData, idx: number) => {
       if (idx == 0) {
         last = value.confCases;
         return null;
