@@ -1,8 +1,8 @@
 <template>
   <div class="py-6">
-    Data source: <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
-    | Twitter: <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
-    | Github: <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
+    <i class="fab fa-github"></i> <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
+    | <i class="fab fa-twitter"></i> <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
+    | <i class="fas fa-database"></i> <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
   </div>
 </template>
 
