@@ -1,10 +1,8 @@
 <template>
   <div class="flex flex-wrap">
     <Cases
-      canton="CH"
-    ></Cases>
-    <Cases
-      v-for="canton in cantons" :key="canton"
+      v-for="canton in cantons"
+      :key="canton"
       v-bind:canton="canton"
     ></Cases>
   </div>
@@ -25,42 +23,13 @@ import Footer from '@/components/Footer.vue'
 })
 export default class Home extends Vue {
 
-  private CANTONS = [
-    "AG",
-    "AI",
-    "AR",
-    "BE",
-    "BL",
-    "BS",
-    "FR",
-    "GE",
-    "GL",
-    "GR",
-    "JU",
-    "LU",
-    "NE",
-    "NW",
-    "OW",
-    "SG",
-    "SH",
-    "SO",
-    "SZ",
-    "TG",
-    "TI",
-    "UR",
-    "VD",
-    "VS",
-    "ZG",
-    "ZH"
-  ]
-
   public mounted() {
     console.log("Home.mounted");
     this.$store.dispatch("cases/fetch");
   }
 
   private get cantons() {
-    return this.CANTONS;
+    return this.$store.state.viewProps.cantons;
   }
 
 }
