@@ -23,6 +23,11 @@ export default class Cases extends Vue {
   private daysToShow!: number;
   @Prop()
   private canton!: string;
+  @Prop({ default: false })
+  private calculateAverage!: boolean;
+  @Prop({ default: 7 })
+  private averageSlidingWindow!: number;
+
   private cases: Array<DailyData> = new Array<DailyData>();
 
   private created() {
@@ -57,7 +62,7 @@ export default class Cases extends Vue {
     // console.log("newCases");
     // console.log(cases);
     let last = 0;
-    const t = cases.map((value: DailyData, idx: number) => {
+    let newCases = cases.map((value: DailyData, idx: number) => {
       if (idx == 0) {
         last = value.confCases;
         return null;
@@ -70,22 +75,49 @@ export default class Cases extends Vue {
       }
       const n = value.confCases - last;
       last = value.confCases;
+
       return {
         date: value.date,
         newCases: n
       } as DailyData;
-    });
-    return t.filter((v: DailyData | null) => v != null) as Array<DailyData>;
+    }).filter((v: DailyData | null) => v != null) as Array<DailyData>;
+
+    if (this.calculateAverage) {
+      // calculate sliding window average
+      newCases = newCases.map((value: DailyData, idx: number, arr: DailyData[]) => {
+        let avg = 0;
+
+        if (idx >= this.averageSlidingWindow) {
+          avg = Math.round(
+            arr.slice(idx - this.averageSlidingWindow, idx)
+              .map((x) => x.newCases)
+              .reduce((sum, current) => sum  + current)
+            / this.averageSlidingWindow
+          );
+        }
+
+        return {
+          date: value.date,
+          newCases: value.newCases,
+          newCasesAvg: avg
+        } as DailyData;
+      });
+    }
+
+    return newCases;
   }
 
   get newCases(): Array<DataPoint> {
     const all = this.cases;
-    const newCases1 = this.calculateNewCases(all).slice(-this.daysToShow);
-    // console.log(newCases1);
-    return newCases1.map((x: DailyData) => {
+    const newCases = this.calculateNewCases(all);
+    // console.log(newCases);
+
+    // limit to last x days and map to datapoints for display
+    return newCases.slice(-this.daysToShow).map((x: DailyData) => {
       return {
         xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
-        yValue: x.newCases
+        yValue: x.newCases,
+        y2Value: x.newCasesAvg
       } as DataPoint
     });
   }
