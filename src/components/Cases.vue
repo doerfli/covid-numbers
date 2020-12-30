@@ -85,9 +85,10 @@ export default class Cases extends Vue {
     if (this.calculateAverage) {
       // calculate sliding window average
       newCases = newCases.map((value: DailyData, idx: number, arr: DailyData[]) => {
-        let avg = 0;
+        let avg = null;
 
-        if (idx >= this.averageSlidingWindow) {
+        // calculate from first valid position (averageSlidingWindow) up to the last - since last day data is never complete, this day is ignored
+        if (idx >= this.averageSlidingWindow && idx < arr.length - 1) {
           avg = Math.round(
             arr.slice(idx - this.averageSlidingWindow + 1, idx + 1)
               .map((x) => x.newCases)

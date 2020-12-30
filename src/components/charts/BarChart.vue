@@ -127,7 +127,7 @@ export default class BarChart extends Vue {
       .attr("stroke", "currentColor")
       .attr("stroke-miterlimit", 1)
       .attr("stroke-width", 3)
-      .attr("d", line(dataPoints) ?? "");
+      .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
 
     /** remove line around chart */
     chart.selectAll('.domain')
