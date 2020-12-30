@@ -28,8 +28,7 @@ export  default class RecordsProcessor {
     "VD",
     "VS",
     "ZG",
-    "ZH",
-    "FL"
+    "ZH"
   ]
 
   private initializedMap(): Map<string,Array<DailyData>> {
@@ -142,6 +141,9 @@ export  default class RecordsProcessor {
       // console.log(val);
 
       const canton = val.abbreviation_canton_and_fl;
+      if (canton === "FL") {
+        return;
+      }
       let record = RecordsProcessor.parseRecord(val);
 
       if (record.confCases == -1) {
