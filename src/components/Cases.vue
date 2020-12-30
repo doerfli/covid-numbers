@@ -89,7 +89,7 @@ export default class Cases extends Vue {
 
         if (idx >= this.averageSlidingWindow) {
           avg = Math.round(
-            arr.slice(idx - this.averageSlidingWindow, idx)
+            arr.slice(idx - this.averageSlidingWindow + 1, idx + 1)
               .map((x) => x.newCases)
               .reduce((sum, current) => sum  + current)
             / this.averageSlidingWindow

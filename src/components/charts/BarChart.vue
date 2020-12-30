@@ -53,7 +53,7 @@ export default class BarChart extends Vue {
     const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
     const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
     const max = dataPoints.length > 0
-      ? (dataPoints.map(e => e.yValue).reduce((a, b) => Math.max(a, b))) * 1.01
+      ? (dataPoints.map((e) => Math.max(e.yValue, e.y2Value)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     // console.log(max);
 
@@ -117,6 +117,17 @@ export default class BarChart extends Vue {
       .on('mouseleave', function () {
         d3.select(this).attr('class', 'bar')
       })
+
+    const line = d3.line<DataPoint>()
+      .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+      .y((d) => yScale(d.y2Value))
+
+    chart.append("path")
+      .attr("fill", "none")
+      .attr("stroke", "currentColor")
+      .attr("stroke-miterlimit", 1)
+      .attr("stroke-width", 3)
+      .attr("d", line(dataPoints) ?? "");
 
     /** remove line around chart */
     chart.selectAll('.domain')
