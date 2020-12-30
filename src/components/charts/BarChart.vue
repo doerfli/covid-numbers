@@ -123,10 +123,11 @@ export default class BarChart extends Vue {
       .y((d) => yScale(d.y2Value))
 
     chart.append("path")
-      .attr("fill", "none")
-      .attr("stroke", "currentColor")
-      .attr("stroke-miterlimit", 1)
-      .attr("stroke-width", 3)
+      .attr("class", "line")
+      // .attr("fill", "none")
+      // .attr("stroke", "currentColor")
+      // .attr("stroke-miterlimit", 1)
+      // .attr("stroke-width", 2)
       .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
 
     /** remove line around chart */
@@ -154,6 +155,14 @@ export default class BarChart extends Vue {
 
     .tick line {
       stroke: #aaa;
+    }
+
+    .line {
+      @apply text-teal-100;
+      @apply stroke-current;
+      @apply stroke-2;
+      fill: none;
+      stroke-dasharray: 5px;
     }
   }
 </style>
