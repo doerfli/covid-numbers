@@ -4,6 +4,7 @@ interface DailyData {
   currHosp: number;
   currIcu: number;
   newCases: number;
+  newCasesAvg: number;
 }
 
 export default DailyData;

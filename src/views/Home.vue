@@ -9,6 +9,7 @@
         v-for="canton in selectedCantons"
         :key="canton.name"
         v-bind:canton="canton.name"
+        calculate-average="true"
       ></Cases>
     </div>
   </div>
