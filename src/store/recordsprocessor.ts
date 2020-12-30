@@ -112,6 +112,7 @@ export  default class RecordsProcessor {
     return currentDay;
   }
 
+  // eslint-disable-next-line
   private static parseRecord (val: any): DailyData {
     if (val.ncumul_conf == "") {
       return {
@@ -129,6 +130,7 @@ export  default class RecordsProcessor {
     } as DailyData;
   }
 
+  // eslint-disable-next-line
   public process(records: any[]): Map<string, DailyData[]> {
     // canton -> Array<DailyData>
     const dataMap: Map<string, DailyData[]> = this.initializedMap();
@@ -137,6 +139,7 @@ export  default class RecordsProcessor {
     let currentDay: string = records[0].date;
 
     // loop over all records and store in DailyData structure by canton
+    // eslint-disable-next-line
     records.forEach((val: any) => {
       // console.log(val);
 
