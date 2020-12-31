@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H3>Swiss Covid-19 Statistics</H3>
+    <H3>Covid-19 Statistics Switzerland</H3>
   </div>
 </template>
 

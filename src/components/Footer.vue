@@ -1,5 +1,5 @@
 <template>
-  <div class="py-6 flex">
+  <div class="py-6 flex flex-wrap">
     <div class="entry">
       <i class="fab fa-github"></i> <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
     </div>
