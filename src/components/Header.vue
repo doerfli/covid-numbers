@@ -1,15 +1,15 @@
 <template>
   <div>
-    <H3>Covid-19 Statistics Switzerland</H3>
+    <H1>Covid-19 Statistics Switzerland</H1>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import H3 from '@/components/base/H3.vue'
+import H1 from '@/components/base/H1.vue'
 
 @Component({
-  components: { H3 }
+  components: { H1 }
 })
 export default class Header extends Vue {
 

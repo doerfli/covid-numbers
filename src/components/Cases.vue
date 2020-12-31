@@ -1,6 +1,6 @@
 <template>
   <div class="case lg:w-1/3 md:w-1/2">
-    <H4>{{ getCanton }}</H4>
+    <H2>{{ getCanton }}</H2>
     <BarChart class="barchart w-full h-80"
               v-bind:data="newCases" />
   </div>
@@ -12,10 +12,10 @@ import DailyData from '@/model/dailydata'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
-import H4 from '@/components/base/H4.vue'
+import H2 from '@/components/base/H2.vue'
 
 @Component({
-  components: { H4, BarChart }
+  components: { H2, BarChart }
 })
 export default class Cases extends Vue {
 
