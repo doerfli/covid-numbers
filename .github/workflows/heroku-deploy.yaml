@@ -1,4 +1,4 @@
-name: Deploy to Heroku
+name: Deploy to Heroku Prod
 
 on:
   push:
@@ -6,11 +6,12 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.8.8 # This is the action
+      - name: Heroku deploy to covid19-data-prod
+        uses: akhileshns/heroku-deploy@v3.8.8 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "covid19-data-prod"
