@@ -1,6 +1,17 @@
 <template>
   <div class="bg-gray-800 p-2">
     <div class="flex flex-wrap">
+      <div class="py-2 pr-2">Time range:</div>
+      <div class="dateRangeSelect"
+           @click="setDaysToShow(30)">Last 30 days</div>
+      <div class="dateRangeSelect"
+           @click="setDaysToShow(60)">Last 60 days</div>
+      <div class="dateRangeSelect"
+           @click="setDaysToShow(90)">Last 90 days</div>
+      <div class="dateRangeSelect"
+           @click="setDaysToShow(180)">Last 180 days</div>
+    </div>
+    <div class="flex flex-wrap">
       <div class="py-2 pr-2">Cantons: </div>
       <div v-for="canton in cantons"
            :key="canton.name"
@@ -40,10 +51,19 @@ export default class ViewOptions extends Vue {
     this.$store.dispatch("viewProps/selectNone");
   }
 
+  private setDaysToShow(days: number) {
+    this.$store.dispatch("viewProps/setDaysToShow", { daysToShow: days });
+  }
+
 }
 </script>
 
 <style scoped>
-
+  .dateRangeSelect {
+    @apply py-2;
+    @apply pr-3;
+    @apply text-blue-500;
+    @apply cursor-pointer;
+  }
 </style>
 
