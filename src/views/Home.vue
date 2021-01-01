@@ -1,8 +1,13 @@
 <template>
   <div>
-    <div @click="toggleCantonSelect" class="text-blue-500 cursor-pointer text-sm pb-1">View options</div>
+    <div @click="toggleCantonSelect"
+         v-if="! showCantonSelect"
+         class="text-blue-500 cursor-pointer text-sm pb-1">Show view options</div>
+    <div @click="toggleCantonSelect"
+         v-else
+         class="text-blue-500 cursor-pointer text-sm pb-1">Hide view options</div>
     <Hideable :visible="showCantonSelect">
-      <CantonSelect />
+      <ViewOptions />
     </Hideable>
     <div class="flex flex-wrap mt-1">
       <Cases
@@ -20,14 +25,14 @@ import { Component, Vue } from 'vue-property-decorator'
 import BarChart from '@/components/charts/BarChart.vue'
 import Cases from '@/components/Cases.vue'
 import Footer from '@/components/Footer.vue'
-import CantonSelect from '@/components/CantonSelect.vue'
 import CantonConfig from '@/model/cantonconfig'
 import Hideable from '@/components/base/Hideable.vue'
+import ViewOptions from '@/components/ViewOptions.vue'
 
 @Component({
   components: {
+    ViewOptions,
     Hideable,
-    CantonSelect,
     Footer,
     Cases,
     BarChart

@@ -22,7 +22,7 @@ import CantonConfig from '@/model/cantonconfig'
 @Component({
   components: {}
 })
-export default class CantonSelect extends Vue {
+export default class ViewOptions extends Vue {
 
   private get cantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons;
