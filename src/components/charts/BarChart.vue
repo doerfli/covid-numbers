@@ -48,27 +48,19 @@ export default class BarChart extends Vue {
     // don't paint anything when no data is available
     if (dataPointsSize == 0) { return; }
 
-    const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
-    const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
     const max = dataPoints.length > 0
       ? (dataPoints.map((e) => Math.max(e.yValue, e.y2Value)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     // console.log(max);
 
-    let svg = d3.select(`#${this.chartId}`);
-    svg = d3.select(`#${this.chartId}`);
-
+    // intialize chart
+    const svg = d3.select(`#${this.chartId}`);
+    const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
+    const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.xmargin)}, ${(this.ymargin)})`);
 
-    const yScale = d3.scaleLinear()
-      .range([height, 0])
-      .domain([0, max])
-    chart.append('g')
-      .call(d3.axisLeft(yScale)
-        .scale(yScale)
-        .tickSize(-width))
-
+    // paint x-axis
     const xScale = d3.scaleBand()
       .range([0, width])
       .domain(dataPoints.map((s) => s.xValue))
@@ -83,6 +75,7 @@ export default class BarChart extends Vue {
       .attr('x', -14)
       .style('text-anchor', 'start')
 
+    // paint x-axis labels
     let showEveryXthLabel = 7;
     if (dataPointsSize > 120) {
       showEveryXthLabel = showEveryXthLabel * 4;
@@ -105,6 +98,16 @@ export default class BarChart extends Vue {
       }
     })
 
+    // paint y-axis
+    const yScale = d3.scaleLinear()
+      .range([height, 0])
+      .domain([0, max])
+    chart.append('g')
+      .call(d3.axisLeft(yScale)
+        .scale(yScale)
+        .tickSize(-width))
+
+    // plot bars
     chart
       .selectAll()
       .data(dataPoints)
@@ -123,6 +126,7 @@ export default class BarChart extends Vue {
         d3.select(this).attr('class', 'bar')
       })
 
+    // plot line
     const line = d3.line<DataPoint>()
       .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
       .y((d) => yScale(d.y2Value))
@@ -135,6 +139,7 @@ export default class BarChart extends Vue {
       // .attr("stroke-width", 2)
       .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
 
+    // cleanup
     /** remove line around chart */
     chart.selectAll('.domain')
       .attr('stroke', '#fff0')
