@@ -1,4 +1,4 @@
-name: Build
+name: Build for Github Pages
 
 on: [push]
 
@@ -30,6 +30,11 @@ jobs:
         run: |
           yarn policies set-version
           yarn install
+
+      - name: set environment variables
+        uses: allenevans/set-env@v2.0.0
+        with:
+          DIST_SUBDIR: '/covid-numbers/'
 
       - name: Yarn run build
         run: yarn run build
