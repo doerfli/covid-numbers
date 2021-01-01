@@ -9,7 +9,8 @@ function persistCantonsToLocalStorage (cantons: string[]) {
 const viewpropsModule: Module<any, any> = {
   namespaced: true as true,
   state: {
-    cantons: [] as CantonConfig[]
+    cantons: [] as CantonConfig[],
+    daysToShow: 30
   },
   getters: {
   },
@@ -38,6 +39,9 @@ const viewpropsModule: Module<any, any> = {
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
       persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.name));
+    },
+    setDaysToShow(state, payload) {
+      state.daysToShow = payload.daysToShow;
     }
   },
   actions: {
@@ -54,6 +58,9 @@ const viewpropsModule: Module<any, any> = {
     },
     init({commit}) {
       commit("init");
+    },
+    setDaysToShow({commit}, payload) {
+      commit("setDaysToShow", { daysToShow: payload.daysToShow });
     }
   },
 };
