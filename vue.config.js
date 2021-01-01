@@ -1,6 +1,6 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/covid-numbers/'
+  publicPath: process.env.DIST_SUBDIR !== undefined
+    ? process.env.DIST_SUBDIR
     : '/',
   configureWebpack: {
     "devtool": "source-map"
