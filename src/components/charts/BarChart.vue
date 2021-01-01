@@ -16,7 +16,6 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
-  private xLabelDistance = 7;
   private xmargin = 40;
   private ymargin = 20;
   private eid = Math.floor(Math.random() * 10000);
@@ -77,15 +76,21 @@ export default class BarChart extends Vue {
 
     chart.append('g')
       .attr('transform', `translate(0, ${height})`)
+      .attr('class', 'xaxis')
       .call(d3.axisBottom(xScale))
       .selectAll('text')
       .attr('class', 'xlabel')
       .attr('x', -14)
       .style('text-anchor', 'start')
 
-    const showEveryXthLabel = this.xLabelDistance;
-    const labelOffset = dataPointsSize % this.xLabelDistance;
-    const ticks = d3.selectAll(`#${this.chartId} .tick .xlabel`)
+    let showEveryXthLabel = 7;
+    if (dataPointsSize > 120) {
+      showEveryXthLabel = showEveryXthLabel * 4;
+    } else if (dataPointsSize > 60) {
+      showEveryXthLabel = showEveryXthLabel * 2;
+    }
+    const labelOffset = dataPointsSize % showEveryXthLabel;
+    const ticks = d3.selectAll(`#${this.chartId} .xaxis .tick`)
     ticks.each(function (_, i) {
       switch (i) {
         // case 0:
