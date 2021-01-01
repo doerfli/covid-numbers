@@ -13,7 +13,8 @@
       <Cases
         v-for="canton in selectedCantons"
         :key="canton.name"
-        v-bind:canton="canton.name"
+        :canton="canton.name"
+        :days-to-show="getDaysToShow"
         calculate-average="true"
       ></Cases>
     </div>
@@ -58,6 +59,10 @@ export default class Home extends Vue {
 
   private toggleCantonSelect() {
     this.showCantonSelect = ! this.showCantonSelect;
+  }
+
+  private get getDaysToShow() {
+    return this.$store.state.viewProps.daysToShow;
   }
 
 }
