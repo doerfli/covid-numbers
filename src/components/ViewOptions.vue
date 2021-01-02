@@ -17,8 +17,7 @@
            :key="canton.name"
            class="pr-3 py-2"
            >
-        <input type="checkbox" :checked="canton.show" @change="toggle(canton.name)" class="mr-0.5"/>
-        {{ canton.name }}
+        <Checkbox :text="canton.name" :checked="canton.show" @change="toggle(canton.name)"/>
       </div>
     </div>
     <div class="p-2 text-sm inline-block text-blue-500" @click="selectAll()">Select all</div>
@@ -29,9 +28,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import CantonConfig from '@/model/cantonconfig'
+import Checkbox from '@/components/base/Checkbox.vue'
 
 @Component({
-  components: {}
+  components: { Checkbox }
 })
 export default class ViewOptions extends Vue {
 
@@ -77,6 +77,15 @@ export default class ViewOptions extends Vue {
     @apply py-2;
     @apply pr-3;
     @apply text-teal-500;
+  }
+
+  input[type="checkbox"] {
+    @apply appearance-none;
+
+  }
+
+  input[type="checkbox"]:checked  {
+
   }
 </style>
 
