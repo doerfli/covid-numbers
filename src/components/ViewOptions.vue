@@ -2,13 +2,13 @@
   <div class="bg-gray-800 p-2">
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Time range:</div>
-      <div class="dateRangeSelect"
+      <div :class="getDaysToShowClass(30)"
            @click="setDaysToShow(30)">Last 30 days</div>
-      <div class="dateRangeSelect"
+      <div :class="getDaysToShowClass(60)"
            @click="setDaysToShow(60)">Last 60 days</div>
-      <div class="dateRangeSelect"
+      <div :class="getDaysToShowClass(90)"
            @click="setDaysToShow(90)">Last 90 days</div>
-      <div class="dateRangeSelect"
+      <div :class="getDaysToShowClass(180)"
            @click="setDaysToShow(180)">Last 180 days</div>
     </div>
     <div class="flex flex-wrap">
@@ -55,6 +55,14 @@ export default class ViewOptions extends Vue {
     this.$store.dispatch("viewProps/setDaysToShow", { daysToShow: days });
   }
 
+  private getDaysToShowClass(days: number) {
+    if (this.$store.state.viewProps.daysToShow === days) {
+      return "dateRangeSelected";
+    } else {
+      return "dateRangeSelect";
+    }
+  }
+
 }
 </script>
 
@@ -64,6 +72,11 @@ export default class ViewOptions extends Vue {
     @apply pr-3;
     @apply text-blue-500;
     @apply cursor-pointer;
+  }
+  .dateRangeSelected {
+    @apply py-2;
+    @apply pr-3;
+    @apply text-teal-500;
   }
 </style>
 
