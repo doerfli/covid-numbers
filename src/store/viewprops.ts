@@ -5,6 +5,11 @@ function persistCantonsToLocalStorage (cantons: string[]) {
   localStorage.setItem("selectedCantons", cantons.join(","));
 }
 
+function persistDaysToShowToLocalStorage (daysToShow: number) {
+  localStorage.setItem("daysToShow", daysToShow.toString());
+}
+
+
 // eslint-disable-next-line
 const viewpropsModule: Module<any, any> = {
   namespaced: true as true,
@@ -35,6 +40,7 @@ const viewpropsModule: Module<any, any> = {
           show: show
         } as CantonConfig
       });
+      state.daysToShow = Number.parseInt(localStorage.getItem("daysToShow") ?? "30");
     },
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
@@ -42,6 +48,7 @@ const viewpropsModule: Module<any, any> = {
     },
     setDaysToShow(state, payload) {
       state.daysToShow = payload.daysToShow;
+      persistDaysToShowToLocalStorage(state.daysToShow);
     }
   },
   actions: {
