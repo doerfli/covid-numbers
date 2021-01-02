@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-1">
     <svg ref="chart" :id="chartId" class="chart"></svg>
   </div>
 </template>
@@ -55,10 +55,10 @@ export default class BarChart extends Vue {
 
     // intialize chart
     const svg = d3.select(`#${this.chartId}`);
-    const width = this.$refs.chart.clientWidth - 2 * this.xmargin;
-    const height = this.$refs.chart.clientHeight - 2 * this.ymargin;
+    const width = this.$refs.chart.clientWidth - 1.25 * this.xmargin;
+    const height = this.$refs.chart.clientHeight - this.ymargin;
     const chart = svg.append('g')
-      .attr('transform', `translate(${(this.xmargin)}, ${(this.ymargin)})`);
+      .attr('transform', `translate(${(this.xmargin)}, 0)`);
 
     // paint x-axis
     const xScale = d3.scaleBand()
