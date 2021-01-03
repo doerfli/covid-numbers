@@ -8,7 +8,7 @@
     <div class="absolute w-full h-full top-0 left-0 flex h-screen bg-gray-700 opacity-80 z-100" v-if="showSpinner()">
       <div class="m-auto flex-col justify-center">
         <div>
-          <i class="fas fa-circle-notch fa-6x text-teal-300 fa-spin"></i>
+          <i class="fas fa-circle-notch fa-6x text-amber-600 dark:text-teal-300 fa-spin"></i>
         </div>
       </div>
     </div>
