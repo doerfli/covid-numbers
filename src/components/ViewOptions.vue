@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 p-2">
+  <div class="bg-indigo-200 dark:bg-gray-800 p-2">
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Time range:</div>
       <div :class="getDaysToShowClass(30)"
@@ -20,8 +20,8 @@
         <Checkbox :text="canton.name" :checked="canton.show" @change="toggle(canton.name)"/>
       </div>
     </div>
-    <div class="p-2 text-sm inline-block text-blue-500" @click="selectAll()">Select all</div>
-    <div class="p-2 text-sm inline-block text-blue-500" @click="selectNone()">Select none</div>
+    <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectAll()">Select all</div>
+    <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectNone()">Select none</div>
   </div>
 </template>
 
@@ -70,13 +70,15 @@ export default class ViewOptions extends Vue {
   .dateRangeSelect {
     @apply py-2;
     @apply pr-3;
-    @apply text-blue-500;
+    @apply text-indigo-700;
+    @apply dark:text-blue-500;
     @apply cursor-pointer;
   }
   .dateRangeSelected {
     @apply py-2;
     @apply pr-3;
-    @apply text-teal-500;
+    @apply text-indigo-700;
+    @apply dark:text-teal-500;
   }
 
   input[type="checkbox"] {
