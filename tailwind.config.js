@@ -5,15 +5,17 @@ module.exports = {
     './public/**/*.html',
     './src/**/*.vue'
   ],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'class'
   theme: {
     extend: {},
     colors: {
       white: colors.white,
       gray: colors.trueGray,
+      black: colors.black,
       teal: colors.teal,
       blue: colors.blue,
-      black: colors.black,
+      indigo: colors.indigo,
+      amber: colors.amber,
     }
   },
   variants: {

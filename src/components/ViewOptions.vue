@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 p-2">
+  <div class="bg-amber-200 dark:bg-gray-800 p-2">
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Time range:</div>
       <div :class="getDaysToShowClass(30)"
@@ -20,8 +20,13 @@
         <Checkbox :text="canton.name" :checked="canton.show" @change="toggle(canton.name)"/>
       </div>
     </div>
-    <div class="p-2 text-sm inline-block text-blue-500" @click="selectAll()">Select all</div>
-    <div class="p-2 text-sm inline-block text-blue-500" @click="selectNone()">Select none</div>
+    <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectAll()">Select all</div>
+    <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectNone()">Select none</div>
+    <div class="flex flex-wrap">
+      <div class="py-2 pr-2">Theme:</div>
+      <div :class="getClassForTheme('light')" @click="toggleTheme()">Light mode</div>
+      <div :class="getClassForTheme('dark')" @click="toggleTheme()">Dark mode</div>
+    </div>
   </div>
 </template>
 
@@ -57,31 +62,44 @@ export default class ViewOptions extends Vue {
 
   private getDaysToShowClass(days: number) {
     if (this.$store.state.viewProps.daysToShow === days) {
-      return "dateRangeSelected";
+      return "itemSelected";
     } else {
-      return "dateRangeSelect";
+      return "itemSelect";
     }
+  }
+
+  private getClassForTheme(theme: string) {
+    if (this.$store.state.viewProps.theme === theme) {
+      return "itemSelected";
+    } else {
+      return "itemSelect";
+    }
+  }
+
+  private toggleTheme() {
+    this.$store.dispatch("viewProps/toggleTheme");
   }
 
 }
 </script>
 
 <style scoped>
-  .dateRangeSelect {
+  .itemSelect {
     @apply py-2;
     @apply pr-3;
-    @apply text-blue-500;
+    @apply text-indigo-700;
+    @apply dark:text-blue-500;
     @apply cursor-pointer;
   }
-  .dateRangeSelected {
+  .itemSelected {
     @apply py-2;
     @apply pr-3;
-    @apply text-teal-500;
+    @apply text-amber-700;
+    @apply dark:text-teal-500;
   }
 
   input[type="checkbox"] {
     @apply appearance-none;
-
   }
 
   input[type="checkbox"]:checked  {

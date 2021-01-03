@@ -1,6 +1,6 @@
 <template>
   <a :href="getUri"
-      class="text-blue-500">
+      class="text-indigo-700 dark:text-blue-500">
     <slot></slot>
   </a>
 </template>

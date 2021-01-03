@@ -1,10 +1,10 @@
 <template>
   <div class="select-none">
-    <i class="far fa-check-square text-teal-500 cursor-pointer"
+    <i class="far fa-check-square text-amber-700 dark:text-teal-500 cursor-pointer"
        @click="toggle"
        v-if="isChecked"
     ></i>
-    <i class="far fa-square text-teal-500 cursor-pointer"
+    <i class="far fa-square text-indigo-700 dark:text-teal-500 cursor-pointer"
        @click="toggle"
        v-else
     ></i>
@@ -36,7 +36,6 @@ export default class Checkbox extends Vue {
   }
 
   private toggle() {
-    this.checked = ! this.checked;
     this.$emit("change")
   }
 

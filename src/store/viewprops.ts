@@ -9,13 +9,18 @@ function persistDaysToShowToLocalStorage (daysToShow: number) {
   localStorage.setItem("daysToShow", daysToShow.toString());
 }
 
+function persistThemeToLocalStorage (theme: string) {
+  localStorage.setItem("theme", theme);
+}
+
 
 // eslint-disable-next-line
 const viewpropsModule: Module<any, any> = {
   namespaced: true as true,
   state: {
     cantons: [] as CantonConfig[],
-    daysToShow: 30
+    daysToShow: 30,
+    theme: ""
   },
   getters: {
   },
@@ -41,6 +46,10 @@ const viewpropsModule: Module<any, any> = {
         } as CantonConfig
       });
       state.daysToShow = Number.parseInt(localStorage.getItem("daysToShow") ?? "30");
+      state.theme = localStorage.getItem("theme") ?? "dark";
+      if (state.theme === "light") {
+        document.querySelector('html')?.classList.remove('dark');
+      }
     },
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
@@ -49,7 +58,17 @@ const viewpropsModule: Module<any, any> = {
     setDaysToShow(state, payload) {
       state.daysToShow = payload.daysToShow;
       persistDaysToShowToLocalStorage(state.daysToShow);
-    }
+    },
+    toggleTheme(state) {
+      if (state.theme === "light") {
+        state.theme = "dark";
+        document.querySelector('html')?.classList.add('dark');
+      } else {
+        state.theme = "light";
+        document.querySelector('html')?.classList.remove('dark');
+      }
+      persistThemeToLocalStorage(state.theme);
+    },
   },
   actions: {
     toggleCanton({commit}, payload) {
@@ -68,7 +87,10 @@ const viewpropsModule: Module<any, any> = {
     },
     setDaysToShow({commit}, payload) {
       commit("setDaysToShow", { daysToShow: payload.daysToShow });
-    }
+    },
+    toggleTheme({commit}) {
+      commit("toggleTheme");
+    },
   },
 };
 
