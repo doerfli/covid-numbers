@@ -47,6 +47,9 @@ const viewpropsModule: Module<any, any> = {
       });
       state.daysToShow = Number.parseInt(localStorage.getItem("daysToShow") ?? "30");
       state.theme = localStorage.getItem("theme") ?? "dark";
+      if (state.theme === "light") {
+        document.querySelector('html')?.classList.remove('dark');
+      }
     },
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
@@ -59,8 +62,10 @@ const viewpropsModule: Module<any, any> = {
     toggleTheme(state) {
       if (state.theme === "light") {
         state.theme = "dark";
+        document.querySelector('html')?.classList.add('dark');
       } else {
         state.theme = "light";
+        document.querySelector('html')?.classList.remove('dark');
       }
       persistThemeToLocalStorage(state.theme);
     },
