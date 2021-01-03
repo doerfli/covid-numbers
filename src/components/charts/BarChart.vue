@@ -141,10 +141,10 @@ export default class BarChart extends Vue {
 
     // cleanup
     /** remove line around chart */
-    chart.selectAll('.domain')
-      .attr('stroke', '#fff0')
+    chart.selectAll('.domain').remove();
+
     chart.selectAll('text')
-      .attr('class', 'text-gray-300')
+      .attr('class', 'chartText');
   }
 }
 </script>
@@ -155,7 +155,7 @@ export default class BarChart extends Vue {
     height: 100%;
 
     .bar {
-      @apply fill-current text-teal-400;
+      @apply fill-current text-indigo-400 dark:text-teal-400;
       opacity: 0.9;
     }
 
@@ -168,11 +168,15 @@ export default class BarChart extends Vue {
     }
 
     .line {
-      @apply text-teal-100;
+      @apply text-indigo-700 dark:text-teal-100;
       @apply stroke-current;
       @apply stroke-2;
       fill: none;
       stroke-dasharray: 5px;
+    }
+
+    .chartText {
+      @apply text-gray-700 dark:text-gray-300;
     }
   }
 </style>
