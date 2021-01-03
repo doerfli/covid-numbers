@@ -36,7 +36,6 @@ export default class Checkbox extends Vue {
   }
 
   private toggle() {
-    this.checked = ! this.checked;
     this.$emit("change")
   }
 
