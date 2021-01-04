@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-emerald-200 dark:bg-gray-800 p-2">
+  <div class="bg-emerald-50 dark:bg-gray-900 p-2">
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Time range:</div>
       <div :class="getDaysToShowClass(30)"
