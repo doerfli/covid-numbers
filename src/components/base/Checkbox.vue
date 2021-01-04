@@ -1,6 +1,6 @@
 <template>
   <div class="select-none">
-    <i class="far fa-check-square text-amber-700 dark:text-teal-500 cursor-pointer"
+    <i class="far fa-check-square text-emerald-700 dark:text-teal-500 cursor-pointer"
        @click="toggle"
        v-if="isChecked"
     ></i>

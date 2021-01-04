@@ -1,6 +1,6 @@
 <template>
   <h2 class="text-xl lg:text-3xl font-normal leading-normal mt-0 mb-2
-             text-amber-800 dark:text-teal-100">
+             text-emerald-800 dark:text-teal-100">
     <slot></slot>
   </h2>
 </template>

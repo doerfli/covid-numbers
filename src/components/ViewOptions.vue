@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-amber-200 dark:bg-gray-800 p-2">
+  <div class="bg-emerald-200 dark:bg-gray-800 p-2">
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Time range:</div>
       <div :class="getDaysToShowClass(30)"
@@ -94,7 +94,7 @@ export default class ViewOptions extends Vue {
   .itemSelected {
     @apply py-2;
     @apply pr-3;
-    @apply text-amber-700;
+    @apply text-emerald-700;
     @apply dark:text-teal-500;
   }
 

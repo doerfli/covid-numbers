@@ -155,7 +155,7 @@ export default class BarChart extends Vue {
     height: 100%;
 
     .bar {
-      @apply fill-current text-amber-400 dark:text-teal-400 opacity-90;
+      @apply fill-current text-emerald-400 dark:text-teal-400 opacity-90;
     }
 
     .bar.highlight {
@@ -167,7 +167,7 @@ export default class BarChart extends Vue {
     }
 
     .line {
-      @apply text-amber-700 dark:text-teal-100;
+      @apply text-emerald-700 dark:text-teal-100;
       @apply stroke-current;
       @apply stroke-2;
       fill: none;
