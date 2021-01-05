@@ -21,6 +21,8 @@ export default class Cases extends Vue {
 
   @Prop({ default: 28 })
   private daysToShow!: number;
+  @Prop({ default: 'confCases'})
+  private fieldToShow!: string;
   @Prop()
   private canton!: string;
   @Prop({ default: false })
@@ -62,22 +64,24 @@ export default class Cases extends Vue {
     // console.log("newCases");
     // console.log(cases);
     let last = 0;
-    let newCases = cases.map((value: DailyData, idx: number) => {
+    let newCases = cases.map((dataPoint: DailyData, idx: number) => {
+      const value = this.getProperty(dataPoint, 'confCases');
+
       if (idx == 0) {
-        last = value.confCases;
+        last = value;
         return null;
       }
-      if (value.confCases == 0) {
+      if (value == 0) {
         return {
-          date: value.date,
+          date: dataPoint.date,
           newCases: 0
         } as DailyData;
       }
-      const n = value.confCases - last;
-      last = value.confCases;
+      const n = value - last;
+      last = value;
 
       return {
-        date: value.date,
+        date: dataPoint.date,
         newCases: n
       } as DailyData;
     }).filter((v: DailyData | null) => v != null) as Array<DailyData>;
@@ -121,6 +125,12 @@ export default class Cases extends Vue {
         y2Value: x.newCasesAvg
       } as DataPoint
     });
+  }
+
+  // credit: Typescript documentation, src
+  // https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types
+  private getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
+    return o[propertyName]; // o[propertyName] is of type T[K]
   }
 
 }
