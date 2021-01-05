@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import DailyData from '@/model/dailydata'
+import DailyDataSet from '@/model/dailyDataSet'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
@@ -55,7 +55,7 @@ export default class Cases extends Vue {
     // console.log(newCases);
 
     // limit to last x days and map to datapoints for display
-    return newCases.slice(-this.daysToShow).map((x: DailyData) => {
+    return newCases.slice(-this.daysToShow).map((x: DailyDataSet) => {
       return {
         xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
         yValue: x.newCases,

@@ -1,4 +1,4 @@
-interface DailyData {
+interface DailyDataSet {
   date: string;
   confCases: number;
   currHosp: number;
@@ -7,4 +7,4 @@ interface DailyData {
   newCasesAvg: number;
 }
 
-export default DailyData;
+export default DailyDataSet;

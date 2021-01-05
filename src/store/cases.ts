@@ -3,7 +3,7 @@ import superagent from 'superagent'
 import parse from 'csv-parse/lib/sync'
 import CantonData from '@/model/cantondata'
 import RecordsProcessor from '@/store/recordsprocessor'
-import DailyData from '@/model/dailydata'
+import DailyDataSet from '@/model/dailyDataSet'
 
 // credit: Typescript documentation, src
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types
@@ -55,14 +55,14 @@ const casesModule: Module<any, any> = {
       const cantonData = state.cases.filter((x: CantonData) => { return x.canton == canton});
       // console.log(cantonData);
       if (cantonData.length == 0) {
-        return new Array<DailyData>();
+        return new Array<DailyDataSet>();
       }
       return cantonData[0].data;
     }),
     // TODO make this return another (generic) object instead if DailyData
-    calculateDailyDiff: ((state, getters) => (canton: string, fieldName: any, averageWindowSize = 0): Array<DailyData> => {
+    calculateDailyDiff: ((state, getters) => (canton: string, fieldName: any, averageWindowSize = 0): Array<DailyDataSet> => {
       let last = 0;
-      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyData, idx: number) => {
+      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number) => {
         const value = getProperty(dataPoint, fieldName);
         if (idx == 0) { // first datapoint
           last = value;
@@ -72,7 +72,7 @@ const casesModule: Module<any, any> = {
           return {
             date: dataPoint.date,
             newCases: 0
-          } as DailyData;
+          } as DailyDataSet;
         }
         const n = value - last;
         last = value;
@@ -80,12 +80,12 @@ const casesModule: Module<any, any> = {
         return {
           date: dataPoint.date,
           newCases: n
-        } as DailyData;
-      }).filter((v: DailyData | null) => v != null) as Array<DailyData>;
+        } as DailyDataSet;
+      }).filter((v: DailyDataSet | null) => v != null) as Array<DailyDataSet>;
 
       if (averageWindowSize > 0) {
         // calculate sliding window average
-        newCases = newCases.map((value: DailyData, idx: number, arr: DailyData[]) => {
+        newCases = newCases.map((value: DailyDataSet, idx: number, arr: DailyDataSet[]) => {
           let avg = null;
 
           // calculate from first valid position (averageSlidingWindow) up to the last - since last day data is never complete, this day is ignored
@@ -102,7 +102,7 @@ const casesModule: Module<any, any> = {
             date: value.date,
             newCases: value.newCases,
             newCasesAvg: avg
-          } as DailyData;
+          } as DailyDataSet;
         });
       }
 
