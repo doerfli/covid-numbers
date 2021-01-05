@@ -1,4 +1,4 @@
-import DailyData from '@/model/dailydata'
+import DailyDataSet from '@/model/dailyDataSet'
 
 export  default class RecordsProcessor {
 
@@ -31,16 +31,16 @@ export  default class RecordsProcessor {
     "ZH"
   ]
 
-  private initializedMap(): Map<string,Array<DailyData>> {
-    const map = new Map<string,Array<DailyData>>();
-    this.CANTONS.forEach((i) => map.set(i, new Array<DailyData>()));
+  private initializedMap(): Map<string,Array<DailyDataSet>> {
+    const map = new Map<string,Array<DailyDataSet>>();
+    this.CANTONS.forEach((i) => map.set(i, new Array<DailyDataSet>()));
     return map;
   }
 
   /**
    * check every canton has an entry, if not, copy last entry
    */
-  private completeDataMap (date: string, dataMap: Map<string, DailyData[]>) {
+  private completeDataMap (date: string, dataMap: Map<string, DailyDataSet[]>) {
     this.CANTONS
       .filter((canton) => {
         if (! dataMap.has(canton) ) return true;
@@ -56,7 +56,7 @@ export  default class RecordsProcessor {
               confCases: 0,
               currHosp: 0,
               currIcu: 0
-            } as DailyData)
+            } as DailyDataSet)
           } else {
             const lastEntry = entries[entries.length - 1];
             // console.log(date + " " + canton + " - " + lastEntry.confCases);
@@ -65,7 +65,7 @@ export  default class RecordsProcessor {
                 confCases: lastEntry.confCases,
                 currHosp: lastEntry.currHosp,
                 currIcu: lastEntry.currIcu
-              } as DailyData);
+              } as DailyDataSet);
 
           }
         }
@@ -75,7 +75,7 @@ export  default class RecordsProcessor {
   /**
    * calculate total for this day across all cantons and push to totals array
    */
-  private calculateTotal(currentDay: string, dataMap: Map<string, DailyData[]>, totalCh: DailyData[]) {
+  private calculateTotal(currentDay: string, dataMap: Map<string, DailyDataSet[]>, totalCh: DailyDataSet[]) {
     let confCases = 0;
     let currHosp = 0;
     let currIcu = 0;
@@ -93,7 +93,7 @@ export  default class RecordsProcessor {
       confCases: confCases,
       currHosp: currHosp,
       currIcu: currIcu
-    } as DailyData;
+    } as DailyDataSet;
     // console.log(d);
     totalCh.push(d);
   }
@@ -101,7 +101,7 @@ export  default class RecordsProcessor {
   /**
    * adds missing entries and calculates totals for day across all cantons
    */
-  private updateCurrentDayData (currentDay: string, recordDate: string, totalCh: DailyData[], dataMap: Map<string, DailyData[]>) {
+  private updateCurrentDayData (currentDay: string, recordDate: string, totalCh: DailyDataSet[], dataMap: Map<string, DailyDataSet[]>) {
     if (recordDate !== currentDay) {
       // console.log(data.date + " <- " + currentDay)
       this.completeDataMap(currentDay, dataMap);
@@ -113,29 +113,29 @@ export  default class RecordsProcessor {
   }
 
   // eslint-disable-next-line
-  private static parseRecord (val: any): DailyData {
+  private static parseRecord (val: any): DailyDataSet {
     if (val.ncumul_conf == "") {
       return {
         date: val.date,
         confCases: -1,
         currHosp: -1,
         currIcu: -1
-      } as DailyData;
+      } as DailyDataSet;
     }
     return {
       date: val.date,
       confCases: parseInt(val.ncumul_conf),
       currHosp: parseInt(val.current_hosp),
       currIcu: parseInt(val.current_icu)
-    } as DailyData;
+    } as DailyDataSet;
   }
 
   // eslint-disable-next-line
-  public process(records: any[]): Map<string, DailyData[]> {
+  public process(records: any[]): Map<string, DailyDataSet[]> {
     // canton -> Array<DailyData>
-    const dataMap: Map<string, DailyData[]> = this.initializedMap();
+    const dataMap: Map<string, DailyDataSet[]> = this.initializedMap();
     // console.log(payload.records);
-    const totalCh = new Array<DailyData>();
+    const totalCh = new Array<DailyDataSet>();
     let currentDay: string = records[0].date;
 
     // loop over all records and store in DailyData structure by canton
@@ -154,13 +154,13 @@ export  default class RecordsProcessor {
           confCases: 0,
           currHosp: 0,
           currIcu: 0
-        } as DailyData;
+        } as DailyDataSet;
         record = {
           date: val.date,
           confCases: latest.confCases,
           currHosp: latest.currHosp,
           currIcu: latest.currIcu
-        } as DailyData;
+        } as DailyDataSet;
       }
 
       currentDay = this.updateCurrentDayData(currentDay, record.date, totalCh, dataMap);

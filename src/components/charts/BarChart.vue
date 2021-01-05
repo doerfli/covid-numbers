@@ -49,7 +49,7 @@ export default class BarChart extends Vue {
     if (dataPointsSize == 0) { return; }
 
     const max = dataPoints.length > 0
-      ? (dataPoints.map((e) => Math.max(e.yValue, e.y2Value)).reduce((a, b) => Math.max(a, b))) * 1.01
+      ? (dataPoints.map((e) => Math.max(e.yValue, e.y2Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     // console.log(max);
 
@@ -126,18 +126,16 @@ export default class BarChart extends Vue {
         d3.select(this).attr('class', 'bar')
       })
 
-    // plot line
-    const line = d3.line<DataPoint>()
-      .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
-      .y((d) => yScale(d.y2Value))
+    if (dataPoints[0].y2Value !== undefined) {
+      // plot line
+      const line = d3.line<DataPoint>()
+        .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d.y2Value ?? 0))
 
-    chart.append("path")
-      .attr("class", "line")
-      // .attr("fill", "none")
-      // .attr("stroke", "currentColor")
-      // .attr("stroke-miterlimit", 1)
-      // .attr("stroke-width", 2)
-      .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
+      chart.append("path")
+        .attr("class", "line")
+        .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
+    }
 
     // cleanup
     /** remove line around chart */

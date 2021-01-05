@@ -1,8 +1,8 @@
-import DailyData from '@/model/dailydata'
+import DailyDataSet from '@/model/dailyDataSet'
 
 interface CantonData {
   canton: string;
-  data: Array<DailyData>;
+  data: Array<DailyDataSet>;
 }
 
 export default CantonData;
