@@ -30,16 +30,6 @@ export default class Cases extends Vue {
   @Prop({ default: 7 })
   private averageSlidingWindow!: number;
 
-  private cases: Array<DailyData> = new Array<DailyData>();
-
-  private created() {
-    // console.log("created");
-    const cases = this.getCases;
-    if (cases.length > 0) {
-      this.cases = cases[0].data;
-    }
-  }
-
   get getCanton() {
     return this.canton;
   }
@@ -57,64 +47,9 @@ export default class Cases extends Vue {
     if (casesNew.length == 0) {
       return;
     }
-    this.cases = casesNew[0].data;
-  }
-
-  private calculateNewCases(cases: Array<DailyData>): Array<DailyData> {
-    // console.log("newCases");
-    // console.log(cases);
-    let last = 0;
-    let newCases = cases.map((dataPoint: DailyData, idx: number) => {
-      const value = this.getProperty(dataPoint, 'confCases');
-
-      if (idx == 0) {
-        last = value;
-        return null;
-      }
-      if (value == 0) {
-        return {
-          date: dataPoint.date,
-          newCases: 0
-        } as DailyData;
-      }
-      const n = value - last;
-      last = value;
-
-      return {
-        date: dataPoint.date,
-        newCases: n
-      } as DailyData;
-    }).filter((v: DailyData | null) => v != null) as Array<DailyData>;
-
-    if (this.calculateAverage) {
-      // calculate sliding window average
-      newCases = newCases.map((value: DailyData, idx: number, arr: DailyData[]) => {
-        let avg = null;
-
-        // calculate from first valid position (averageSlidingWindow) up to the last - since last day data is never complete, this day is ignored
-        if (idx >= this.averageSlidingWindow && idx < arr.length - 1) {
-          avg = Math.round(
-            arr.slice(idx - this.averageSlidingWindow + 1, idx + 1)
-              .map((x) => x.newCases)
-              .reduce((sum, current) => sum  + current)
-            / this.averageSlidingWindow
-          );
-        }
-
-        return {
-          date: value.date,
-          newCases: value.newCases,
-          newCasesAvg: avg
-        } as DailyData;
-      });
-    }
-
-    return newCases;
   }
 
   get newCases(): Array<DataPoint> {
-    const all = this.cases;
-    // const newCases = this.calculateNewCases(all);
     const newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow);
     // console.log(1111);
     // console.log(newCases);
@@ -127,12 +62,6 @@ export default class Cases extends Vue {
         y2Value: x.newCasesAvg
       } as DataPoint
     });
-  }
-
-  // credit: Typescript documentation, src
-  // https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types
-  private getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
-    return o[propertyName]; // o[propertyName] is of type T[K]
   }
 
 }
