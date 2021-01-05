@@ -84,7 +84,6 @@ const casesModule: Module<any, any> = {
       }
       return cantonData[0].data;
     }),
-    // TODO make this return another (generic) object instead if DailyData
     calculateDailyDiff: ((state, getters) =>
           (canton: string,
           // eslint-disable-next-line
