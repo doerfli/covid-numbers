@@ -8,11 +8,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import DailyDataSet from '@/model/dailyDataSet'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
 import H2 from '@/components/base/H2.vue'
+import DailyDiff from '@/model/dailyDiff'
 
 @Component({
   components: { H2, BarChart }
@@ -50,17 +50,17 @@ export default class Cases extends Vue {
   }
 
   get newCases(): Array<DataPoint> {
-    const newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow);
+    const newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
     // console.log(1111);
     // console.log(newCases);
 
     // limit to last x days and map to datapoints for display
-    return newCases.slice(-this.daysToShow).map((x: DailyDataSet) => {
+    return newCases.slice(-this.daysToShow).map((x: DailyDiff) => {
       return {
         xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
-        yValue: x.newCases,
-        y2Value: x.newCasesAvg
-      } as DataPoint
+        yValue: x.value,
+        y2Value: x.avg
+      } as DataPoint;
     });
   }
 
