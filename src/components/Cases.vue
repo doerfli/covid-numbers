@@ -114,7 +114,9 @@ export default class Cases extends Vue {
 
   get newCases(): Array<DataPoint> {
     const all = this.cases;
-    const newCases = this.calculateNewCases(all);
+    // const newCases = this.calculateNewCases(all);
+    const newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow);
+    // console.log(1111);
     // console.log(newCases);
 
     // limit to last x days and map to datapoints for display
