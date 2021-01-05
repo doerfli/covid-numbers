@@ -94,7 +94,7 @@ const casesModule: Module<any, any> = {
               arr.slice(idx - averageWindowSize + 1, idx + 1)
                 .map((x) => x.newCases)
                 .reduce((sum, current) => sum + current)
-              / 7
+              / averageWindowSize
             );
           }
 
