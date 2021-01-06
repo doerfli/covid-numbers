@@ -47,7 +47,7 @@ import ViewOptions from '@/components/ViewOptions.vue'
     BarChart
   }
 })
-export default class Home extends Vue {
+export default class ConfirmedCases extends Vue {
 
   private showCantonSelect = false;
 
