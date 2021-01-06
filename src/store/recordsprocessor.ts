@@ -124,9 +124,9 @@ export  default class RecordsProcessor {
     }
     return {
       date: val.date,
-      confCases: parseInt(val.ncumul_conf),
-      currHosp: parseInt(val.current_hosp),
-      currIcu: parseInt(val.current_icu)
+      confCases: parseInt(val.ncumul_conf) || 0,
+      currHosp: parseInt(val.current_hosp) || 0,
+      currIcu: parseInt(val.current_icu) || 0
     } as DailyDataSet;
   }
 

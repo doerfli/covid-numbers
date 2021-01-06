@@ -121,6 +121,47 @@ const casesModule: Module<any, any> = {
       // console.log(0);
       // console.log(newCases);
       return newCases;
+    }),
+    dailyValues: ((state, getters) =>
+            (canton: string,
+              // eslint-disable-next-line
+              fieldName: any,
+              averageWindowSize = 0): Array<DailyDiff> => {
+      let last = 0;
+      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number) => {
+        const value = getProperty(dataPoint, fieldName);
+        // if (value == 0) { // missing datapoint (delivered with value == 0)
+        //   return {
+        //     date: dataPoint.date,
+        //     fieldName: fieldName,
+        //     value: 0
+        //   } as DailyDiff;
+        // }
+
+        let v = value;
+
+        // if not value is available, assume its the same as the last
+        if (v == 0) {
+          v = last;
+        }
+
+        last = v;
+
+        return {
+          date: dataPoint.date,
+          fieldName: fieldName,
+          value: v
+        } as DailyDiff;
+      }).filter((v: DailyDiff | null) => v != null) as Array<DailyDiff>;
+
+      if (averageWindowSize > 0) {
+        // calculate sliding window average
+        newCases = calculateAverageValue(newCases, averageWindowSize)
+      }
+
+      // console.log(0);
+      // console.log(newCases);
+      return newCases;
     })
   }
 };
