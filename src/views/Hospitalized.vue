@@ -1,22 +1,5 @@
 <template>
   <div>
-    <div @click="toggleCantonSelect"
-         v-if="! showCantonSelect"
-         class="text-indigo-700 dark:text-blue-500 cursor-pointer text-sm pb-1">
-      <i class="fas fa-cog pr-1"></i>
-      <i class="fas fa-chevron-down"></i>
-      Show view options
-    </div>
-    <div @click="toggleCantonSelect"
-         v-else
-         class="text-indigo-700 dark:text-blue-500 cursor-pointer text-sm pb-1">
-      <i class="fas fa-cog pr-1"></i>
-      <i class="fas fa-chevron-up"></i>
-      Hide view options
-    </div>
-    <Hideable :visible="showCantonSelect">
-      <ViewOptions />
-    </Hideable>
     <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"

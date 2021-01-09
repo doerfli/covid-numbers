@@ -25,6 +25,12 @@ import Footer from '@/components/Footer.vue'
 })
 export default class App extends Vue {
 
+  public mounted() {
+    console.log("Home.mounted");
+    this.$store.dispatch("viewProps/init");
+    this.$store.dispatch("cases/fetch");
+  }
+
   private showSpinner(): boolean {
     return this.$store.state.cases.cases.length == 0;
   }
