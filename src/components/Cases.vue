@@ -29,6 +29,8 @@ export default class Cases extends Vue {
   private calculateAverage!: boolean;
   @Prop({ default: 7 })
   private averageSlidingWindow!: number;
+  @Prop({ default: false })
+  private showAbsoluteNumbers!: boolean;
 
   get getCanton() {
     return this.canton;
@@ -50,7 +52,14 @@ export default class Cases extends Vue {
   }
 
   get newCases(): Array<DataPoint> {
-    const newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
+    let newCases = null;
+
+    if (this.showAbsoluteNumbers) {
+      newCases = this.$store.getters["cases/dailyValues"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
+    } else {
+      newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
+    }
+
     // console.log(1111);
     // console.log(newCases);
 
