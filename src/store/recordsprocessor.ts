@@ -48,22 +48,20 @@ export  default class RecordsProcessor {
       if (canton === "FL") {
         return;
       }
-      let record = RecordsProcessor.parseRecord(val);
 
-      if (record.confCases == -1) {
-        const latest = dataMap.get(canton)?.slice(-1)[0] ?? {
-          confCases: 0,
-          currHosp: 0,
-          currIcu: 0,
-          deceased: 0,
-        } as DailyDataSet;
-        record = {
-          date: val.date,
-          confCases: latest.confCases,
-          currHosp: latest.currHosp,
-          currIcu: latest.currIcu,
-          deceased: latest.deceased,
-        } as DailyDataSet;
+      const record = RecordsProcessor.parseRecord(val);
+
+      if (record.confCases === undefined) {
+        record.confCases = dataMap.get(canton)?.slice(-1)[0]?.confCases ?? 0;
+      }
+      if (record.currHosp === undefined) {
+        record.currHosp = dataMap.get(canton)?.slice(-1)[0]?.currHosp ?? 0;
+      }
+      if (record.currIcu === undefined) {
+        record.currIcu = dataMap.get(canton)?.slice(-1)[0]?.currIcu ?? 0;
+      }
+      if (record.deceased === undefined) {
+        record.deceased = dataMap.get(canton)?.slice(-1)[0]?.deceased ?? 0;
       }
 
       currentDay = this.updateCurrentDayData(currentDay, record.date, totalCh, dataMap);
@@ -92,21 +90,12 @@ export  default class RecordsProcessor {
 
   // eslint-disable-next-line
   private static parseRecord (val: any): DailyDataSet {
-    if (val.ncumul_conf == "") {
-      return {
-        date: val.date,
-        confCases: -1,
-        currHosp: -1,
-        currIcu: -1,
-        deceased: -1
-      } as DailyDataSet;
-    }
     return {
       date: val.date,
-      confCases: parseInt(val.ncumul_conf) || 0,
-      currHosp: parseInt(val.current_hosp) || 0,
-      currIcu: parseInt(val.current_icu) || 0,
-      deceased: parseInt(val.ncumul_deceased) || 0
+      confCases: parseInt(val.ncumul_conf) || undefined,
+      currHosp: parseInt(val.current_hosp) || undefined,
+      currIcu: parseInt(val.current_icu) || undefined,
+      deceased: parseInt(val.ncumul_deceased) || undefined
     } as DailyDataSet;
   }
 
