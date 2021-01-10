@@ -5,6 +5,8 @@ interface DailyDataSet {
   currIcu: number;
   newCases: number;
   newCasesAvg: number;
+  deceased: number;
+  deceasedAvg: number;
 }
 
 export default DailyDataSet;

@@ -55,7 +55,8 @@ export  default class RecordsProcessor {
               date: date,
               confCases: 0,
               currHosp: 0,
-              currIcu: 0
+              currIcu: 0,
+              deceased: 0,
             } as DailyDataSet)
           } else {
             const lastEntry = entries[entries.length - 1];
@@ -64,7 +65,8 @@ export  default class RecordsProcessor {
                 date: date,
                 confCases: lastEntry.confCases,
                 currHosp: lastEntry.currHosp,
-                currIcu: lastEntry.currIcu
+                currIcu: lastEntry.currIcu,
+                deceased: lastEntry.deceased,
               } as DailyDataSet);
 
           }
@@ -79,6 +81,7 @@ export  default class RecordsProcessor {
     let confCases = 0;
     let currHosp = 0;
     let currIcu = 0;
+    let currDeceased = 0;
 
     this.CANTONS.forEach((canton) => {
       const data = dataMap.get(canton)?.slice(-1)[0];
@@ -87,12 +90,14 @@ export  default class RecordsProcessor {
       confCases += data?.confCases ?? 0;
       currHosp += data?.currHosp ?? 0;
       currIcu += data?.currIcu ?? 0;
+      currDeceased += data?.deceased ?? 0;
     });
     const d = {
       date: currentDay,
       confCases: confCases,
       currHosp: currHosp,
-      currIcu: currIcu
+      currIcu: currIcu,
+      deceased: currDeceased,
     } as DailyDataSet;
     // console.log(d);
     totalCh.push(d);
@@ -119,14 +124,16 @@ export  default class RecordsProcessor {
         date: val.date,
         confCases: -1,
         currHosp: -1,
-        currIcu: -1
+        currIcu: -1,
+        deceased: -1
       } as DailyDataSet;
     }
     return {
       date: val.date,
       confCases: parseInt(val.ncumul_conf) || 0,
       currHosp: parseInt(val.current_hosp) || 0,
-      currIcu: parseInt(val.current_icu) || 0
+      currIcu: parseInt(val.current_icu) || 0,
+      deceased: parseInt(val.ncumul_deceased) || 0
     } as DailyDataSet;
   }
 
@@ -153,13 +160,15 @@ export  default class RecordsProcessor {
         const latest = dataMap.get(canton)?.slice(-1)[0] ?? {
           confCases: 0,
           currHosp: 0,
-          currIcu: 0
+          currIcu: 0,
+          deceased: 0,
         } as DailyDataSet;
         record = {
           date: val.date,
           confCases: latest.confCases,
           currHosp: latest.currHosp,
-          currIcu: latest.currIcu
+          currIcu: latest.currIcu,
+          deceased: latest.deceased,
         } as DailyDataSet;
       }
 
