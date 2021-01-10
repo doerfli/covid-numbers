@@ -12,7 +12,9 @@
     <div :class="getClass('Icu')">
       <router-link :to="{ name: 'Icu' }">Icu</router-link>
     </div>
-<!--    <div class="menuitem inline-block">Deaths</div>-->
+    <div :class="getClass('Deceased')">
+      <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
+    </div>
     <div @click="toggleCantonSelect"
          v-if="! showCantonSelect"
          class="menuitem">
