@@ -156,21 +156,19 @@ const casesModule: Module<any, any> = {
         windowSize = 7): Array<DailyDiff> => {
 
       return getters.calculateDailyDiff(canton, fieldName, windowSize).map((dataPoint: DailyDiff, idx: number, arr: DailyDiff[]) => {
-        if (idx < windowSize) {
-          return {
-            date: dataPoint.date,
-            incidence: 0
-          } as DailyIncidence;
-        }
+        let incidence = null;
 
-        let pop = StaticData.getPopulation(canton);
-        if (canton === "CH") {
-          pop = StaticData.getTotalPopulation();
+        // calculate from first value data point up to second last day (current day data is rarely complete)
+        if (idx > windowSize && idx < arr.length - 1) {
+          let pop = StaticData.getPopulation(canton);
+          if (canton === "CH") {
+            pop = StaticData.getTotalPopulation();
+          }
+          const totalLastWindowSlice = arr.slice(idx - windowSize + 1, idx + 1)
+            .map((x) => x.value)
+            .reduce((sum, current) => sum + current);
+          incidence = totalLastWindowSlice / pop * 100000;
         }
-        const totalLastWindowSlice = arr.slice(idx - windowSize + 1, idx + 1)
-          .map((x) => x.value)
-          .reduce((sum, current) => sum + current);
-        const incidence = totalLastWindowSlice / pop * 100000;
 
         return {
           date: dataPoint.date,

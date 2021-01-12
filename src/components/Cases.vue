@@ -62,8 +62,7 @@ export default class Cases extends Vue {
       return inc.slice(-this.daysToShow).map((x: DailyIncidence) => {
         return {
           xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
-          yValue: x.incidence,
-          // y2Value: x.incidence
+          y2Value: x.incidence
         } as DataPoint;
       });
     } else if (this.showAbsoluteNumbers) {
