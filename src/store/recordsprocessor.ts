@@ -1,35 +1,7 @@
 import DailyDataSet from '@/model/dailyDataSet'
+import StaticData from '@/store/StaticData'
 
 export  default class RecordsProcessor {
-
-  private CANTONS = [
-    "AG",
-    "AI",
-    "AR",
-    "BE",
-    "BL",
-    "BS",
-    "FR",
-    "GE",
-    "GL",
-    "GR",
-    "JU",
-    "LU",
-    "NE",
-    "NW",
-    "OW",
-    "SG",
-    "SH",
-    "SO",
-    "SZ",
-    "TG",
-    "TI",
-    "UR",
-    "VD",
-    "VS",
-    "ZG",
-    "ZH"
-  ]
 
   // eslint-disable-next-line
   public process(records: any[]): Map<string, DailyDataSet[]> {
@@ -84,7 +56,7 @@ export  default class RecordsProcessor {
 
   private initializedMap(): Map<string,Array<DailyDataSet>> {
     const map = new Map<string,Array<DailyDataSet>>();
-    this.CANTONS.forEach((i) => map.set(i, new Array<DailyDataSet>()));
+    StaticData.getCantons().forEach((i) => map.set(i, new Array<DailyDataSet>()));
     return map;
   }
 
@@ -117,7 +89,7 @@ export  default class RecordsProcessor {
    * check every canton has an entry, if not, copy last entry
    */
   private completeDataMap (date: string, dataMap: Map<string, DailyDataSet[]>) {
-    this.CANTONS
+    StaticData.getCantons()
       .filter((canton) => {
         if (! dataMap.has(canton) ) return true;
         if ((dataMap.get(canton)?.length ?? 0) == 0) { return true; }
@@ -159,7 +131,7 @@ export  default class RecordsProcessor {
     let currIcu = 0;
     let currDeceased = 0;
 
-    this.CANTONS.forEach((canton) => {
+    StaticData.getCantons().forEach((canton) => {
       const data = dataMap.get(canton)?.slice(-1)[0];
       // console.log(canton);
       // console.log(data);
