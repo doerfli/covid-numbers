@@ -96,13 +96,6 @@ const casesModule: Module<any, any> = {
           last = value;
           return null;
         }
-        if (value == 0) { // missing datapoint (delivered with value == 0)
-          return {
-            date: dataPoint.date,
-            fieldName: fieldName,
-            value: 0
-          } as DailyDiff;
-        }
         const n = value - last;
         last = value;
 
@@ -129,28 +122,19 @@ const casesModule: Module<any, any> = {
               averageWindowSize = 0): Array<DailyDiff> => {
       let last = 0;
       let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number) => {
-        const value = getProperty(dataPoint, fieldName);
-        // if (value == 0) { // missing datapoint (delivered with value == 0)
-        //   return {
-        //     date: dataPoint.date,
-        //     fieldName: fieldName,
-        //     value: 0
-        //   } as DailyDiff;
-        // }
-
-        let v = value;
+        let value = getProperty(dataPoint, fieldName);
 
         // if not value is available, assume its the same as the last
-        if (v == 0) {
-          v = last;
+        if (value == 0) {
+          value = last;
         }
 
-        last = v;
+        last = value;
 
         return {
           date: dataPoint.date,
           fieldName: fieldName,
-          value: v
+          value: value
         } as DailyDiff;
       }).filter((v: DailyDiff | null) => v != null) as Array<DailyDiff>;
 
