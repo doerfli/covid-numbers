@@ -37,4 +37,8 @@ export default class StaticData {
     return 8606033;
   }
 
+  public static getPopulation(canton: string): number {
+    return this.CANTONS.find(c => c.name === canton)?.population ?? -1;
+  }
+
 }

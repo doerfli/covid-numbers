@@ -13,6 +13,7 @@ import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
 import H2 from '@/components/base/H2.vue'
 import DailyDiff from '@/model/dailyDiff'
+import DailyIncidence from '@/model/dailyIncidence'
 
 @Component({
   components: { H2, BarChart }
@@ -31,6 +32,8 @@ export default class Cases extends Vue {
   private averageSlidingWindow!: number;
   @Prop({ default: false })
   private showAbsoluteNumbers!: boolean;
+  @Prop({ default: false })
+  private showIncidence!: boolean;
 
   get getCanton() {
     return this.canton;
@@ -54,7 +57,16 @@ export default class Cases extends Vue {
   get newCases(): Array<DataPoint> {
     let newCases = null;
 
-    if (this.showAbsoluteNumbers) {
+    if (this.showIncidence) {
+      const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyIncidence>;
+      return inc.slice(-this.daysToShow).map((x: DailyIncidence) => {
+        return {
+          xValue: `${x.date.substr(8, 2)}.${x.date.substr(5, 2)}.`,
+          yValue: x.incidence,
+          // y2Value: x.incidence
+        } as DataPoint;
+      });
+    } else if (this.showAbsoluteNumbers) {
       newCases = this.$store.getters["cases/dailyValues"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
     } else {
       newCases = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.averageSlidingWindow) as Array<DailyDiff>;
