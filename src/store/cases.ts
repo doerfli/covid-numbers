@@ -5,6 +5,8 @@ import CantonData from '@/model/cantondata'
 import RecordsProcessor from '@/store/recordsprocessor'
 import DailyDataSet from '@/model/dailyDataSet'
 import DailyDiff from '@/model/dailyDiff'
+import DailyIncidence from '@/model/dailyIncidence'
+import StaticData from '@/store/StaticData'
 
 // credit: Typescript documentation, src
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types
@@ -121,7 +123,7 @@ const casesModule: Module<any, any> = {
               fieldName: any,
               averageWindowSize = 0): Array<DailyDiff> => {
       let last = 0;
-      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number) => {
+      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet) => {
         let value = getProperty(dataPoint, fieldName);
 
         // if not value is available, assume its the same as the last
@@ -146,6 +148,33 @@ const casesModule: Module<any, any> = {
       // console.log(0);
       // console.log(newCases);
       return newCases;
+    }),
+    incidence: ((state, getters) =>
+      (canton: string,
+        // eslint-disable-next-line
+        fieldName: any = "confCases",
+        windowSize = 7): Array<DailyDiff> => {
+
+      return getters.calculateDailyDiff(canton, fieldName, windowSize).map((dataPoint: DailyDiff, idx: number, arr: DailyDiff[]) => {
+        let incidence = null;
+
+        // calculate from first value data point up to second last day (current day data is rarely complete)
+        if (idx > windowSize && idx < arr.length - 1) {
+          let pop = StaticData.getPopulation(canton);
+          if (canton === "CH") {
+            pop = StaticData.getTotalPopulation();
+          }
+          const totalLastWindowSlice = arr.slice(idx - windowSize + 1, idx + 1)
+            .map((x) => x.value)
+            .reduce((sum, current) => sum + current);
+          incidence = totalLastWindowSlice / pop * 100000;
+        }
+
+        return {
+          date: dataPoint.date,
+          incidence: incidence
+        } as DailyIncidence;
+      });
     })
   }
 };

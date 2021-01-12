@@ -8,9 +8,9 @@
         v-for="canton in selectedCantons"
         :key="canton.name"
         :canton="canton.name"
-        field-to-show="deceased"
         :days-to-show="getDaysToShow"
-        calculate-average="true"
+        show-incidence="true"
+        window-size="14"
       ></Cases>
     </div>
   </div>
@@ -36,7 +36,11 @@ import Alert from '@/components/base/Alert.vue'
     BarChart
   }
 })
-export default class Deceased extends Vue {
+export default class IncidenceTwoWeek extends Vue {
+
+  private get cantons(): CantonConfig[] {
+    return this.$store.state.viewProps.cantons;
+  }
 
   private get selectedCantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons.filter((c: CantonConfig) => c.show);

@@ -49,7 +49,7 @@ export default class BarChart extends Vue {
     if (dataPointsSize == 0) { return; }
 
     const max = dataPoints.length > 0
-      ? (dataPoints.map((e) => Math.max(e.yValue, e.y2Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
+      ? (dataPoints.map((e) => Math.max(e.yValue ?? 0, e.y2Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     // console.log(max);
 

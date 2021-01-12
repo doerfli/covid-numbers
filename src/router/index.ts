@@ -4,6 +4,8 @@ import ConfirmedCases from '@/views/ConfirmedCases.vue'
 import Hospitalized from '@/views/Hospitalized.vue'
 import Icu from '@/views/Icu.vue'
 import Deceased from '@/views/Deceased.vue'
+import IncidenceOneWeek from '@/views/IncidenceOneWeek.vue'
+import IncidenceTwoWeek from '@/views/IncidenceTwoWeek.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +30,16 @@ const routes: Array<RouteConfig> = [
     path: '/deceased',
     name: 'Deceased',
     component: Deceased
+  },
+  {
+    path: '/incidence-7-days',
+    name: 'IncidenceOneWeek',
+    component: IncidenceOneWeek
+  },
+  {
+    path: '/incidence-14-days',
+    name: 'IncidenceTwoWeek',
+    component: IncidenceTwoWeek
   },
 ]
 
