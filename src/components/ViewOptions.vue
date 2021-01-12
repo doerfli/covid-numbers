@@ -87,8 +87,8 @@ export default class ViewOptions extends Vue {
   .itemSelect {
     @apply py-2;
     @apply pr-3;
-    @apply text-indigo-700;
-    @apply dark:text-blue-500;
+    @apply text-indigo-700 hover:text-indigo-500;
+    @apply dark:text-blue-500 dark:hover:text-blue-300;
     @apply cursor-pointer;
   }
   .itemSelected {

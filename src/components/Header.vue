@@ -69,7 +69,7 @@ export default class Header extends Vue {
     @apply pb-1 pr-5 inline-block;
     @apply text-sm;
     @apply cursor-pointer;
-    @apply text-indigo-700 dark:text-blue-500;
+    @apply text-indigo-700 hover:text-indigo-500 dark:text-blue-500 dark:hover:text-blue-300;
   }
 
   .menuitem_active {
