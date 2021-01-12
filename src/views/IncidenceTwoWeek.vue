@@ -7,6 +7,7 @@
         :canton="canton.name"
         :days-to-show="getDaysToShow"
         show-incidence="true"
+        average-sliding-window="14"
       ></Cases>
     </div>
   </div>
@@ -30,7 +31,7 @@ import ViewOptions from '@/components/ViewOptions.vue'
     BarChart
   }
 })
-export default class Incidence extends Vue {
+export default class IncidenceTwoWeek extends Vue {
 
   private get cantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons;

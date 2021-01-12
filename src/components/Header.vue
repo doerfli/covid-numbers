@@ -6,8 +6,11 @@
     <div :class="getClass('ConfirmedCases')">
       <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
     </div>
-    <div :class="getClass('Incidence')">
-      <router-link :to="{ name: 'Incidence' }">7-day Incidence</router-link>
+    <div :class="getClass('IncidenceOneWeek')">
+      <router-link :to="{ name: 'IncidenceOneWeek' }">7-day Incidence</router-link>
+    </div>
+    <div :class="getClass('IncidenceTwoWeek')">
+      <router-link :to="{ name: 'IncidenceTwoWeek' }">14-day Incidence</router-link>
     </div>
     <div :class="getClass('Hospitalized')">
       <router-link :to="{ name: 'Hospitalized' }">Hospitalized</router-link>
