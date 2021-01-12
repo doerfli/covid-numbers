@@ -7,7 +7,7 @@
         :canton="canton.name"
         :days-to-show="getDaysToShow"
         show-incidence="true"
-        average-sliding-window="14"
+        window-size="14"
       ></Cases>
     </div>
   </div>

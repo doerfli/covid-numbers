@@ -123,7 +123,7 @@ const casesModule: Module<any, any> = {
               fieldName: any,
               averageWindowSize = 0): Array<DailyDiff> => {
       let last = 0;
-      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number) => {
+      let newCases = getters.dataPerCanton(canton).map((dataPoint: DailyDataSet) => {
         let value = getProperty(dataPoint, fieldName);
 
         // if not value is available, assume its the same as the last
