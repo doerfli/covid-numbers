@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Alert
+      title="Warning"
+      text="these calculations are new and have not been fully validated!" />
     <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"
@@ -21,9 +24,11 @@ import Footer from '@/components/Footer.vue'
 import CantonConfig from '@/model/cantonconfig'
 import Hideable from '@/components/base/Hideable.vue'
 import ViewOptions from '@/components/ViewOptions.vue'
+import Alert from '@/components/base/Alert.vue'
 
 @Component({
   components: {
+    Alert,
     ViewOptions,
     Hideable,
     Footer,
