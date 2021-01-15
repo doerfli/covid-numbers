@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="flex flex-wrap">
-      <div class="entry">
+      <div class="entryfirst">
         <i class="fab fa-github"></i> <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
       </div>
       <div class="entry">
@@ -17,7 +17,7 @@
       Calculations are done to the best of my knowledge, but i do not guarantee correctness.
       <br/>
       If you find a mistake, I will be happy to fix it.
-      Please bring it to my attention by raising an issue on the <Ref uri="https://github.com/doerfli/covid-numbers/">github project</Ref> or contact me via <Ref uri="https://twitter.com/doerfli">Twitter</Ref>.
+      Please bring it to my attention by raising an issue on the <Ref uri="https://github.com/doerfli/covid-numbers/">Github project</Ref> or contact me via <Ref uri="https://twitter.com/doerfli">Twitter</Ref>.
     </div>
   </div>
 </template>
@@ -44,11 +44,17 @@ export default class Footer extends Vue {
       @apply border-r-2;
       @apply border-gray-700 dark:border-gray-200;
     }
+    .entryfirst {
+      @apply pr-3;
+      @apply border-solid;
+      @apply border-r-2;
+      @apply border-gray-700 dark:border-gray-200;
+    }
     .entrylast {
-      @apply px-3;
+      @apply pl-3;
     }
     .disclaimer {
-      @apply px-3 pt-2;
+      @apply pt-2;
       @apply text-sm;
       > span {
         @apply text-pink-600 dark:text-pink-500 font-bold;
