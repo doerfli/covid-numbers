@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="disclaimer">
-      <b>Disclaimer</b>:
+      <span>Disclaimer</span>:
       All data shown on this page is based on the data provided by <Ref uri="https://github.com/openZH/">OpenZH</Ref>.
       Calculations are done to the best of my knowledge, but i do not guarantee correctness.
       <br/>
@@ -42,7 +42,7 @@ export default class Footer extends Vue {
       @apply px-3;
       @apply border-solid;
       @apply border-r-2;
-      @apply border-gray-200;
+      @apply border-gray-700 dark:border-gray-200;
     }
     .entrylast {
       @apply px-3;
@@ -50,6 +50,9 @@ export default class Footer extends Vue {
     .disclaimer {
       @apply px-3 pt-2;
       @apply text-sm;
+      > span {
+        @apply text-pink-600 dark:text-pink-500;
+      }
     }
   }
 </style>
