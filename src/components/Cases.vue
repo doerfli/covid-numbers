@@ -1,6 +1,7 @@
 <template>
   <div class="case w-full md:w-1/2 lg:w-1/3">
     <H2>{{ getCanton }}</H2>
+    <router-link :to="detailsUrl()" >Details</router-link>
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData" />
   </div>
@@ -86,6 +87,10 @@ export default class Cases extends Vue {
 
   private static formatDate(date: string) {
     return `${date.substr(8, 2)}.${date.substr(5, 2)}.`
+  }
+
+  private detailsUrl() {
+    return `/details/${this.canton}`;
   }
 }
 </script>
