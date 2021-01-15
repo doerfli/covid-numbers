@@ -1,8 +1,5 @@
 <template>
   <div>
-    <Alert
-      title="Warning"
-      text="these calculations are new and have not been fully validated!" />
     <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"
