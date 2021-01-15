@@ -51,7 +51,7 @@ export default class Footer extends Vue {
       @apply px-3 pt-2;
       @apply text-sm;
       > span {
-        @apply text-pink-600 dark:text-pink-500;
+        @apply text-pink-600 dark:text-pink-500 font-bold;
       }
     }
   }
