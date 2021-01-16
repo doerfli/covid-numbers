@@ -51,24 +51,24 @@ export default class CasesTable extends Vue {
     return t.find((x: CantonData) => { return x.canton == this.canton}).data.reverse();
   }
 
-  private diff(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: string) {
+  private diff(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: any) {
     if (idx == casesList.length - 1) {
       return 0;
     }
 
-    const prev = getProperty(casesList[idx + 1], field)
-    const curr = getProperty(day, field);
+    const prev: number = getProperty(casesList[idx + 1], field)
+    const curr: number = getProperty(day, field);
     return curr - prev; // array is reverse sorted
   }
 
-  private diffPct(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: string) {
+  private diffPct(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: any) {
     if (idx == casesList.length - 1) {
       return 0;
     }
 
-    const prev = getProperty(casesList[idx + 1], field)
-    const curr = getProperty(day, field);
-    return ((curr - prev) / prev * 100).toFixed(1); // array is reverse sorted
+    const prev: number = getProperty(casesList[idx + 1], field)
+    const curr: number = getProperty(day, field);
+    return (((curr - prev) / prev) * 100).toFixed(1); // array is reverse sorted
   }
 
 }

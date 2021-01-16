@@ -34,24 +34,8 @@ import ViewOptions from '@/components/ViewOptions.vue'
 })
 export default class Hospitalized extends Vue {
 
-  private showCantonSelect = false;
-
-  public mounted() {
-    console.log("Home.mounted");
-    this.$store.dispatch("viewProps/init");
-    this.$store.dispatch("cases/fetch");
-  }
-
-  private get cantons(): CantonConfig[] {
-    return this.$store.state.viewProps.cantons;
-  }
-
   private get selectedCantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons.filter((c: CantonConfig) => c.show);
-  }
-
-  private toggleCantonSelect() {
-    this.showCantonSelect = ! this.showCantonSelect;
   }
 
   private get getDaysToShow() {
