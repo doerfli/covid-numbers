@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="text-gray-700 dark:text-gray-200 p-2">
-    <div class="container mx-auto">
+    <div class="container md:mx-auto">
       <Header />
       <router-view/>
       <Footer />
@@ -26,7 +26,7 @@ import Footer from '@/components/Footer.vue'
 export default class App extends Vue {
 
   public mounted() {
-    console.log("Home.mounted");
+    console.log("App.mounted");
     this.$store.dispatch("viewProps/init");
     this.$store.dispatch("cases/fetch");
   }

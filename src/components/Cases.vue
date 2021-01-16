@@ -1,6 +1,12 @@
 <template>
   <div class="case w-full md:w-1/2 lg:w-1/3">
-    <H2>{{ getCanton }}</H2>
+    <H2 class="inline-block pl-2">{{ getCanton }}</H2>
+    <span class="inline-block details_link">
+      <router-link :to="detailsUrl()" title="Show details">
+        <i class="fas fa-eye"></i>
+      </router-link>
+    </span>
+
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData" />
   </div>
@@ -39,10 +45,8 @@ export default class Cases extends Vue {
     return this.canton;
   }
 
-  get getCases(): Array<CantonData> {
-    const t = this.$store.state.cases.cases;
-    // console.log(t);
-    return t.filter((x: CantonData) => { return x.canton == this.getCanton});
+  get getCases(): CantonData {
+    return this.$store.state.cases.cases.find((x: CantonData) => { return x.canton === this.getCanton});
   }
 
   @Watch("getCases", { deep: true} )
@@ -74,8 +78,11 @@ export default class Cases extends Vue {
     // console.log(1111);
     // console.log(data);
 
+    const lastXDays = data.slice(-this.daysToShow);
+    // console.log(lastXDays);
+
     // limit to last x days and map to datapoints for display
-    return data.slice(-this.daysToShow).map((x: DailyDiff) => {
+    return lastXDays.map((x: DailyDiff) => {
       return {
         xValue: Cases.formatDate(x.date),
         yValue: x.value,
@@ -87,9 +94,18 @@ export default class Cases extends Vue {
   private static formatDate(date: string) {
     return `${date.substr(8, 2)}.${date.substr(5, 2)}.`
   }
+
+  private detailsUrl() {
+    return `/details/${this.canton}`;
+  }
 }
 </script>
 
 <style scoped>
+  .details_link {
+    @apply px-2;
+    @apply text-indigo-700 hover:text-indigo-500;
+    @apply dark:text-blue-500 dark:hover:text-blue-300;
+  }
 </style>
 
