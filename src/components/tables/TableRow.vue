@@ -1,7 +1,7 @@
 <template>
   <tr v-bind:class="{
-    'dark:bg-teal-900': this.index % 2 === 1,
-    'dark:bg-black': this.index % 2 === 0
+    'bg-emerald-100 dark:bg-teal-900': this.index % 2 === 1,
+    'bg-white dark:bg-black': this.index % 2 === 0
   }">
     <slot></slot>
   </tr>
