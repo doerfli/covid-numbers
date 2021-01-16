@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="text-gray-700 dark:text-gray-200 p-2">
-    <div class="container mx-auto">
+    <div class="container md:mx-auto">
       <Header />
       <router-view/>
       <Footer />
