@@ -1,7 +1,12 @@
 <template>
   <div class="case w-full md:w-1/2 lg:w-1/3">
-    <H2>{{ getCanton }}</H2>
-    <router-link :to="detailsUrl()" >Details</router-link>
+    <H2 class="inline-block pl-2">{{ getCanton }}</H2>
+    <span class="inline-block details_link">
+      <router-link :to="detailsUrl()" title="Show details">
+        <i class="fas fa-eye"></i>
+      </router-link>
+    </span>
+
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData" />
   </div>
@@ -97,5 +102,10 @@ export default class Cases extends Vue {
 </script>
 
 <style scoped>
+  .details_link {
+    @apply px-2;
+    @apply text-indigo-700 hover:text-indigo-500;
+    @apply dark:text-blue-500 dark:hover:text-blue-300;
+  }
 </style>
 
