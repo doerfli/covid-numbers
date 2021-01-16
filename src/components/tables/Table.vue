@@ -6,9 +6,6 @@
     <tbody>
       <slot></slot>
     </tbody>
-    <tfoot>
-      <slot name="footer"></slot>
-    </tfoot>
   </table>
 </template>
 
