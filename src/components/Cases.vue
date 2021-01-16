@@ -40,10 +40,8 @@ export default class Cases extends Vue {
     return this.canton;
   }
 
-  get getCases(): Array<CantonData> {
-    const t = this.$store.state.cases.cases;
-    // console.log(t);
-    return t.filter((x: CantonData) => { return x.canton == this.getCanton});
+  get getCases(): CantonData {
+    return this.$store.state.cases.cases.find((x: CantonData) => { return x.canton === this.getCanton});
   }
 
   @Watch("getCases", { deep: true} )
@@ -75,8 +73,11 @@ export default class Cases extends Vue {
     // console.log(1111);
     // console.log(data);
 
+    const lastXDays = data.slice(-this.daysToShow);
+    // console.log(lastXDays);
+
     // limit to last x days and map to datapoints for display
-    return data.slice(-this.daysToShow).map((x: DailyDiff) => {
+    return lastXDays.map((x: DailyDiff) => {
       return {
         xValue: Cases.formatDate(x.date),
         yValue: x.value,

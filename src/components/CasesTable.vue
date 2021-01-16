@@ -48,7 +48,8 @@ export default class CasesTable extends Vue {
     if (t.length === 0) {
       return [];
     }
-    return t.find((x: CantonData) => { return x.canton == this.canton}).data.reverse();
+    // use slice to copy data as reverse is working inplace
+    return t.find((x: CantonData) => { return x.canton == this.canton}).data.slice().reverse();
   }
 
   private diff(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: any) {
