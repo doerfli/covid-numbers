@@ -7,12 +7,7 @@ import DailyDataSet from '@/model/dailyDataSet'
 import DailyDiff from '@/model/dailyDiff'
 import DailyIncidence from '@/model/dailyIncidence'
 import StaticData from '@/store/StaticData'
-
-// credit: Typescript documentation, src
-// https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types
-function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
-  return o[propertyName]; // o[propertyName] is of type T[K]
-}
+import getProperty from '@/get-property'
 
 function calculateAverageValue (newCases: Array<DailyDiff>, averageWindowSize: number) {
   return newCases.map((value: DailyDiff, idx: number, arr: DailyDiff[]) => {
