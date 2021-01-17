@@ -1,5 +1,6 @@
 import { Module } from 'vuex'
 import CantonConfig from '@/model/cantonconfig'
+import StaticData from '@/store/staticdata'
 
 function persistCantonsToLocalStorage (cantons: string[]) {
   localStorage.setItem("selectedCantons", cantons.join(","));
@@ -31,20 +32,17 @@ const viewpropsModule: Module<any, any> = {
     },
     init(state) {
       const selectedCantons = localStorage.getItem("selectedCantons")?.split(",");
-      state.cantons = [
-        "CH", "AG", "AI", "AR", "BE", "BL", "BS", "FR", "GE", "GL", "GR", "JU",
-        "LU", "NE", "NW", "OW", "SG", "SH", "SO", "SZ", "TG", "TI", "UR", "VD",
-        "VS", "ZG", "ZH"
-      ].map((e) => {
-        let show = true;
-        if (selectedCantons != null && ! selectedCantons.includes(e)) {
-          show = false;
-        }
-        return {
-          name: e,
-          show: show
-        } as CantonConfig
-      });
+      state.cantons = [ "CH" ].concat(StaticData.getCantons())
+        .map((e) => {
+          let show = true;
+          if (selectedCantons != null && ! selectedCantons.includes(e)) {
+            show = false;
+          }
+          return {
+            name: e,
+            show: show
+          } as CantonConfig
+        });
       state.daysToShow = Number.parseInt(localStorage.getItem("daysToShow") ?? "30");
       state.theme = localStorage.getItem("theme") ?? "dark";
       if (state.theme === "light") {
