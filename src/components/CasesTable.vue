@@ -32,7 +32,7 @@ import TableData from '@/components/tables/TableData.vue'
 import DailyDataSet from '@/model/dailyDataSet'
 import TableHeader from '@/components/tables/TableHeader.vue'
 import TableRowHeader from '@/components/tables/TableRowHeader.vue'
-import getProperty from '@/get-property'
+import getProperty from '@/utils/get-property'
 
 @Component({
   components: { TableRowHeader, TableHeader, TableData, TableRow, Table }

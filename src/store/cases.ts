@@ -2,12 +2,12 @@ import { Module } from 'vuex'
 import superagent from 'superagent'
 import parse from 'csv-parse/lib/sync'
 import CantonData from '@/model/cantondata'
-import RecordsProcessor from '@/store/recordsprocessor'
+import RecordsProcessor from '@/utils/records-processor'
 import DailyDataSet from '@/model/dailyDataSet'
 import DailyDiff from '@/model/dailyDiff'
 import DailyIncidence from '@/model/dailyIncidence'
-import StaticData from '@/store/StaticData'
-import getProperty from '@/get-property'
+import getProperty from '@/utils/get-property'
+import StaticData from '@/store/staticdata'
 
 function calculateAverageValue (newCases: Array<DailyDiff>, averageWindowSize: number) {
   return newCases.map((value: DailyDiff, idx: number, arr: DailyDiff[]) => {

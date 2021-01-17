@@ -1,5 +1,5 @@
 import DailyDataSet from '@/model/dailyDataSet'
-import StaticData from '@/store/StaticData'
+import StaticData from '@/store/staticdata'
 
 export  default class RecordsProcessor {
 
