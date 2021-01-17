@@ -1,12 +1,19 @@
 <template>
-  <div class="case w-full md:w-1/2 lg:w-1/3">
-    <H2 class="inline-block pl-2">{{ getCanton }}</H2>
-    <span class="inline-block details_link">
-      <router-link :to="detailsUrl()" title="Show details">
-        <i class="fas fa-eye"></i>
-      </router-link>
-    </span>
-
+  <div class="case w-full md:w-1/2 lg:w-1/3 mb-4">
+    <div class="flex justify-between">
+      <div class="">
+        <H2 class="pl-2">
+          {{ getCanton }}
+        </H2>
+      </div>
+      <div class="">
+        <span class="details_link text-xs">
+          <router-link :to="detailsUrl()">
+            <i class="fas fa-eye"></i> Show details
+          </router-link>
+        </span>
+      </div>
+    </div>
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData" />
   </div>
