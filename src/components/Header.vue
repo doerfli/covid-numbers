@@ -21,21 +21,23 @@
     <div :class="getClass('Deceased')">
       <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
     </div>
-    <div @click="toggleCantonSelect"
-         v-if="! showCantonSelect"
-         class="menuitem">
-      <i class="fas fa-cog pr-1"></i>
-      <i class="fas fa-chevron-down"></i>
-      Show view options
-    </div>
-    <div @click="toggleCantonSelect"
-         v-else
-         class="menuitem">
-      <i class="fas fa-cog pr-1"></i>
-      <i class="fas fa-chevron-up"></i>
-      Hide view options
-    </div>
-    <Hideable :visible="showCantonSelect">
+    <span v-if="! isDetailsPage()">
+      <div @click="toggleViewOptions"
+           v-if="! showViewOptions"
+           class="menuitem">
+        <i class="fas fa-cog pr-1"></i>
+        <i class="fas fa-chevron-down"></i>
+        Show view options
+      </div>
+      <div @click="toggleViewOptions"
+           v-else
+           class="menuitem">
+        <i class="fas fa-cog pr-1"></i>
+        <i class="fas fa-chevron-up"></i>
+        Hide view options
+      </div>
+    </span>
+    <Hideable :visible="showViewOptions">
       <ViewOptions />
     </Hideable>
   </div>
@@ -53,10 +55,10 @@ import ViewOptions from '@/components/ViewOptions.vue'
 })
 export default class Header extends Vue {
 
-  private showCantonSelect = false;
+  private showViewOptions = false;
 
-  private toggleCantonSelect() {
-    this.showCantonSelect = ! this.showCantonSelect;
+  private toggleViewOptions() {
+    this.showViewOptions = ! this.showViewOptions;
   }
 
   private getClass(routeName: string) {
@@ -65,7 +67,10 @@ export default class Header extends Vue {
     } else {
       return "menuitem";
     }
+  }
 
+  private isDetailsPage() {
+    return this.$route.name === "Details";
   }
 }
 </script>
