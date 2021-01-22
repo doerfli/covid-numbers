@@ -125,6 +125,10 @@ export default class BarChart extends Vue {
       .on('mouseleave', function () {
         d3.select(this).attr('class', 'bar')
       })
+      .append("title")
+      .text(function (s) {
+        return BarChart.renderTooltipContent(s);
+      })
 
     if (dataPoints[0].y2Value !== undefined) {
       // plot line
@@ -144,6 +148,20 @@ export default class BarChart extends Vue {
     chart.selectAll('text')
       .attr('class', 'chartText');
   }
+
+  private static renderTooltipContent (s: DataPoint) {
+    let tooltip = ''
+    if (s.xValueDescr !== undefined) {
+      tooltip += s.xValueDescr + ': ' + s.xValue + '\n'
+    }
+    if (s.yValueDescr !== undefined) {
+      tooltip += s.yValueDescr + ': ' + s.yValue + '\n'
+    }
+    if (s.y2ValueDescr !== undefined) {
+      tooltip += s.y2ValueDescr + ': ' + s.y2Value + '\n'
+    }
+    return tooltip
+  }
 }
 </script>
 
@@ -154,6 +172,10 @@ export default class BarChart extends Vue {
 
     .bar {
       @apply fill-current text-emerald-400 dark:text-teal-400 opacity-90;
+
+      title {
+        @apply text-pink-500;
+      }
     }
 
     .bar.highlight {

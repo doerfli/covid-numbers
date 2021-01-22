@@ -92,8 +92,11 @@ export default class Cases extends Vue {
     return lastXDays.map((x: DailyDiff) => {
       return {
         xValue: Cases.formatDate(x.date),
+        xValueDescr: "Date",
         yValue: x.value,
-        y2Value: x.avg
+        yValueDescr: "Count",
+        y2Value: x.avg,
+        y2ValueDescr: "Average"
       } as DataPoint;
     });
   }
