@@ -51,7 +51,46 @@ export  default class RecordsProcessor {
     // set total ch data
     dataMap.set("CH", totalCh);
 
+    this.calculateChgAndAverages(dataMap);
+
     return dataMap;
+  }
+
+  private calculateChgAndAverages (dataMap: Map<string, DailyDataSet[]>) {
+    dataMap.forEach((dataset) => {
+      dataset.forEach((dailyData, i) => {
+        if (i > 0) {
+          dailyData.confCasesChg = dailyData.confCases - dataset[i - 1].confCases;
+          dailyData.deceasedChg = dailyData.deceased - dataset[i - 1].deceased;
+        }
+        if (i >= 6) {
+          dailyData.confCasesChgAvg = Math.round(
+            dataset.slice(i - 7 + 1, i + 1)
+              .map((x) => x.confCasesChg)
+              .reduce((sum, current) => sum + current)
+            / 7
+          )
+          dailyData.currHospAvg = Math.round(
+            dataset.slice(i - 7 + 1, i + 1)
+              .map((x) => x.currHosp)
+              .reduce((sum, current) => sum + current)
+            / 7
+          )
+          dailyData.currIcuAvg = Math.round(
+            dataset.slice(i - 7 + 1, i + 1)
+              .map((x) => x.currIcu)
+              .reduce((sum, current) => sum + current)
+            / 7
+          )
+          dailyData.deceasedChgAvg = Math.round(
+            dataset.slice(i - 7 + 1, i + 1)
+              .map((x) => x.deceasedChg)
+              .reduce((sum, current) => sum + current)
+            / 7
+          )
+        }
+      });
+    })
   }
 
   private initializedMap(): Map<string,Array<DailyDataSet>> {

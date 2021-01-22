@@ -5,7 +5,7 @@
         v-for="canton in selectedCantons"
         :key="canton.name"
         :canton="canton.name"
-        field-to-show="deceased"
+        field-to-show="deceasedChg"
         :days-to-show="getDaysToShow"
         calculate-average="true"
       ></Cases>

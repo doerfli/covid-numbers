@@ -7,7 +7,6 @@
         :canton="canton.name"
         :days-to-show="getDaysToShow"
         field-to-show="currHosp"
-        show-absolute-numbers="true"
         calculate-average="true"
       ></Cases>
     </div>
