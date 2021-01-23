@@ -72,6 +72,8 @@ export  default class RecordsProcessor {
       dataset.forEach((dailyData, i) => {
         if (i > 0) {
           dailyData.confCasesChg = dailyData.confCases - dataset[i - 1].confCases;
+          dailyData.currHospChg = dailyData.currHosp - dataset[i - 1].currHosp;
+          dailyData.currIcuChg = dailyData.currIcu - dataset[i - 1].currIcu;
           dailyData.deceasedChg = dailyData.deceased - dataset[i - 1].deceased;
         }
         if (i >= 6) {

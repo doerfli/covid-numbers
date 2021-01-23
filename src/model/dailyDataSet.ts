@@ -4,8 +4,10 @@ interface DailyDataSet {
   confCasesChg: number;
   confCasesChgAvg: number;
   currHosp: number;
+  currHospChg: number;
   currHospAvg: number;
   currIcu: number;
+  currIcuChg: number;
   currIcuAvg: number;
   deceased: number;
   deceasedChg: number;

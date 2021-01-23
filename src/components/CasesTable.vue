@@ -15,10 +15,10 @@
       v-bind:index="idx"
     >
       <TableData>{{ day.date }}</TableData>
-      <TableData>{{ day.confCases }} / {{ diff(day, idx, cases, "confCases") }}</TableData>
-      <TableData>{{ day.currHosp }} / {{ diff(day, idx, cases, "currHosp") }} ({{ diffPct(day, idx, cases, "currHosp") }}%)</TableData>
-      <TableData>{{ day.currIcu }}  / {{ diff(day, idx, cases, "currIcu") }} ({{ diffPct(day, idx, cases, "currIcu") }}%)</TableData>
-      <TableData>{{ day.deceased }} / {{ diff(day, idx, cases, "deceased") }}</TableData>
+      <TableData>{{ day.confCases }} / {{ day.confCasesChg }}</TableData>
+      <TableData>{{ day.currHosp }} / {{ day.currHospChg }}</TableData>
+      <TableData>{{ day.currIcu }}  / {{ day.currIcuChg }}</TableData>
+      <TableData>{{ day.deceased }} / {{ day.deceasedChg }}</TableData>
     </TableRow>
   </Table>
 </template>
@@ -32,7 +32,6 @@ import TableData from '@/components/tables/TableData.vue'
 import DailyDataSet from '@/model/dailyDataSet'
 import TableHeader from '@/components/tables/TableHeader.vue'
 import TableRowHeader from '@/components/tables/TableRowHeader.vue'
-import getProperty from '@/utils/get-property'
 
 @Component({
   components: { TableRowHeader, TableHeader, TableData, TableRow, Table }
@@ -50,26 +49,6 @@ export default class CasesTable extends Vue {
     }
     // use slice to copy data as reverse is working inplace
     return t.find((x: CantonData) => { return x.canton == this.canton}).data.slice().reverse();
-  }
-
-  private diff(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: any) {
-    if (idx == casesList.length - 1) {
-      return 0;
-    }
-
-    const prev: number = getProperty(casesList[idx + 1], field)
-    const curr: number = getProperty(day, field);
-    return curr - prev; // array is reverse sorted
-  }
-
-  private diffPct(day: DailyDataSet, idx: number, casesList: Array<DailyDataSet>, field: any) {
-    if (idx == casesList.length - 1) {
-      return 0;
-    }
-
-    const prev: number = getProperty(casesList[idx + 1], field)
-    const curr: number = getProperty(day, field);
-    return (((curr - prev) / prev) * 100).toFixed(1); // array is reverse sorted
   }
 
 }
