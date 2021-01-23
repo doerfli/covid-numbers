@@ -17,7 +17,7 @@ import H2 from '@/components/base/H2.vue'
 import CasesTable from '@/components/CasesTable.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import DataPoint from '@/model/datapoint'
-import DailyDiff from '@/model/dailyDiff'
+import DailyDataSet from '@/model/dailyDataSet'
 
 @Component({
     components: { BarChart, CasesTable, H2, H1 }
@@ -34,7 +34,7 @@ import DailyDiff from '@/model/dailyDiff'
 
     get displayData(): Array<DataPoint> {
       let data = null;
-      data = this.$store.getters["cases/calculateDailyDiff"](this.canton, "confCases", this.windowSize) as Array<DailyDiff>;
+      data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
 
       // console.log(1111);
       // console.log(data);
@@ -43,11 +43,11 @@ import DailyDiff from '@/model/dailyDiff'
       // console.log(lastXDays);
 
       // limit to last x days and map to datapoints for display
-      return lastXDays.map((x: DailyDiff) => {
+      return lastXDays.map((x: DailyDataSet) => {
         return {
           xValue: Details.formatDate(x.date),
-          yValue: x.value,
-          y2Value: x.avg
+          yValue: x.confCasesChg,
+          y2Value: x.confCasesChgAvg
         } as DataPoint;
       });
     }
