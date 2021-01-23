@@ -1,7 +1,7 @@
 <template>
   <TableRow :index="index">
     <TableData>{{ day.date }}</TableData>
-    <TableData>{{ day.confCases }} / {{ day.confCasesChg }}</TableData>
+    <TableData>{{ day.confCases }} / {{ day.confCasesChg }} / {{ day.confCasesChgAvg }}</TableData>
     <TableData>{{ day.currHosp }} / {{ day.currHospChg }}</TableData>
     <TableData>{{ day.currIcu }}  / {{ day.currIcuChg }}</TableData>
     <TableData>{{ day.deceased }} / {{ day.deceasedChg }}</TableData>

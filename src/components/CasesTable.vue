@@ -3,7 +3,7 @@
     <slot name="header">
       <TableRowHeader>
         <TableHeader>Date</TableHeader>
-        <TableHeader>Confirmed cases (Total/Change)</TableHeader>
+        <TableHeader>Confirmed cases (Total/Change/Average)</TableHeader>
         <TableHeader>Hospitalized (Current/Change)</TableHeader>
         <TableHeader>Icu (Current/Change)</TableHeader>
         <TableHeader>Deceased (Total/Change)</TableHeader>
