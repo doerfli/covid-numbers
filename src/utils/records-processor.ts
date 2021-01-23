@@ -1,5 +1,6 @@
 import DailyDataSet from '@/model/dailyDataSet'
 import StaticData from '@/store/staticdata'
+import getProperty from '@/utils/get-property'
 
 export  default class RecordsProcessor {
 
@@ -51,7 +52,10 @@ export  default class RecordsProcessor {
     // set total ch data
     dataMap.set("CH", totalCh);
 
+    const before = new Date().getTime();
     this.calculateChgAndAverages(dataMap);
+    const after = new Date().getTime();
+    console.log(`calculation dutation: ${after - before}ms`);
 
     return dataMap;
   }
@@ -64,33 +68,22 @@ export  default class RecordsProcessor {
           dailyData.deceasedChg = dailyData.deceased - dataset[i - 1].deceased;
         }
         if (i >= 6) {
-          dailyData.confCasesChgAvg = Math.round(
-            dataset.slice(i - 7 + 1, i + 1)
-              .map((x) => x.confCasesChg)
-              .reduce((sum, current) => sum + current)
-            / 7
-          )
-          dailyData.currHospAvg = Math.round(
-            dataset.slice(i - 7 + 1, i + 1)
-              .map((x) => x.currHosp)
-              .reduce((sum, current) => sum + current)
-            / 7
-          )
-          dailyData.currIcuAvg = Math.round(
-            dataset.slice(i - 7 + 1, i + 1)
-              .map((x) => x.currIcu)
-              .reduce((sum, current) => sum + current)
-            / 7
-          )
-          dailyData.deceasedChgAvg = Math.round(
-            dataset.slice(i - 7 + 1, i + 1)
-              .map((x) => x.deceasedChg)
-              .reduce((sum, current) => sum + current)
-            / 7
-          )
+          dailyData.confCasesChgAvg = this.calcAvg(dataset, i, "confCasesChg");
+          dailyData.currHospAvg = this.calcAvg(dataset, i, "currHosp");
+          dailyData.currIcuAvg = this.calcAvg(dataset, i, "currIcu");
+          dailyData.deceasedChgAvg = this.calcAvg(dataset, i, "deceasedChg");
         }
       });
     })
+  }
+
+  private calcAvg(dataset: DailyDataSet[], i: number, fieldname: any, duration = 7) {
+    return Math.round(
+      dataset.slice(i - duration + 1, i + 1)
+        .map((x) => getProperty(x, fieldname))
+        .reduce((sum, current) => sum + current)
+      / duration
+    );
   }
 
   private initializedMap(): Map<string,Array<DailyDataSet>> {
