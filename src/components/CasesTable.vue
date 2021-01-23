@@ -9,17 +9,12 @@
         <TableHeader>Deceased (Total/Change)</TableHeader>
       </TableRowHeader>
     </slot>
-    <TableRow
+    <tr is="daily-cases-row"
       v-for="(day,idx) in cases"
       v-bind:key="day.date"
       v-bind:index="idx"
-    >
-      <TableData>{{ day.date }}</TableData>
-      <TableData>{{ day.confCases }} / {{ day.confCasesChg }}</TableData>
-      <TableData>{{ day.currHosp }} / {{ day.currHospChg }}</TableData>
-      <TableData>{{ day.currIcu }}  / {{ day.currIcuChg }}</TableData>
-      <TableData>{{ day.deceased }} / {{ day.deceasedChg }}</TableData>
-    </TableRow>
+      :day="day"
+    ></tr>
   </Table>
 </template>
 
@@ -32,9 +27,10 @@ import TableData from '@/components/tables/TableData.vue'
 import DailyDataSet from '@/model/dailyDataSet'
 import TableHeader from '@/components/tables/TableHeader.vue'
 import TableRowHeader from '@/components/tables/TableRowHeader.vue'
+import DailyCasesRow from '@/components/DailyCasesRow.vue'
 
 @Component({
-  components: { TableRowHeader, TableHeader, TableData, TableRow, Table }
+  components: { DailyCasesRow, TableRowHeader, TableHeader, TableData, TableRow, Table }
 })
 export default class CasesTable extends Vue {
 
