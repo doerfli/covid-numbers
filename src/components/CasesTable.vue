@@ -37,6 +37,8 @@ export default class CasesTable extends Vue {
 
   @Prop()
   private canton!: string;
+  @Prop()
+  private rowsToRender!: number;
 
   private get cases(): Array<DailyDataSet> {
     const t = this.$store.state.cases.cases;
@@ -45,7 +47,8 @@ export default class CasesTable extends Vue {
       return [];
     }
     // use slice to copy data as reverse is working inplace
-    return t.find((x: CantonData) => { return x.canton == this.canton}).data.slice().reverse();
+    const dt = t.find((x: CantonData) => { return x.canton == this.canton}).data;
+    return dt.slice(Math.max(-dt.length, -this.rowsToRender)).reverse();
   }
 
   private getLastWeek(cases: Array<DailyDataSet>, currIdx: number): DailyDataSet | null {

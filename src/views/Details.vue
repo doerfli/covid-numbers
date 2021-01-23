@@ -2,10 +2,10 @@
   <div>
     <H2>Details for canton {{ getCanton }}</H2>
 
-    <BarChart class="barchart w-full h-96"
+    <BarChart class="barchart w-full h-96 my-6"
               v-bind:data="displayData" />
 
-    <CasesTable :canton="getCanton" />
+    <CasesTable :canton="getCanton" :rows-to-render="rowsToRender" />
 
   </div>
 </template>
@@ -27,6 +27,11 @@ import DailyDataSet from '@/model/dailyDataSet'
     private canton!: string;
     @Prop({ default: 7 })
     private windowSize!: number;
+    private rowsToRender = 90;
+
+    private mounted() {
+      this.scroll();
+    }
 
     private get getCanton() {
       return this.canton;
@@ -54,6 +59,24 @@ import DailyDataSet from '@/model/dailyDataSet'
 
     private static formatDate(date: string) {
       return `${date.substr(8, 2)}.${date.substr(5, 2)}.`
+    }
+
+    private static isScrolledIntoView(el: Element) {
+      const rect = el.getBoundingClientRect();
+      const elemTop = rect.top;
+      const elemBottom = rect.bottom;
+      return elemTop < window.innerHeight && elemBottom >= 0;
+    }
+
+    private scroll () {
+      window.onscroll = () => {
+        const scrolledTo = document.querySelector('.footer')
+
+        if (scrolledTo && Details.isScrolledIntoView(scrolledTo)) {
+          console.log('scrolled');
+          this.rowsToRender += 90;
+        }
+      }
     }
 
   }
