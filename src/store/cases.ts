@@ -84,7 +84,7 @@ const casesModule: Module<any, any> = {
       (canton: string,
         // eslint-disable-next-line
         fieldName: any = "confCases",
-        windowSize = 7): Array<DailyDiff> => {
+        windowSize = 7): Array<DailyIncidence> => {
 
       return getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number, arr: Array<DailyDataSet>) => {
         let incidence = null;
