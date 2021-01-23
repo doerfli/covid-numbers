@@ -25,8 +25,9 @@ import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import CantonData from '@/model/cantondata'
 import H2 from '@/components/base/H2.vue'
-import DailyDiff from '@/model/dailyDiff'
 import DailyIncidence from '@/model/dailyIncidence'
+import getProperty from '@/utils/get-property'
+import DailyDataSet from '@/model/dailyDataSet'
 
 @Component({
   components: { H2, BarChart }
@@ -36,15 +37,13 @@ export default class Cases extends Vue {
   @Prop({ default: 28 })
   private daysToShow!: number;
   @Prop({ default: 'confCases'})
-  private fieldToShow!: string;
+  private fieldToShow!: any;
   @Prop()
   private canton!: string;
   @Prop({ default: false })
   private calculateAverage!: boolean;
   @Prop({ default: 7 })
   private windowSize!: number;
-  @Prop({ default: false })
-  private showAbsoluteNumbers!: boolean;
   @Prop({ default: false })
   private showIncidence!: boolean;
 
@@ -76,10 +75,8 @@ export default class Cases extends Vue {
           y2Value: x.incidence
         } as DataPoint;
       });
-    } else if (this.showAbsoluteNumbers) {
-      data = this.$store.getters["cases/dailyValues"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyDiff>;
     } else {
-      data = this.$store.getters["cases/calculateDailyDiff"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyDiff>;
+      data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
     }
 
     // console.log(1111);
@@ -87,15 +84,16 @@ export default class Cases extends Vue {
 
     const lastXDays = data.slice(-this.daysToShow);
     // console.log(lastXDays);
+    const avgFieldName = this.fieldToShow + "Avg" as any;
 
     // limit to last x days and map to datapoints for display
-    return lastXDays.map((x: DailyDiff) => {
+    return lastXDays.map((x: DailyDataSet) => {
       return {
         xValue: Cases.formatDate(x.date),
         xValueDescr: "Date",
-        yValue: x.value,
+        yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
-        y2Value: x.avg,
+        y2Value: getProperty(x, avgFieldName),
         y2ValueDescr: "Average"
       } as DataPoint;
     });

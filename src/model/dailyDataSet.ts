@@ -1,12 +1,15 @@
 interface DailyDataSet {
   date: string;
   confCases: number;
+  confCasesChg: number;
+  confCasesChgAvg: number;
   currHosp: number;
+  currHospAvg: number;
   currIcu: number;
-  newCases: number;
-  newCasesAvg: number;
+  currIcuAvg: number;
   deceased: number;
-  deceasedAvg: number;
+  deceasedChg: number;
+  deceasedChgAvg: number;
 }
 
 export default DailyDataSet;

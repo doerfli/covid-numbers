@@ -5,6 +5,7 @@
         v-for="canton in selectedCantons"
         :key="canton.name"
         :canton="canton.name"
+        field-to-show="confCasesChg"
         :days-to-show="getDaysToShow"
         calculate-average="true"
       ></Cases>
