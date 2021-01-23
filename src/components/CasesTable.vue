@@ -14,6 +14,7 @@
       v-bind:key="day.date"
       v-bind:index="idx"
       :day="day"
+      :last-week="getLastWeek(cases, idx)"
     ></tr>
   </Table>
 </template>
@@ -45,6 +46,13 @@ export default class CasesTable extends Vue {
     }
     // use slice to copy data as reverse is working inplace
     return t.find((x: CantonData) => { return x.canton == this.canton}).data.slice().reverse();
+  }
+
+  private getLastWeek(cases: Array<DailyDataSet>, currIdx: number): DailyDataSet | null {
+    if (currIdx + 7 >= cases.length) {
+      return null;
+    }
+    return cases[currIdx + 7];
   }
 
 }

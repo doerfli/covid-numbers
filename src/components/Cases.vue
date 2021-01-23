@@ -87,13 +87,13 @@ export default class Cases extends Vue {
     const avgFieldName = this.fieldToShow + "Avg" as any;
 
     // limit to last x days and map to datapoints for display
-    return lastXDays.map((x: DailyDataSet) => {
+    return lastXDays.map((x: DailyDataSet, i: number) => {
       return {
         xValue: Cases.formatDate(x.date),
         xValueDescr: "Date",
         yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
-        y2Value: getProperty(x, avgFieldName),
+        y2Value: (i < lastXDays.length - 1) ? getProperty(x, avgFieldName) : null,
         y2ValueDescr: "Average"
       } as DataPoint;
     });

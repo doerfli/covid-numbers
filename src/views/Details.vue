@@ -43,11 +43,11 @@ import DailyDataSet from '@/model/dailyDataSet'
       // console.log(lastXDays);
 
       // limit to last x days and map to datapoints for display
-      return lastXDays.map((x: DailyDataSet) => {
+      return lastXDays.map((x: DailyDataSet, i: number) => {
         return {
           xValue: Details.formatDate(x.date),
           yValue: x.confCasesChg,
-          y2Value: x.confCasesChgAvg
+          y2Value: (i < lastXDays.length - 1) ? x.confCasesChgAvg : null
         } as DataPoint;
       });
     }
