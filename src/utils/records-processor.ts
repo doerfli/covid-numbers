@@ -12,6 +12,8 @@ export  default class RecordsProcessor {
     const totalCh = new Array<DailyDataSet>();
     let currentDay: string = records[0].date;
 
+    const beginTime = new Date().getTime();
+
     // loop over all records and store in DailyData structure by canton
     // eslint-disable-next-line
     records.forEach((val: any) => {
@@ -47,15 +49,20 @@ export  default class RecordsProcessor {
       }
     });
 
+
     currentDay = this.updateCurrentDayData(currentDay, "2100-01-01", totalCh, dataMap);
+
+    const afterRecordsProcessingTime = new Date().getTime();
 
     // set total ch data
     dataMap.set("CH", totalCh);
 
-    const before = new Date().getTime();
     this.calculateChgAndAverages(dataMap);
-    const after = new Date().getTime();
-    console.log(`calculation dutation: ${after - before}ms`);
+
+    const afterAvgCalculationTime = new Date().getTime();
+    console.log(`records processing duration: ${afterRecordsProcessingTime - beginTime}ms`);
+    console.log(`calculation of chg and avg duration: ${afterAvgCalculationTime - afterRecordsProcessingTime}ms`);
+    console.log(`total calculation duration: ${afterAvgCalculationTime - beginTime}ms`);
 
     return dataMap;
   }
