@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "sitemap": "vue-cli-service sitemap"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
@@ -46,6 +47,7 @@
     "sass-loader": "^8.0.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "~4",
+    "vue-cli-plugin-sitemap": "~2.3.0",
     "vue-template-compiler": "^2.6.11"
   }
 }
