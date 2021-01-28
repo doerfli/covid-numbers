@@ -1,5 +1,6 @@
 <template>
   <div class="p-1">
+    <div>{{ text }}</div>
     <svg ref="chart" :id="chartId" class="chart"></svg>
   </div>
 </template>
@@ -16,6 +17,8 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
+  private text = "hello world"
+
   private xmargin = 40;
   private ymargin = 20;
   private eid = Math.floor(Math.random() * 10000);
@@ -119,9 +122,7 @@ export default class BarChart extends Vue {
       .attr('height', (s) => height - yScale(s.yValue))
       .attr('width', xScale.bandwidth())
       // hover effect
-      .on('mouseenter', function () {
-        d3.select(this).attr('class', 'bar highlight')
-      })
+      .on('mouseenter', this.hello)
       .on('mouseleave', function () {
         d3.select(this).attr('class', 'bar')
       })
@@ -147,6 +148,14 @@ export default class BarChart extends Vue {
 
     chart.selectAll('text')
       .attr('class', 'chartText');
+  }
+
+  private hello(event: any, data: DataPoint) {
+    console.log("33");
+    console.log(event)
+    console.log(data)
+    this.text = "Date: " + data.xValue;
+    d3.select(event.target).attr('class', 'bar highlight')
   }
 
   private static renderTooltipContent (s: DataPoint) {
