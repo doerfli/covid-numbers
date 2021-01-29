@@ -1,9 +1,9 @@
 <template>
-  <div class="flex text-xs">
-    <div class="flex-1">
+  <div class="text-xs grid grid-cols-2 justify-items-stretch px-4">
+    <div class="">
       Date: {{ getHighlightDate }}
     </div>
-    <div class="flex-1">
+    <div class="justify-self-end content-end">
       Cnt/Avg: {{ getHighlightCount }} / {{ getHighlightAvg }}
     </div>
   </div>
