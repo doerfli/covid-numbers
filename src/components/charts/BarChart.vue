@@ -16,6 +16,7 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
+
   private xmargin = 40;
   private ymargin = 20;
   private eid = Math.floor(Math.random() * 10000);
@@ -119,16 +120,8 @@ export default class BarChart extends Vue {
       .attr('height', (s) => height - yScale(s.yValue))
       .attr('width', xScale.bandwidth())
       // hover effect
-      .on('mouseenter', function () {
-        d3.select(this).attr('class', 'bar highlight')
-      })
-      .on('mouseleave', function () {
-        d3.select(this).attr('class', 'bar')
-      })
-      .append("title")
-      .text(function (s) {
-        return BarChart.renderTooltipContent(s);
-      })
+      .on('mouseenter', this.barMouseEnter)
+      .on('mouseleave', this.barMouseLeave)
 
     if (dataPoints[0].y2Value !== undefined) {
       // plot line
@@ -147,6 +140,18 @@ export default class BarChart extends Vue {
 
     chart.selectAll('text')
       .attr('class', 'chartText');
+  }
+
+  // eslint-disable-next-line
+  private barMouseEnter(event: any, data: DataPoint) {
+    this.$emit("bar-active", data);
+    d3.select(event.target).attr('class', 'bar highlight')
+  }
+
+  // eslint-disable-next-line
+  private barMouseLeave(event: any, data: DataPoint) {
+    // this.$emit("bar-active", data);
+    d3.select(event.target).attr('class', 'bar')
   }
 
   private static renderTooltipContent (s: DataPoint) {

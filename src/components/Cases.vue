@@ -15,22 +15,24 @@
       </div>
     </div>
     <BarChart class="barchart w-full h-80"
-              v-bind:data="displayData" />
+              v-bind:data="displayData"
+              v-on:bar-active="setHighlightDataPoint"/>
+    <HighlightLine :highlight-data-point="highlightDataPoint" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
-import CantonData from '@/model/cantondata'
 import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import getProperty from '@/utils/get-property'
 import DailyDataSet from '@/model/dailyDataSet'
+import HighlightLine from '@/components/HighlightLine.vue'
 
 @Component({
-  components: { H2, BarChart }
+  components: { HighlightLine, H2, BarChart }
 })
 export default class Cases extends Vue {
 
@@ -46,25 +48,14 @@ export default class Cases extends Vue {
   private windowSize!: number;
   @Prop({ default: false })
   private showIncidence!: boolean;
+  private highlightDataPoint: DataPoint = { } as DataPoint;
 
   get getCanton() {
     return this.canton;
   }
 
-  get getCases(): CantonData {
-    return this.$store.state.cases.cases.find((x: CantonData) => { return x.canton === this.getCanton});
-  }
-
-  @Watch("getCases", { deep: true} )
-  casesMapChanged(casesNew: Array<CantonData>) {
-    // console.log("casesMapChanged");
-    // console.log(casesNew);
-    if (casesNew.length == 0) {
-      return;
-    }
-  }
-
   get displayData(): Array<DataPoint> {
+    // console.log("displayData " + this.getCanton);
     let data = null;
 
     if (this.showIncidence) {
@@ -87,7 +78,7 @@ export default class Cases extends Vue {
     const avgFieldName = this.fieldToShow + "Avg" as any;
 
     // limit to last x days and map to datapoints for display
-    return lastXDays.map((x: DailyDataSet, i: number) => {
+    const result = lastXDays.map((x: DailyDataSet, i: number) => {
       return {
         xValue: Cases.formatDate(x.date),
         xValueDescr: "Date",
@@ -97,6 +88,11 @@ export default class Cases extends Vue {
         y2ValueDescr: "Average"
       } as DataPoint;
     });
+
+    // show second last day when initializing dataset
+    this.highlightDataPoint = result[result.length - 2];
+
+    return result;
   }
 
   private static formatDate(date: string) {
@@ -105,6 +101,34 @@ export default class Cases extends Vue {
 
   private detailsUrl() {
     return `/details/${this.canton}`;
+  }
+
+  private setHighlightDataPoint(data: DataPoint) {
+    // console.log(data);
+    this.highlightDataPoint = data;
+    // console.log(this.highlightDataPoint);
+  }
+
+
+
+  // @Watch('highlightDataPoint')
+  private dataPointHighlight() {
+    console.log("w");
+    if (this.highlightDataPoint !== undefined) {
+      return this.highlightDataPoint;
+    }
+    if (this.displayData.length == 0) {
+      return {
+        xValue: "-",
+        yValue: 0,
+        y2Value: 0,
+        xValueDescr: "",
+        yValueDescr: "",
+        y2ValueDescr: "",
+      } as DataPoint;
+    }
+
+    return this.displayData[this.displayData.length - 1];
   }
 }
 </script>
