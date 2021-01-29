@@ -1,6 +1,5 @@
 <template>
   <div class="p-1">
-    <div>{{ text }}</div>
     <svg ref="chart" :id="chartId" class="chart"></svg>
   </div>
 </template>
@@ -17,7 +16,6 @@ export default class BarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
-  private text = "hello world"
 
   private xmargin = 40;
   private ymargin = 20;
@@ -122,14 +120,8 @@ export default class BarChart extends Vue {
       .attr('height', (s) => height - yScale(s.yValue))
       .attr('width', xScale.bandwidth())
       // hover effect
-      .on('mouseenter', this.hello)
-      .on('mouseleave', function () {
-        d3.select(this).attr('class', 'bar')
-      })
-      .append("title")
-      .text(function (s) {
-        return BarChart.renderTooltipContent(s);
-      })
+      .on('mouseenter', this.barMouseEnter)
+      .on('mouseleave', this.barMouseLeave)
 
     if (dataPoints[0].y2Value !== undefined) {
       // plot line
@@ -150,12 +142,16 @@ export default class BarChart extends Vue {
       .attr('class', 'chartText');
   }
 
-  private hello(event: any, data: DataPoint) {
-    console.log("33");
-    console.log(event)
-    console.log(data)
-    this.text = "Date: " + data.xValue;
+  // eslint-disable-next-line
+  private barMouseEnter(event: any, data: DataPoint) {
+    this.$emit("bar-active", data);
     d3.select(event.target).attr('class', 'bar highlight')
+  }
+
+  // eslint-disable-next-line
+  private barMouseLeave(event: any, data: DataPoint) {
+    // this.$emit("bar-active", data);
+    d3.select(event.target).attr('class', 'bar')
   }
 
   private static renderTooltipContent (s: DataPoint) {
