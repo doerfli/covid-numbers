@@ -14,7 +14,6 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/confirmedcases',
-    alias: '/',
     name: 'ConfirmedCases',
     component: ConfirmedCases
   },
@@ -51,6 +50,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/overview',
+    alias: '/',
     name: 'Overview',
     component: Overview
   },

@@ -3,6 +3,9 @@
     <div class="flex-initial">
       <H1>Covid-19 Statistics Switzerland</H1>
     </div>
+    <div :class="getClass('Overview')">
+      <router-link :to="{ name: 'Overview' }">Overview</router-link>
+    </div>
     <div :class="getClass('ConfirmedCases')">
       <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
     </div>
