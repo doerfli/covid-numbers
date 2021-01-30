@@ -1,6 +1,6 @@
 <template>
   <div class="pb-3 flex items-end">
-    <div class="flex-initial">{{ getCanton }}</div>
+    <div class="flex-initial w-1/6">{{ getCanton }}</div>
     <div class="flex-initial w-1/2 p-1">
       <AreaChart class="areachart w-full h-12"
                  v-bind:data="incidenceData"
@@ -26,16 +26,18 @@ export default class IncidenceOverview extends Vue {
   @Prop({ default: 'confCases'})
   private fieldToShow!: any;
   @Prop()
-  private canton!: string;
+  private name!: string;
+  @Prop()
+  private shortName!: string;
 
   get getCanton() {
-    return this.canton;
+    return this.name;
   }
 
   get incidenceData(): Array<DataPoint> {
     // console.log("incidenceData for " + this.getCanton);
 
-    const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow) as Array<DailyIncidence>;
+    const inc = this.$store.getters["cases/incidence"](this.shortName, this.fieldToShow) as Array<DailyIncidence>;
     const range = inc.slice(-180);
     // TODO make range configurable
     return range.slice(0, range.length - 1).map((x: DailyIncidence) => {

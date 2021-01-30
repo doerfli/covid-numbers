@@ -1,36 +1,40 @@
 export default class StaticData {
 
   private static CANTONS = [
-    { name: "AG", population: 685845 },
-    { name: "AI", population: 16128 },
-    { name: "AR", population: 55445 },
-    { name: "BE", population: 1039474 },
-    { name: "BL", population: 289468 },
-    { name: "BS", population: 195844 },
-    { name: "FR", population: 321783 },
-    { name: "GE", population: 504128 },
-    { name: "GL", population: 40590 },
-    { name: "GR", population: 199021 },
-    { name: "JU", population: 73584 },
-    { name: "LU", population: 413120 },
-    { name: "NE", population: 176496 },
-    { name: "NW", population: 43087 },
-    { name: "OW", population: 37930 },
-    { name: "SG", population: 510734 },
-    { name: "SH", population: 82348 },
-    { name: "SO", population: 275247 },
-    { name: "SZ", population: 160480 },
-    { name: "TG", population: 279547 },
-    { name: "TI", population: 351491 },
-    { name: "UR", population: 36703 },
-    { name: "VD", population: 805098 },
-    { name: "VS", population: 345525 },
-    { name: "ZG", population: 127642 },
-    { name: "ZH", population: 1539275 },
+    { short: "AG", name: "Aargau", population: 685845 },
+    { short: "AI", name: "Appenzell Innerrhoden", population: 16128 },
+    { short: "AR", name: "Appenzell Ausserrhoden ", population: 55445 },
+    { short: "BE", name: "Bern", population: 1039474 },
+    { short: "BL", name: "Basel Stadt", population: 289468 },
+    { short: "BS", name: "Basel Land", population: 195844 },
+    { short: "FR", name: "Freiburg", population: 321783 },
+    { short: "GE", name: "Genève", population: 504128 },
+    { short: "GL", name: "Glarus", population: 40590 },
+    { short: "GR", name: "Genève", population: 199021 },
+    { short: "JU", name: "Jura", population: 73584 },
+    { short: "LU", name: "Luzern", population: 413120 },
+    { short: "NE", name: "Neuchâtel", population: 176496 },
+    { short: "NW", name: "Nidwalden", population: 43087 },
+    { short: "OW", name: "Obwalden", population: 37930 },
+    { short: "SG", name: "Sankt Gallen", population: 510734 },
+    { short: "SH", name: "Schaffhausen", population: 82348 },
+    { short: "SO", name: "Solothurn", population: 275247 },
+    { short: "SZ", name: "Schwyz", population: 160480 },
+    { short: "TG", name: "Thurgau", population: 279547 },
+    { short: "TI", name: "Ticino", population: 351491 },
+    { short: "UR", name: "Uri", population: 36703 },
+    { short: "VD", name: "Vaud", population: 805098 },
+    { short: "VS", name: "Valais", population: 345525 },
+    { short: "ZG", name: "Zug", population: 127642 },
+    { short: "ZH", name: "Zürich", population: 1539275 },
   ]
 
   public static getCantons(): Array<string> {
-    return this.CANTONS.map(c => c.name);
+    return this.CANTONS.map(c => c.short);
+  }
+
+  public static getCantonsFull(): Array<any> {
+    return this.CANTONS;
   }
 
   public static getTotalPopulation(): number {
@@ -38,7 +42,7 @@ export default class StaticData {
   }
 
   public static getPopulation(canton: string): number {
-    return this.CANTONS.find(c => c.name === canton)?.population ?? -1;
+    return this.CANTONS.find(c => c.short === canton)?.population ?? -1;
   }
 
 }
