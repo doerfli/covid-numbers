@@ -30,6 +30,7 @@ import DailyIncidence from '@/model/dailyIncidence'
 import getProperty from '@/utils/get-property'
 import DailyDataSet from '@/model/dailyDataSet'
 import HighlightLine from '@/components/HighlightLine.vue'
+import formatDate from '@/utils/format-date'
 
 @Component({
   components: { HighlightLine, H2, BarChart }
@@ -62,7 +63,7 @@ export default class Cases extends Vue {
       const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyIncidence>;
       return inc.slice(-this.daysToShow).map((x: DailyIncidence) => {
         return {
-          xValue: Cases.formatDate(x.date),
+          xValue: formatDate(x.date),
           y2Value: x.incidence
         } as DataPoint;
       });
@@ -80,7 +81,7 @@ export default class Cases extends Vue {
     // limit to last x days and map to datapoints for display
     const result = lastXDays.map((x: DailyDataSet, i: number) => {
       return {
-        xValue: Cases.formatDate(x.date),
+        xValue: formatDate(x.date),
         xValueDescr: "Date",
         yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
@@ -93,10 +94,6 @@ export default class Cases extends Vue {
     this.highlightDataPoint = result[result.length - 2];
 
     return result;
-  }
-
-  private static formatDate(date: string) {
-    return `${date.substr(8, 2)}.${date.substr(5, 2)}.`
   }
 
   private detailsUrl() {

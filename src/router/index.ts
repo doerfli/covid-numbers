@@ -7,6 +7,7 @@ import Deceased from '@/views/Deceased.vue'
 import IncidenceOneWeek from '@/views/IncidenceOneWeek.vue'
 import IncidenceTwoWeek from '@/views/IncidenceTwoWeek.vue'
 import Details from '@/views/Details.vue'
+import Overview from '@/views/Overview.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes: Array<RouteConfig> = [
     name: 'Details',
     component: Details,
     props: route => ({ canton: route.params.canton })
+  },
+  {
+    path: '/overview',
+    name: 'Overview',
+    component: Overview
   },
 ]
 
