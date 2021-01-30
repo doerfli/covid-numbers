@@ -1,16 +1,10 @@
 <template>
-  <div>
-    <div class="case w-2/3 mb-4">
-      <div class="flex justify-between">
-        <div class="">
-          <H2 class="pl-2">
-            {{ getCanton }}
-          </H2>
-        </div>
-      </div>
-      <AreaChart class="areachart w-full h-20"
-                v-bind:data="incidenceData"
-                />
+  <div class="pb-3 flex items-end">
+    <div class="flex-initial">{{ getCanton }}</div>
+    <div class="flex-initial w-1/2 p-1">
+      <AreaChart class="areachart w-full h-12"
+                 v-bind:data="incidenceData"
+      />
     </div>
   </div>
 </template>

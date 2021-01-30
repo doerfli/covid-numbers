@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-2">
     <IncidenceOverview
       v-for="canton in cantons"
       :key="canton.name"
