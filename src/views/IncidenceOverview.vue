@@ -4,7 +4,10 @@
       <thead>
         <tr>
           <th>Canton</th>
-          <th>7-day Incidence</th>
+          <th>
+            <span class="block lg:hidden">7d Inc</span>
+            <span class="hidden lg:block">7-day Incidence</span>
+          </th>
           <th>{{ startDate }} - {{ endDate }}</th>
         </tr>
       </thead>

@@ -1,6 +1,9 @@
 <template>
   <tr>
-    <td>{{ getCanton }}</td>
+    <td>
+      <span class="block lg:hidden">{{ getCantonShort}}</span>
+      <span class="hidden lg:block">{{ getCanton }}</span>
+    </td>
     <td>{{ latestValue }}</td>
     <td class="pb-3">
       <AreaChart class="areachart w-full h-10"
@@ -33,6 +36,10 @@ export default class IncidenceMiniChart extends Vue {
 
   get getCanton() {
     return this.name;
+  }
+
+  get getCantonShort() {
+    return this.shortName;
   }
 
   get incidenceData(): Array<DataPoint> {
