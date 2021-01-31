@@ -1,5 +1,8 @@
 <template>
-  <tr>
+  <tr :class="{
+        'bg-gray-900': idx % 2 === 0,
+        'bg-black': idx % 2 === 1,
+    }">
     <td>
       <span class="block lg:hidden">{{ getCantonShort}}</span>
       <span class="hidden lg:block">{{ getCanton }}</span>
@@ -33,6 +36,8 @@ export default class IncidenceMiniChart extends Vue {
   private name!: string;
   @Prop()
   private shortName!: string;
+  @Prop()
+  private idx!: number;
 
   get getCanton() {
     return this.name;
@@ -75,7 +80,7 @@ export default class IncidenceMiniChart extends Vue {
 
 <style scoped>
   td {
-    @apply pr-3 pb-3;
+    @apply pl-2 pr-3 pb-2;
     @apply align-bottom;
   }
   td:nth-child(2) {

@@ -13,10 +13,11 @@
       </thead>
       <tbody>
         <tr is="IncidenceMiniChart"
-            v-for="canton in cantons"
+            v-for="(canton,idx) in cantons"
             :key="canton.short"
             :name="canton.name"
             :short-name="canton.short"
+            :idx="idx"
             v-on:start-date="setStartDate"
             v-on:end-date="setEndDate"
             ></tr>
@@ -56,7 +57,7 @@ export default class IncidenceOverview extends Vue {
 
 <style scoped lang="scss">
   th {
-    @apply pr-3;
+    @apply pl-2 pr-3;
     @apply text-left whitespace-nowrap;
     @apply text-emerald-800 dark:text-teal-100;
     @apply border-b-2 border-emerald-400 dark:border-teal-700;
@@ -68,7 +69,7 @@ export default class IncidenceOverview extends Vue {
   tbody:before {
     content: "@";
     @apply block;
-    @apply leading-3;
+    line-height: 0.3em;
     text-indent: -99999px;
   }
 </style>
