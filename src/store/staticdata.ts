@@ -37,6 +37,10 @@ export default class StaticData {
     return this.CANTONS;
   }
 
+  public static getCantonsFullWithCh(): Array<any> {
+    return [{ short: "CH", name: "Switzerland", population: this.getTotalPopulation() }].concat(this.CANTONS);
+  }
+
   public static getTotalPopulation(): number {
     return 8606033;
   }

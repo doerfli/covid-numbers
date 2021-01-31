@@ -21,7 +21,7 @@ import StaticData from '@/store/staticdata'
 export default class Overview extends Vue {
 
   private get cantons(): Array<any> {
-    return StaticData.getCantonsFull();
+    return StaticData.getCantonsFullWithCh();
   }
 
 }
