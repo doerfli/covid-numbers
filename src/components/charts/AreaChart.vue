@@ -101,7 +101,7 @@ export default class AreaChart extends Vue {
     height: 100%;
 
     .area {
-      @apply text-emerald-700 dark:text-teal-100;
+      @apply text-emerald-400 dark:text-teal-100;
       @apply fill-current opacity-60;
     }
 
