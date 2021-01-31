@@ -3,11 +3,11 @@
     <div class="flex-initial">
       <H1>Covid-19 Statistics Switzerland</H1>
     </div>
-    <div :class="getClass('Overview')">
-      <router-link :to="{ name: 'Overview' }">Overview</router-link>
-    </div>
     <div :class="getClass('ConfirmedCases')">
       <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
+    </div>
+    <div :class="getClass('IncidenceOverview')">
+      <router-link :to="{ name: 'IncidenceOverview' }">IncidenceOverview</router-link>
     </div>
     <div :class="getClass('IncidenceOneWeek')">
       <router-link :to="{ name: 'IncidenceOneWeek' }">7-day Incidence</router-link>

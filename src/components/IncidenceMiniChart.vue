@@ -21,7 +21,7 @@ import AreaChart from '@/components/charts/AreaChart.vue'
 @Component({
   components: { H2, AreaChart }
 })
-export default class IncidenceOverview extends Vue {
+export default class IncidenceMiniChart extends Vue {
 
   @Prop({ default: 'confCases'})
   private fieldToShow!: any;
