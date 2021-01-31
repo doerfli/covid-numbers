@@ -57,7 +57,7 @@ export default class IncidenceOverview extends Vue {
 
 <style scoped lang="scss">
   th {
-    @apply pl-2 pr-3;
+    @apply p-1 lg:px-2;
     @apply text-left whitespace-nowrap;
     @apply text-emerald-800 dark:text-teal-100;
     @apply border-b-2 border-emerald-400 dark:border-teal-700;

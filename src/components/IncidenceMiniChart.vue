@@ -80,7 +80,7 @@ export default class IncidenceMiniChart extends Vue {
 
 <style scoped>
   td {
-    @apply pl-2 pr-3 pb-2;
+    @apply p-1 lg:px-2;
     @apply align-bottom;
   }
   td:nth-child(2) {
