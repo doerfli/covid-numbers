@@ -18,6 +18,7 @@ import CasesTable from '@/components/CasesTable.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import DataPoint from '@/model/datapoint'
 import DailyDataSet from '@/model/dailyDataSet'
+import formatDate from '@/utils/format-date'
 
 @Component({
     components: { BarChart, CasesTable, H2, H1 }
@@ -50,15 +51,11 @@ import DailyDataSet from '@/model/dailyDataSet'
       // limit to last x days and map to datapoints for display
       return lastXDays.map((x: DailyDataSet, i: number) => {
         return {
-          xValue: Details.formatDate(x.date),
+          xValue: formatDate(x.date),
           yValue: x.confCasesChg,
           y2Value: (i < lastXDays.length - 1) ? x.confCasesChgAvg : null
         } as DataPoint;
       });
-    }
-
-    private static formatDate(date: string) {
-      return `${date.substr(8, 2)}.${date.substr(5, 2)}.`
     }
 
     private static isScrolledIntoView(el: Element) {
