@@ -1,6 +1,11 @@
 <template>
   <div class="pb-3 flex items-end">
-    <div class="flex-initial w-1/6">{{ getCanton }}</div>
+    <div class="flex-initial w-1/6">
+      {{ getCanton }}
+      {{ firstDay }}
+      {{ lastDay }}
+      {{ latestValue }}
+    </div>
     <div class="flex-initial w-1/2 p-1">
       <AreaChart class="areachart w-full h-12"
                  v-bind:data="incidenceData"
@@ -46,6 +51,18 @@ export default class IncidenceMiniChart extends Vue {
         yValue: x.incidence
       } as DataPoint;
     });
+  }
+
+  get firstDay() {
+    return this.incidenceData[0].xValue;
+  }
+
+  get lastDay() {
+    return this.incidenceData[this.incidenceData.length - 1].xValue;
+  }
+
+  get latestValue() {
+    return this.incidenceData[this.incidenceData.length - 1].yValue.toFixed(0);
   }
 }
 </script>
