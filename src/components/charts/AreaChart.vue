@@ -1,5 +1,7 @@
 <template>
-  <svg ref="chart" :id="chartId" class="chart"></svg>
+  <div>
+    <svg ref="chart" :id="chartId" class="chart"></svg>
+  </div>
 </template>
 
 <script lang="ts">

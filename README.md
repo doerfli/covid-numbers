@@ -1,4 +1,4 @@
-# covid19-charts
+# covid-numbers
 
 ## Project setup
 ```
@@ -15,11 +15,9 @@ yarn serve
 yarn build
 ```
 
-### Lints and fixes files
+### Run container manually
 ```
-yarn lint
+docker run -p 8080:8080 -e PORT=8080 <imageid>
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
