@@ -2,8 +2,11 @@
   <div class="case w-full md:w-1/2 lg:w-1/3 mb-4">
     <div class="flex justify-between">
       <div class="">
-        <H2 class="pl-2">
+        <H2 class="pl-2 inline-block block sm:hidden">
           {{ getCanton }}
+        </H2>
+        <H2 class="pl-2 inline-block hidden sm:block">
+          {{ getName }}
         </H2>
       </div>
       <div class="">
@@ -31,9 +34,10 @@ import getProperty from '@/utils/get-property'
 import DailyDataSet from '@/model/dailyDataSet'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
+import H3 from '@/components/base/H3.vue'
 
 @Component({
-  components: { HighlightLine, H2, BarChart }
+  components: { H3, HighlightLine, H2, BarChart }
 })
 export default class Cases extends Vue {
 
@@ -43,6 +47,8 @@ export default class Cases extends Vue {
   private fieldToShow!: any;
   @Prop()
   private canton!: string;
+  @Prop()
+  private name!: string;
   @Prop({ default: false })
   private calculateAverage!: boolean;
   @Prop({ default: 7 })
@@ -53,6 +59,10 @@ export default class Cases extends Vue {
 
   get getCanton() {
     return this.canton;
+  }
+
+  get getName() {
+    return this.name;
   }
 
   get displayData(): Array<DataPoint> {

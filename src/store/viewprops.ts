@@ -32,14 +32,15 @@ const viewpropsModule: Module<any, any> = {
     },
     init(state) {
       const selectedCantons = localStorage.getItem("selectedCantons")?.split(",");
-      state.cantons = [ "CH" ].concat(StaticData.getCantons())
+      state.cantons = [{ short: "CH", name: "Switzerland", population: StaticData.getTotalPopulation() }].concat(StaticData.getCantonsFull())
         .map((e) => {
           let show = true;
-          if (selectedCantons != null && ! selectedCantons.includes(e)) {
+          if (selectedCantons != null && ! selectedCantons.includes(e.short)) {
             show = false;
           }
           return {
-            nameShort: e,
+            name: e.name,
+            nameShort: e.short,
             show: show
           } as CantonConfig
         });
