@@ -3,8 +3,9 @@
     <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"
-        :key="canton.name"
-        :canton="canton.name"
+        :key="canton.nameShort"
+        :canton="canton.nameShort"
+        :name="canton.name"
         :days-to-show="getDaysToShow"
         show-incidence="true"
         window-size="14"

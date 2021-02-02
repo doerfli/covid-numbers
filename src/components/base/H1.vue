@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-2xl lg:text-4xl font-normal leading-normal mt-0 mb-2
+  <h1 class="text-2xl lg:text-3xl font-bold leading-normal mt-0 mb-2
              text-emerald-800 dark:text-teal-100">
     <slot></slot>
   </h1>

@@ -14,10 +14,10 @@
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Cantons: </div>
       <div v-for="canton in cantons"
-           :key="canton.name"
+           :key="canton.nameShort"
            class="pr-3 py-2"
            >
-        <Checkbox :text="canton.name" :checked="canton.show" @change="toggle(canton.name)"/>
+        <Checkbox :text="canton.nameShort" :checked="canton.show" @change="toggle(canton.nameShort)"/>
       </div>
     </div>
     <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectAll()">Select all</div>

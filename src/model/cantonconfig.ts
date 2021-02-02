@@ -1,5 +1,6 @@
 interface CantonConfig {
   name: string;
+  nameShort: string;
   show: boolean;
 }
 

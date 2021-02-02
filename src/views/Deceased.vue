@@ -3,8 +3,9 @@
     <div class="flex flex-wrap mt-1">
       <Cases
         v-for="canton in selectedCantons"
-        :key="canton.name"
-        :canton="canton.name"
+        :key="canton.nameShort"
+        :canton="canton.nameShort"
+        :name="canton.name"
         field-to-show="deceasedChg"
         :days-to-show="getDaysToShow"
         calculate-average="true"
