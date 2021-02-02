@@ -97,7 +97,7 @@ export default class IncidenceMiniChart extends Vue {
 
   get trendIconClass() {
     const chg = this.incidenceChange;
-    console.log("trendIconClass - chg " + chg);
+    // console.log("trendIconClass - chg " + chg);
     const cls = "fas fa-long-arrow-alt-right fa-2x ";
     if (chg < -0.1) {
       return cls + "transform rotate-45 text-emerald-600";
