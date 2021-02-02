@@ -37,11 +37,7 @@ import Ref from '@/components/base/Ref.vue'
 export default class Footer extends Vue {
 
   private isTheme(theme: string) {
-    if (this.$store.state.viewProps.theme === theme) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.$store.state.viewProps.theme === theme;
   }
 
   private toggleTheme() {

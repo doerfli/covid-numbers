@@ -1,7 +1,9 @@
 <template>
   <tr :class="{
-        'bg-gray-900': idx % 2 === 0,
-        'bg-black': idx % 2 === 1,
+        'bg-gray-900': idx % 2 === 0 && isTheme('dark'),
+        'bg-black': idx % 2 === 1 && isTheme('dark'),
+        'bg-emerald-100': idx % 2 === 0 && isTheme('light'),
+        'bg-white': idx % 2 === 1 && isTheme('light'),
     }">
     <td>
       <span class="block lg:hidden">{{ getCantonShort}}</span>
@@ -74,6 +76,10 @@ export default class IncidenceMiniChart extends Vue {
       return "";
     }
     return this.incidenceData[this.incidenceData.length - 1].yValue.toFixed(0);
+  }
+
+  private isTheme(theme: string) {
+    return this.$store.state.viewProps.theme === theme;
   }
 }
 </script>
