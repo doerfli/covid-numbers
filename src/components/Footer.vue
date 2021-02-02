@@ -2,6 +2,11 @@
   <div class="footer">
     <div class="flex flex-wrap">
       <div class="entryfirst">
+        <i class="fas fa-adjust"></i>&nbsp;
+        <span class="link" v-if="isTheme('dark')" @click="toggleTheme()">Switch to light theme</span>
+        <span class="link" v-if="isTheme('light')" @click="toggleTheme()">Switch to dark theme</span>
+      </div>
+      <div class="entry">
         <i class="fab fa-github"></i> <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
       </div>
       <div class="entry">
@@ -31,6 +36,18 @@ import Ref from '@/components/base/Ref.vue'
 })
 export default class Footer extends Vue {
 
+  private isTheme(theme: string) {
+    if (this.$store.state.viewProps.theme === theme) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private toggleTheme() {
+    this.$store.dispatch("viewProps/toggleTheme");
+  }
+
 }
 </script>
 
@@ -59,6 +76,11 @@ export default class Footer extends Vue {
       > span {
         @apply text-pink-600 dark:text-pink-500 font-bold;
       }
+    }
+
+    .link {
+      @apply text-indigo-700 dark:text-blue-500;
+      @apply cursor-pointer;
     }
   }
 </style>

@@ -22,11 +22,6 @@
     </div>
     <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectAll()">Select all</div>
     <div class="p-2 text-sm inline-block text-indigo-700 dark:text-blue-500" @click="selectNone()">Select none</div>
-    <div class="flex flex-wrap">
-      <div class="py-2 pr-2">Theme:</div>
-      <div :class="getClassForTheme('light')" @click="toggleTheme()">Light mode</div>
-      <div :class="getClassForTheme('dark')" @click="toggleTheme()">Dark mode</div>
-    </div>
   </div>
 </template>
 
@@ -66,18 +61,6 @@ export default class ViewOptions extends Vue {
     } else {
       return "itemSelect";
     }
-  }
-
-  private getClassForTheme(theme: string) {
-    if (this.$store.state.viewProps.theme === theme) {
-      return "itemSelected";
-    } else {
-      return "itemSelect";
-    }
-  }
-
-  private toggleTheme() {
-    this.$store.dispatch("viewProps/toggleTheme");
   }
 
 }
