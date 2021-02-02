@@ -27,8 +27,8 @@ const viewpropsModule: Module<any, any> = {
   },
   mutations: {
     toggleCanton(state, payload) {
-      state.cantons.filter((c: CantonConfig) => c.name === payload.canton).forEach((c: CantonConfig) => c.show = ! c.show);
-      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.name));
+      state.cantons.filter((c: CantonConfig) => c.nameShort === payload.canton).forEach((c: CantonConfig) => c.show = ! c.show);
+      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.nameShort));
     },
     init(state) {
       const selectedCantons = localStorage.getItem("selectedCantons")?.split(",");
@@ -39,7 +39,7 @@ const viewpropsModule: Module<any, any> = {
             show = false;
           }
           return {
-            name: e,
+            nameShort: e,
             show: show
           } as CantonConfig
         });
@@ -51,7 +51,7 @@ const viewpropsModule: Module<any, any> = {
     },
     setAll(state, payload) {
       state.cantons.forEach((c: CantonConfig) => c.show = payload.show);
-      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.name));
+      persistCantonsToLocalStorage(state.cantons.filter((c: CantonConfig) => c.show).map((c: CantonConfig) => c.nameShort));
     },
     setDaysToShow(state, payload) {
       state.daysToShow = payload.daysToShow;
