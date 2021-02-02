@@ -5,6 +5,7 @@
         v-for="canton in selectedCantons"
         :key="canton.nameShort"
         :canton="canton.nameShort"
+        :name="canton.name"
         :days-to-show="getDaysToShow"
         field-to-show="currIcu"
         calculate-average="true"
