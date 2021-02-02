@@ -34,10 +34,9 @@ import getProperty from '@/utils/get-property'
 import DailyDataSet from '@/model/dailyDataSet'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
-import H3 from '@/components/base/H3.vue'
 
 @Component({
-  components: { H3, HighlightLine, H2, BarChart }
+  components: { HighlightLine, H2, BarChart }
 })
 export default class Cases extends Vue {
 
