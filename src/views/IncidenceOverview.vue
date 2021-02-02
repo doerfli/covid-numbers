@@ -9,6 +9,7 @@
             <span class="hidden lg:block">7-day Incidence</span>
           </th>
           <th>{{ startDate }} - {{ endDate }}</th>
+          <th>Trend</th>
         </tr>
       </thead>
       <tbody>

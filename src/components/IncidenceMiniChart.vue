@@ -9,11 +9,17 @@
       <span class="block lg:hidden">{{ getCantonShort}}</span>
       <span class="hidden lg:block">{{ getCanton }}</span>
     </td>
-    <td>{{ latestValue }}</td>
+    <td>{{ latestValue.toFixed(0) }}</td>
     <td class="pb-3">
       <AreaChart class="areachart w-full h-10"
                  v-bind:data="incidenceData"
       />
+    </td>
+    <td>
+      <span :title="`${formatPct(incidenceChange)} in last 7 days`">
+        <i :class="trendIconClass"></i>
+      </span>
+
     </td>
   </tr>
 </template>
@@ -71,11 +77,47 @@ export default class IncidenceMiniChart extends Vue {
     return data;
   }
 
-  get latestValue() {
+  get latestValue(): number {
     if (this.incidenceData.length == 0) {
-      return "";
+      return 0;
     }
-    return this.incidenceData[this.incidenceData.length - 1].yValue.toFixed(0);
+    return this.incidenceData[this.incidenceData.length - 1].yValue;
+  }
+
+  get valueOneWeekAgo(): number {
+    if (this.incidenceData.length == 0) {
+      return 0;
+    }
+    return this.incidenceData[this.incidenceData.length - 8].yValue;
+  }
+
+  get incidenceChange() {
+    return (this.latestValue - this.valueOneWeekAgo) / this.valueOneWeekAgo;
+  }
+
+  get trendIconClass() {
+    const chg = this.incidenceChange;
+    console.log("trendIconClass - chg " + chg);
+    const cls = "fas fa-long-arrow-alt-right fa-2x ";
+    if (chg < -0.1) {
+      return cls + "transform rotate-45 text-emerald-600";
+    } else if (chg < -0.01) {
+      return cls + "transform rotate-12 text-emerald-400";
+    } else if (chg > 0.1) {
+      return cls + "transform -rotate-45 text-pink-600";
+    } else if (chg > 0.01) {
+      return cls + "transform -rotate-12 text-pink-300";
+    }
+
+    return cls + "text-emerald-300";
+  }
+
+  private formatPct(decNum: number, fractionDigits = 0): string {
+    let pref = "";
+    if (decNum > 0) {
+      pref += "+";
+    }
+    return `${pref}${(decNum * 100).toFixed(fractionDigits)}%`;
   }
 
   private isTheme(theme: string) {
