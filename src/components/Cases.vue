@@ -14,10 +14,10 @@
         </span>
       </div>
     </div>
+    <HighlightLine :highlight-data-point="highlightDataPoint" />
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               v-on:bar-active="setHighlightDataPoint"/>
-    <HighlightLine :highlight-data-point="highlightDataPoint" />
   </div>
 </template>
 
