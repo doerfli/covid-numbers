@@ -77,6 +77,29 @@ export default class IncidenceMiniChart extends Vue {
     return data;
   }
 
+  get incidenceEma(): Array<number> {
+    const data = this.incidenceData;
+    if (this.incidenceData.length == 0) {
+      return [];
+    }
+
+    // based upon https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
+    const k = 2 / (7 + 1); // weight multiplier
+    const emarr = [data[0].yValue];
+    for (let i = 1; i < data.length; i++) {
+      const ema = data[i].yValue * k + (emarr[i-1] * (1 - k));
+      emarr.push(ema);
+    }
+    return emarr;
+  }
+
+  private emaChangedLastWeek(): number {
+    const t = this.incidenceEma.length;
+    const lastValue = this.incidenceEma[t-1]
+    const oneWeekAgoValue = this.incidenceEma[t-8]
+    return (lastValue - oneWeekAgoValue) / oneWeekAgoValue;
+  }
+
   get latestValue(): number {
     if (this.incidenceData.length == 0) {
       return 0;
@@ -96,7 +119,7 @@ export default class IncidenceMiniChart extends Vue {
   }
 
   get trendIconClass() {
-    const chg = this.simpleMovingAverage;
+    const chg = this.emaChangedLastWeek();
     // console.log("trendIconClass - chg " + chg);
     const cls = "fas fa-long-arrow-alt-right fa-2x ";
     if (chg < -0.1) {
@@ -123,6 +146,7 @@ export default class IncidenceMiniChart extends Vue {
   private isTheme(theme: string) {
     return this.$store.state.viewProps.theme === theme;
   }
+
 }
 </script>
 
