@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "@types/d3": "^6.2.0",
+    "@types/d3": "^6.3.0",
     "@types/superagent": "^4.1.10",
     "core-js": "^3.6.5",
     "csv-parse": "^4.14.2",
