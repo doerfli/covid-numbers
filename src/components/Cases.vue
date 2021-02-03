@@ -86,7 +86,7 @@ export default class Cases extends Vue {
     const avgFieldName = this.fieldToShow + "Avg" as any;
 
     const lastXDays = data.slice(-this.daysToShow);
-    const emaShort = this.calculateEma(lastXDays.map((d: DailyDataSet) => getProperty(d, this.fieldToShow)), 14);
+    const emaShort = this.calculateEma(lastXDays.map((d: DailyDataSet) => getProperty(d, this.fieldToShow)), 7);
     const emaLong = this.calculateEma(lastXDays.map((d: DailyDataSet) => getProperty(d, this.fieldToShow)), 28);
 
 

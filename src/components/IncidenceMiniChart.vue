@@ -78,7 +78,7 @@ export default class IncidenceMiniChart extends Vue {
   }
 
   get incidenceEmaShort(): Array<number> {
-    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 14);
+    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 7);
   }
 
   get incidenceEmaLong(): Array<number> {
