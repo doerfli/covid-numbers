@@ -32,7 +32,7 @@ jobs:
           yarn install
 
       - name: set environment variables
-        uses: allenevans/set-env@v2.0.0
+        uses: allenevans/set-env@v2.0.1
         with:
           DIST_SUBDIR: '/covid-numbers/'
 
