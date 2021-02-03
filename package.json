@@ -43,7 +43,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "postcss": "^7",
-    "sass": "^1.26.5",
+    "sass": "^1.32.6",
     "sass-loader": "^8.0.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "~4",
