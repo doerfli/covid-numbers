@@ -16,7 +16,7 @@
       />
     </td>
     <td>
-      <span :title="`${formatPct(incidenceChange)} in last 7 days`">
+      <span :title="`${formatPct(simpleMovingAverage)} in last 7 days`">
         <i :class="trendIconClass"></i>
       </span>
 
@@ -91,12 +91,12 @@ export default class IncidenceMiniChart extends Vue {
     return this.incidenceData[this.incidenceData.length - 8].yValue;
   }
 
-  get incidenceChange() {
+  get simpleMovingAverage() {
     return (this.latestValue - this.valueOneWeekAgo) / this.valueOneWeekAgo;
   }
 
   get trendIconClass() {
-    const chg = this.incidenceChange;
+    const chg = this.simpleMovingAverage;
     // console.log("trendIconClass - chg " + chg);
     const cls = "fas fa-long-arrow-alt-right fa-2x ";
     if (chg < -0.1) {
