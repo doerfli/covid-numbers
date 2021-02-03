@@ -77,27 +77,51 @@ export default class IncidenceMiniChart extends Vue {
     return data;
   }
 
-  get incidenceEma(): Array<number> {
-    const data = this.incidenceData;
-    if (this.incidenceData.length == 0) {
+  get incidenceEmaShort(): Array<number> {
+    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 14);
+  }
+
+  get incidenceEmaLong(): Array<number> {
+    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 28);
+  }
+
+  get macd(): Array<number> {
+    const emaShort = this.incidenceEmaShort;
+    const emaLong = this.incidenceEmaLong;
+    const macd = [];
+    for (let i = 0; i < emaShort.length; i++) {
+      if (emaShort[i] === -1 || emaLong[i] === -1) {
+        macd.push(0);
+      } else {
+        macd.push(emaShort[i] - emaLong[i]);
+      }
+    }
+    return macd;
+  }
+
+  private static calculateEma(data: Array<number>, length: number): Array<number> {
+    if (data.length == 0) {
       return [];
     }
 
     // based upon https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
-    const k = 2 / (7 + 1); // weight multiplier
-    const emarr = [data[0].yValue];
-    for (let i = 1; i < data.length; i++) {
-      const ema = data[i].yValue * k + (emarr[i-1] * (1 - k));
-      emarr.push(ema);
+    const k = 2 / (length + 1); // weight multiplier
+    const emaArr = [];
+    for (let i = 0; i < data.length; i++) {
+      if (i < length - 1) {
+        emaArr.push(-1);
+      } else if ( i === length - 1 ) {
+        emaArr.push(Math.round(
+          data.slice(0, i + 1)
+            .map((x) => x)
+            .reduce((sum, current) => sum + current)
+          / length));
+      } else {
+        const ema: number = data[i] * k + (emaArr[i-1] * (1 - k));
+        emaArr.push(ema);
+      }
     }
-    return emarr;
-  }
-
-  private emaChangedLastWeek(): number {
-    const t = this.incidenceEma.length;
-    const lastValue = this.incidenceEma[t-1]
-    const oneWeekAgoValue = this.incidenceEma[t-8]
-    return (lastValue - oneWeekAgoValue) / oneWeekAgoValue;
+    return emaArr;
   }
 
   get latestValue(): number {
@@ -119,16 +143,22 @@ export default class IncidenceMiniChart extends Vue {
   }
 
   get trendIconClass() {
-    const chg = this.emaChangedLastWeek();
-    // console.log("trendIconClass - chg " + chg);
+    const macd = this.macd;
+    const lastMacd = macd[macd.length - 1];
+    const emaLong = this.incidenceEmaLong;
+    const lastEmaLong = emaLong[emaLong.length - 1];
+    const treshold = lastEmaLong * 0.04;
+    const tresholdLg = lastEmaLong * 0.12;
+    console.log(`lastMacd: ${lastMacd}`)
+    console.log(`lastEmaLong: ${lastEmaLong}`)
     const cls = "fas fa-long-arrow-alt-right fa-2x ";
-    if (chg < -0.1) {
+    if (lastMacd < -tresholdLg) {
       return cls + "transform rotate-45 text-emerald-600";
-    } else if (chg < -0.01) {
+    } else if (lastMacd < -treshold) {
       return cls + "transform rotate-12 text-emerald-400";
-    } else if (chg > 0.1) {
+    } else if (lastMacd > tresholdLg) {
       return cls + "transform -rotate-45 text-pink-600";
-    } else if (chg > 0.01) {
+    } else if (lastMacd > treshold) {
       return cls + "transform -rotate-12 text-pink-300";
     }
 

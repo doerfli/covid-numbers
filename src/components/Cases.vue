@@ -1,5 +1,5 @@
 <template>
-  <div class="case w-full md:w-1/2 lg:w-1/3 mb-4">
+  <div class="case w-full md:w-1/2 lg:w-full mb-4">
     <div class="flex justify-between">
       <div class="">
         <H2 class="pl-2 inline-block block sm:hidden">
@@ -66,7 +66,6 @@ export default class Cases extends Vue {
 
   get displayData(): Array<DataPoint> {
     // console.log("displayData " + this.getCanton);
-    let data = null;
 
     if (this.showIncidence) {
       const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyIncidence>;
@@ -76,16 +75,20 @@ export default class Cases extends Vue {
           y2Value: x.incidence
         } as DataPoint;
       });
-    } else {
-      data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
     }
+
+    const data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
 
     // console.log(1111);
     // console.log(data);
 
-    const lastXDays = data.slice(-this.daysToShow);
     // console.log(lastXDays);
     const avgFieldName = this.fieldToShow + "Avg" as any;
+
+    const lastXDays = data.slice(-this.daysToShow);
+    const emaShort = this.calculateEma(lastXDays.map((d: DailyDataSet) => getProperty(d, this.fieldToShow)), 14);
+    const emaLong = this.calculateEma(lastXDays.map((d: DailyDataSet) => getProperty(d, this.fieldToShow)), 28);
+
 
     // limit to last x days and map to datapoints for display
     const result = lastXDays.map((x: DailyDataSet, i: number) => {
@@ -95,7 +98,11 @@ export default class Cases extends Vue {
         yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
         y2Value: (i < lastXDays.length - 1) ? getProperty(x, avgFieldName) : null,
-        y2ValueDescr: "Average"
+        y2ValueDescr: "Average",
+        y3Value: emaShort[i],
+        y3ValueDescr: "Ema",
+        y4Value: emaLong[i],
+        y4ValueDescr: "EmaLong",
       } as DataPoint;
     });
 
@@ -103,6 +110,31 @@ export default class Cases extends Vue {
     this.highlightDataPoint = result[result.length - 2];
 
     return result;
+  }
+
+  private calculateEma(data: Array<number>, length = 7): Array<number> {
+    if (data.length == 0) {
+      return [];
+    }
+
+    // based upon https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
+    const k = 2 / (length + 1); // weight multiplier
+    const emaArr = [0];
+    for (let i = 1; i < data.length; i++) {
+      if (i < length - 1) {
+        emaArr.push(0);
+      } else if ( i === length - 1 ) {
+        emaArr.push(Math.round(
+          data.slice(0, i + 1)
+            .map((x) => x)
+            .reduce((sum, current) => sum + current)
+          / length));
+      } else {
+        const ema = data[i] * k + (emaArr[i-1] * (1 - k));
+        emaArr.push(ema);
+      }
+    }
+    return emaArr;
   }
 
   private detailsUrl() {
@@ -114,8 +146,6 @@ export default class Cases extends Vue {
     this.highlightDataPoint = data;
     // console.log(this.highlightDataPoint);
   }
-
-
 
   // @Watch('highlightDataPoint')
   private dataPointHighlight() {

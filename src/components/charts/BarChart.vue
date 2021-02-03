@@ -134,6 +134,28 @@ export default class BarChart extends Vue {
         .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
     }
 
+    if (dataPoints[0].y3Value !== undefined) {
+      // plot line
+      const line = d3.line<DataPoint>()
+        .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d.y3Value ?? 0))
+
+      chart.append("path")
+        .attr("class", "line2")
+        .attr("d", line(dataPoints.filter((d) => d.y3Value != null)) ?? ""); // exlude empty datapoints
+    }
+
+    if (dataPoints[0].y4Value !== undefined) {
+      // plot line
+      const line = d3.line<DataPoint>()
+        .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d.y4Value ?? 0))
+
+      chart.append("path")
+        .attr("class", "line3")
+        .attr("d", line(dataPoints.filter((d) => d.y4Value != null)) ?? ""); // exlude empty datapoints
+    }
+
     // cleanup
     /** remove line around chart */
     chart.selectAll('.domain').remove();
@@ -197,6 +219,22 @@ export default class BarChart extends Vue {
       @apply stroke-2;
       fill: none;
       stroke-dasharray: 5px;
+    }
+
+    .line2 {
+      @apply text-indigo-700 dark:text-teal-100;
+      @apply stroke-current;
+      @apply stroke-2;
+      fill: none;
+      stroke-dasharray: 1px;
+    }
+
+    .line3 {
+      @apply text-pink-700 dark:text-teal-100;
+      @apply stroke-current;
+      @apply stroke-2;
+      fill: none;
+      stroke-dasharray: 1px;
     }
 
     .chartText {
