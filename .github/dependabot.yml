@@ -9,6 +9,9 @@ updates:
     directory: "/" 
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "postcss"
+        versions: ["8.x"]
   - package-ecosystem: "docker" 
     directory: "/" 
     schedule:
