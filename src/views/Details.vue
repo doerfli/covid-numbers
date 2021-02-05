@@ -5,10 +5,8 @@
     <BarChart class="barchart w-full h-96 my-6"
               v-bind:data="displayData" />
 
-    <!--
     <BarChart class="barchart w-full h-96 my-6"
               v-bind:data="displayDataMacd" />
-    -->
 
     <CasesTable :canton="getCanton" :rows-to-render="rowsToRender" />
 
@@ -75,14 +73,18 @@ import formatDate from '@/utils/format-date'
     }
 
     get displayDataMacd(): Array<DataPoint> {
+      const dataset = this.dataset;
       const macd = this.macd;
-      // const signal = this.calculateEma(macd, 9);
-      return macd.map((x: number, i: number) => {
+      const signal = this.calculateEma(macd, 9);
+      const d = macd.map((m: number, i: number) => {
         return {
-          // xValue: formatDate(x.date),
-          yValue: x
+          xValue: formatDate(dataset[i].date),
+          y2Value: m,
+          y3Value: signal[i]
         } as DataPoint;
       });
+      console.log(d);
+      return d;
     }
 
     get macd() {

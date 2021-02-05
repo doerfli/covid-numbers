@@ -49,6 +49,9 @@ export default class BarChart extends Vue {
     // don't paint anything when no data is available
     if (dataPointsSize == 0) { return; }
 
+    const min = dataPoints.length > 0
+      ? (dataPoints.map((e) => Math.min(e.yValue ?? 0, e.y2Value ?? 0)).reduce((a, b) => Math.min(a, b))) * 1.01
+      : 0;
     const max = dataPoints.length > 0
       ? (dataPoints.map((e) => Math.max(e.yValue ?? 0, e.y2Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
@@ -102,7 +105,7 @@ export default class BarChart extends Vue {
     // paint y-axis
     const yScale = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, max])
+      .domain([min, max])
     chart.append('g')
       .call(d3.axisLeft(yScale)
         .scale(yScale)
