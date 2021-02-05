@@ -5,8 +5,16 @@
     <BarChart class="barchart w-full h-96 my-6"
               v-bind:data="displayData" />
 
-    <BarChart class="barchart w-full h-96 my-6"
-              v-bind:data="displayDataMacd" />
+    <BarChart class="barchart w-full h-96 mt-6 mb-3"
+              v-bind:data="displayDataMacd"
+              v-if="indicatorsShown"/>
+
+    <div class="indicator_link" v-if="!indicatorsShown" v-on:click="toggleTrendIndicators">
+      Show trend indicators in chart
+    </div>
+    <div class="indicator_link" v-else v-on:click="toggleTrendIndicators">
+      Hide trend indicators in chart
+    </div>
 
     <CasesTable :canton="getCanton" :rows-to-render="rowsToRender" />
 
@@ -34,6 +42,7 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
     private windowSize!: number;
     private daysInChart = 180;
     private rowsToRender = 90;
+    private indicatorsShown = false;
 
     private mounted() {
       this.scroll();
@@ -61,13 +70,22 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
       const emaShort = this.emaShort;
       const emaLong = this.emaLong;
       return dataset.map((x: DailyDataSet, i: number) => {
-        return {
-          xValue: formatDate(x.date),
-          yValue: x.confCasesChg,
-          y2Value: (i < dataset.length - 1) ? x.confCasesChgAvg : null,
-          y3Value: (i < dataset.length - 1) ? emaShort[i] : null,
-          y4Value: (i < dataset.length - 1) ? emaLong[i] : null
-        } as DataPoint;
+        if (this.indicatorsShown) {
+          return {
+            xValue: formatDate(x.date),
+            yValue: x.confCasesChg,
+            y2Value: (i < dataset.length - 1) ? x.confCasesChgAvg : null,
+            y3Value: (i < dataset.length - 1) ? emaShort[i] : null,
+            y4Value: (i < dataset.length - 1) ? emaLong[i] : null
+          } as DataPoint;
+        } else {
+          return {
+            xValue: formatDate(x.date),
+            yValue: x.confCasesChg,
+            y2Value: (i < dataset.length - 1) ? x.confCasesChgAvg : null,
+          } as DataPoint;
+        }
+
       });
     }
 
@@ -104,10 +122,19 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
       }
     }
 
+    private toggleTrendIndicators() {
+      this.indicatorsShown = ! this.indicatorsShown;
+    }
+
   }
 </script>
 
 <style scoped>
-
+  .indicator_link {
+    @apply text-sm;
+    @apply cursor-pointer;
+    @apply text-indigo-700 hover:text-indigo-500 dark:text-blue-500 dark:hover:text-blue-300;
+    @apply mb-3;
+  }
 </style>
 
