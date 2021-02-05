@@ -70,19 +70,19 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
       const emaShort = this.emaShort;
       const emaLong = this.emaLong;
       return dataset.map((x: DailyDataSet, i: number) => {
-        if (this.indicatorsShown) {
+        if (!this.indicatorsShown) {
           return {
             xValue: formatDate(x.date),
             yValue: x.confCasesChg,
             y2Value: (i < dataset.length - 1) ? x.confCasesChgAvg : null,
-            y3Value: (i < dataset.length - 1) ? emaShort[i] : null,
-            y4Value: (i < dataset.length - 1) ? emaLong[i] : null
           } as DataPoint;
         } else {
           return {
             xValue: formatDate(x.date),
             yValue: x.confCasesChg,
             y2Value: (i < dataset.length - 1) ? x.confCasesChgAvg : null,
+            y3Value: (i >= 26 && i < dataset.length - 1) ? emaShort[i] : null,
+            y4Value: (i >= 26 && i < dataset.length - 1) ? emaLong[i] : null
           } as DataPoint;
         }
 
@@ -96,8 +96,8 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
       const d = macd.map((m: number, i: number) => {
         return {
           xValue: formatDate(dataset[i].date),
-          y2Value: m,
-          y3Value: signal[i]
+          y2Value: (i >= 26) ? m : null,
+          y3Value: (i >= 35) ? signal[i] : null,
         } as DataPoint;
       });
 
