@@ -83,7 +83,10 @@ import formatDate from '@/utils/format-date'
           y3Value: signal[i]
         } as DataPoint;
       });
-      console.log(d);
+      // console.log(d);
+
+      this.calculateTrend(macd, signal, 7);
+
       return d;
     }
 
@@ -143,6 +146,23 @@ import formatDate from '@/utils/format-date'
       }
     }
 
+    private calculateTrend (macd: any[], signal: Array<number>, range = 7) {
+      const lastWeekMacd = macd.slice(-range);
+      const lastWeekSignal = signal.slice(-range);
+      let trend = 0;
+
+      console.log(lastWeekMacd);
+      console.log(lastWeekSignal);
+      for (let i = 0; i < lastWeekMacd.length; i++) {
+        if (lastWeekMacd[i] > lastWeekSignal[i]) {
+          trend += 1;
+        } else {
+          trend -= 1;
+        }
+      }
+
+      console.log(trend);
+    }
   }
 </script>
 

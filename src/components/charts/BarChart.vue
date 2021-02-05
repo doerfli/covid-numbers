@@ -111,20 +111,22 @@ export default class BarChart extends Vue {
         .scale(yScale)
         .tickSize(-width))
 
-    // plot bars
-    chart
-      .selectAll()
-      .data(dataPoints)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (s) => xScale(s.xValue) as (number | null))
-      .attr('y', (s) => yScale(s.yValue))
-      .attr('height', (s) => height - yScale(s.yValue))
-      .attr('width', xScale.bandwidth())
-      // hover effect
-      .on('mouseenter', this.barMouseEnter)
-      .on('mouseleave', this.barMouseLeave)
+    if (dataPoints[0].yValue !== undefined) {
+      // plot bars
+      chart
+        .selectAll()
+        .data(dataPoints)
+        .enter()
+        .append('rect')
+        .attr('class', 'bar')
+        .attr('x', (s) => xScale(s.xValue) as (number | null))
+        .attr('y', (s) => yScale(s.yValue))
+        .attr('height', (s) => height - yScale(s.yValue))
+        .attr('width', xScale.bandwidth())
+        // hover effect
+        .on('mouseenter', this.barMouseEnter)
+        .on('mouseleave', this.barMouseLeave)
+    }
 
     if (dataPoints[0].y2Value !== undefined) {
       // plot line
