@@ -22,6 +22,7 @@ import BarChart from '@/components/charts/BarChart.vue'
 import DataPoint from '@/model/datapoint'
 import DailyDataSet from '@/model/dailyDataSet'
 import formatDate from '@/utils/format-date'
+import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
 
 @Component({
     components: { BarChart, CasesTable, H2, H1 }
@@ -48,13 +49,11 @@ import formatDate from '@/utils/format-date'
     }
 
     get emaShort(): Array<number> {
-      const dataset = this.dataset;
-      return this.calculateEma(dataset.map((d: DailyDataSet) => d.confCasesChg), 12);
+      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 12);
     }
 
     get emaLong(): Array<number> {
-      const dataset = this.dataset;
-      return this.calculateEma(dataset.map((d: DailyDataSet) => d.confCasesChg), 26);
+      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 26);
     }
 
     get displayData(): Array<DataPoint> {
@@ -74,8 +73,8 @@ import formatDate from '@/utils/format-date'
 
     get displayDataMacd(): Array<DataPoint> {
       const dataset = this.dataset;
-      const macd = this.macd;
-      const signal = this.calculateEma(macd, 9);
+      const macd = calculateMacd(this.emaShort, this.emaLong);
+      const signal = calculateSignal(macd);
       const d = macd.map((m: number, i: number) => {
         return {
           xValue: formatDate(dataset[i].date),
@@ -83,49 +82,8 @@ import formatDate from '@/utils/format-date'
           y3Value: signal[i]
         } as DataPoint;
       });
-      // console.log(d);
-
-      this.calculateTrend(macd, signal, 7);
 
       return d;
-    }
-
-    get macd() {
-      const emaShort = this.emaShort;
-      const emaLong = this.emaLong;
-      const macd = [];
-      if (emaShort.length != emaLong.length) {
-        throw "ema lengths don't match";
-      }
-      for (let i = 1; i < emaLong.length; i++) {
-        macd.push(emaShort[i] - emaLong[i]);
-      }
-      return macd;
-    }
-
-    private calculateEma(data: Array<number>, length = 7): Array<number> {
-      if (data.length == 0) {
-        return [];
-      }
-
-      // based upon https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
-      const k = 2 / (length + 1); // weight multiplier
-      const emaArr = [0];
-      for (let i = 1; i < data.length; i++) {
-        if (i < length - 1) {
-          emaArr.push(0);
-        } else if ( i === length - 1 ) {
-          emaArr.push(Math.round(
-            data.slice(0, i + 1)
-              .map((x) => x)
-              .reduce((sum, current) => sum + current)
-            / length));
-        } else {
-          const ema = data[i] * k + (emaArr[i-1] * (1 - k));
-          emaArr.push(ema);
-        }
-      }
-      return emaArr;
     }
 
     private static isScrolledIntoView(el: Element) {
@@ -146,23 +104,6 @@ import formatDate from '@/utils/format-date'
       }
     }
 
-    private calculateTrend (macd: any[], signal: Array<number>, range = 7) {
-      const lastWeekMacd = macd.slice(-range);
-      const lastWeekSignal = signal.slice(-range);
-      let trend = 0;
-
-      console.log(lastWeekMacd);
-      console.log(lastWeekSignal);
-      for (let i = 0; i < lastWeekMacd.length; i++) {
-        if (lastWeekMacd[i] > lastWeekSignal[i]) {
-          trend += 1;
-        } else {
-          trend -= 1;
-        }
-      }
-
-      console.log(trend);
-    }
   }
 </script>
 
