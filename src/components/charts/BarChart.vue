@@ -130,7 +130,7 @@ export default class BarChart extends Vue {
         .y((d) => yScale(d.y2Value ?? 0))
 
       chart.append("path")
-        .attr("class", "line")
+        .attr("class", "line2")
         .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
     }
 
@@ -141,7 +141,7 @@ export default class BarChart extends Vue {
         .y((d) => yScale(d.y3Value ?? 0))
 
       chart.append("path")
-        .attr("class", "line2")
+        .attr("class", "line3")
         .attr("d", line(dataPoints.filter((d) => d.y3Value != null)) ?? ""); // exlude empty datapoints
     }
 
@@ -152,7 +152,7 @@ export default class BarChart extends Vue {
         .y((d) => yScale(d.y4Value ?? 0))
 
       chart.append("path")
-        .attr("class", "line3")
+        .attr("class", "line4")
         .attr("d", line(dataPoints.filter((d) => d.y4Value != null)) ?? ""); // exlude empty datapoints
     }
 
@@ -213,7 +213,7 @@ export default class BarChart extends Vue {
       stroke: #aaa;
     }
 
-    .line {
+    .line2 {
       @apply text-emerald-700 dark:text-teal-100;
       @apply stroke-current;
       @apply stroke-2;
@@ -221,7 +221,7 @@ export default class BarChart extends Vue {
       stroke-dasharray: 5px;
     }
 
-    .line2 {
+    .line3 {
       @apply text-indigo-700 dark:text-teal-100;
       @apply stroke-current;
       @apply stroke-2;
@@ -229,7 +229,7 @@ export default class BarChart extends Vue {
       stroke-dasharray: 1px;
     }
 
-    .line3 {
+    .line4 {
       @apply text-pink-700 dark:text-teal-100;
       @apply stroke-current;
       @apply stroke-2;
