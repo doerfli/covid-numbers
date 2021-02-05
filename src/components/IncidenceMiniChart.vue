@@ -16,7 +16,7 @@
       />
     </td>
     <td>
-      <span :title="`${formatPct(simpleMovingAverage)} in last 7 days`">
+      <span :title="`${formatPct(changeLastWeek)} in last 7 days`">
         <i :class="trendIconClass"></i>
       </span>
 
@@ -32,6 +32,8 @@ import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import formatDate from '@/utils/format-date'
 import AreaChart from '@/components/charts/AreaChart.vue'
+import { calculateEma, calculateMacd, calculateSignal, calculateTrend } from '@/utils/macd'
+import Trend from '@/utils/trend'
 
 @Component({
   components: { H2, AreaChart }
@@ -55,14 +57,18 @@ export default class IncidenceMiniChart extends Vue {
     return this.shortName;
   }
 
-  get incidenceData(): Array<DataPoint> {
-    // console.log("incidenceData for " + this.getCanton);
-
+  get dataset(): Array<DailyIncidence> {
     const inc = this.$store.getters["cases/incidence"](this.shortName, this.fieldToShow) as Array<DailyIncidence>;
     const range = inc.slice(-180);
 
     // TODO make range configurable
-    const data = range.slice(0, range.length - 1).map((x: DailyIncidence) => {
+    return range.slice(0, range.length - 1)
+  }
+
+  get incidenceData(): Array<DataPoint> {
+    // console.log("incidenceData for " + this.getCanton);
+
+    const data = this.dataset.map((x: DailyIncidence) => {
       return {
         xValue: formatDate(x.date),
         yValue: x.incidence
@@ -77,53 +83,6 @@ export default class IncidenceMiniChart extends Vue {
     return data;
   }
 
-  get incidenceEmaShort(): Array<number> {
-    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 7);
-  }
-
-  get incidenceEmaLong(): Array<number> {
-    return IncidenceMiniChart.calculateEma(this.incidenceData.map((d: DataPoint) => d.yValue), 28);
-  }
-
-  get macd(): Array<number> {
-    const emaShort = this.incidenceEmaShort;
-    const emaLong = this.incidenceEmaLong;
-    const macd = [];
-    for (let i = 0; i < emaShort.length; i++) {
-      if (emaShort[i] === -1 || emaLong[i] === -1) {
-        macd.push(0);
-      } else {
-        macd.push(emaShort[i] - emaLong[i]);
-      }
-    }
-    return macd;
-  }
-
-  private static calculateEma(data: Array<number>, length: number): Array<number> {
-    if (data.length == 0) {
-      return [];
-    }
-
-    // based upon https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
-    const k = 2 / (length + 1); // weight multiplier
-    const emaArr = [];
-    for (let i = 0; i < data.length; i++) {
-      if (i < length - 1) {
-        emaArr.push(-1);
-      } else if ( i === length - 1 ) {
-        emaArr.push(Math.round(
-          data.slice(0, i + 1)
-            .map((x) => x)
-            .reduce((sum, current) => sum + current)
-          / length));
-      } else {
-        const ema: number = data[i] * k + (emaArr[i-1] * (1 - k));
-        emaArr.push(ema);
-      }
-    }
-    return emaArr;
-  }
-
   get latestValue(): number {
     if (this.incidenceData.length == 0) {
       return 0;
@@ -131,38 +90,41 @@ export default class IncidenceMiniChart extends Vue {
     return this.incidenceData[this.incidenceData.length - 1].yValue;
   }
 
-  get valueOneWeekAgo(): number {
+  get valueLastWeek(): number {
     if (this.incidenceData.length == 0) {
       return 0;
     }
     return this.incidenceData[this.incidenceData.length - 8].yValue;
   }
 
-  get simpleMovingAverage() {
-    return (this.latestValue - this.valueOneWeekAgo) / this.valueOneWeekAgo;
+  get changeLastWeek() {
+    return (this.latestValue - this.valueLastWeek) / this.valueLastWeek;
+  }
+
+  get emaShort(): Array<number> {
+    return calculateEma(this.dataset.map((d: DailyIncidence) => d.incidence), 12);
+  }
+
+  get emaLong(): Array<number> {
+    return calculateEma(this.dataset.map((d: DailyIncidence) => d.incidence), 26);
   }
 
   get trendIconClass() {
-    const macd = this.macd;
-    const lastMacd = macd[macd.length - 1];
-    const emaLong = this.incidenceEmaLong;
-    const lastEmaLong = emaLong[emaLong.length - 1];
-    const treshold = lastEmaLong * 0.04;
-    const tresholdLg = lastEmaLong * 0.12;
-    console.log(`lastMacd: ${lastMacd}`)
-    console.log(`lastEmaLong: ${lastEmaLong}`)
-    const cls = "fas fa-long-arrow-alt-right fa-2x ";
-    if (lastMacd < -tresholdLg) {
-      return cls + "transform rotate-45 text-emerald-600";
-    } else if (lastMacd < -treshold) {
-      return cls + "transform rotate-12 text-emerald-400";
-    } else if (lastMacd > tresholdLg) {
-      return cls + "transform -rotate-45 text-pink-600";
-    } else if (lastMacd > treshold) {
-      return cls + "transform -rotate-12 text-pink-300";
-    }
+    const macd = calculateMacd(this.emaShort, this.emaLong);
+    const signal = calculateSignal(macd);
+    const trend = calculateTrend(macd, signal, 21);
 
-    return cls + "text-emerald-300";
+    const cls = "fas fa-long-arrow-alt-right fa-2x ";
+
+    switch (trend) {
+      case Trend.UP:
+        return cls + "transform -rotate-12 text-pink-300";
+      case Trend.DOWN:
+        return cls + "transform rotate-12 text-emerald-400";
+      default:
+        console.log("not exists");
+        return cls;
+    }
   }
 
   private formatPct(decNum: number, fractionDigits = 0): string {
