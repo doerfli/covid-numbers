@@ -33,7 +33,7 @@ function calculateMacd(emaShort: Array<number>, emaLong: Array<number>) {
   if (emaShort.length != emaLong.length) {
     throw "ema lengths don't match";
   }
-  for (let i = 1; i < emaLong.length; i++) {
+  for (let i = 0; i < emaLong.length; i++) {
     macd.push(emaShort[i] - emaLong[i]);
   }
   return macd;
