@@ -14,7 +14,7 @@
     </div>
     <div v-else >
       <div class="indicator_info">
-        The indicator lines in the upper diagram are the 7-day SMA (green line), 3-day EMA (blue dotted line), 20-day EMA (red dotted line)
+        The indicator lines in the upper diagram are the 7-day SMA (green dashed line), 3-day EMA (blue dotted line), 20-day EMA (red dotted line)
         and in the lower diagram the MACD (green dashed line) and the MACD Signal (blue dotted line).
         <p/>
         The calculation is based on the paper
