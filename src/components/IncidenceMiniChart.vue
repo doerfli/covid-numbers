@@ -16,10 +16,11 @@
       />
     </td>
     <td>
-      <span :title="`${formatPct(changeLastWeek)} in last 7 days`">
-        <i :class="trendIconClass"></i>
-      </span>
-
+      <router-link :to="detailsUrl()">
+        <span :title="`${formatPct(changeLastWeek)} in last 7 days`">
+          <i :class="trendIconClass"></i>
+        </span>
+      </router-link>
     </td>
   </tr>
 </template>
@@ -137,6 +138,10 @@ export default class IncidenceMiniChart extends Vue {
 
   private isTheme(theme: string) {
     return this.$store.state.viewProps.theme === theme;
+  }
+
+  private detailsUrl() {
+    return `/details/${this.shortName}`;
   }
 
 }
