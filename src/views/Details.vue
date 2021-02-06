@@ -12,8 +12,16 @@
     <div class="indicator_link" v-if="!indicatorsShown" v-on:click="toggleTrendIndicators">
       Show trend indicators in chart
     </div>
-    <div class="indicator_link" v-else v-on:click="toggleTrendIndicators">
-      Hide trend indicators in chart
+    <div v-else >
+      <div class="indicator_info">
+        The indicator lines in the upper diagram are the 7-day SMA (green line), 3-day EMA (blue dotted line), 20-day EMA (red dotted line)
+        and in the lower diagram the MACD (green dashed line) and the MACD Signal (blue dotted line).
+        <p/>
+        The calculation is based on the paper
+        <Ref uri="https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/predicting-sarscov2-infection-trend-using-technical-analysis-indicators/6421416657454D2F816979DD885562A1#article">Predicting SARS-CoV-2 Infection Trend Using Technical Analysis Indicators</Ref>
+        published by Cambridge University Press on July 17th 2020.
+      </div>
+      <div class="indicator_link" v-on:click="toggleTrendIndicators">Hide trend indicators in chart</div>
     </div>
 
     <CasesTable :canton="getCanton" :rows-to-render="rowsToRender" />
@@ -134,6 +142,10 @@ import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
     @apply text-sm;
     @apply cursor-pointer;
     @apply text-indigo-700 hover:text-indigo-500 dark:text-blue-500 dark:hover:text-blue-300;
+    @apply mb-3;
+  }
+  .indicator_info {
+    @apply text-sm;
     @apply mb-3;
   }
 </style>
