@@ -16,10 +16,11 @@
       />
     </td>
     <td>
-      <span :title="`${formatPct(incidenceChange)} in last 7 days`">
-        <i :class="trendIconClass"></i>
-      </span>
-
+      <router-link :to="detailsUrl()">
+        <span :title="`${formatPct(changeLastWeek)} in last 7 days`">
+          <i :class="trendIconClass"></i>
+        </span>
+      </router-link>
     </td>
   </tr>
 </template>
@@ -32,6 +33,8 @@ import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import formatDate from '@/utils/format-date'
 import AreaChart from '@/components/charts/AreaChart.vue'
+import { calculateEma, calculateMacd, calculateSignal, calculateTrend } from '@/utils/macd'
+import Trend from '@/utils/trend'
 
 @Component({
   components: { H2, AreaChart }
@@ -55,14 +58,18 @@ export default class IncidenceMiniChart extends Vue {
     return this.shortName;
   }
 
-  get incidenceData(): Array<DataPoint> {
-    // console.log("incidenceData for " + this.getCanton);
-
+  get dataset(): Array<DailyIncidence> {
     const inc = this.$store.getters["cases/incidence"](this.shortName, this.fieldToShow) as Array<DailyIncidence>;
     const range = inc.slice(-180);
 
     // TODO make range configurable
-    const data = range.slice(0, range.length - 1).map((x: DailyIncidence) => {
+    return range.slice(0, range.length - 1)
+  }
+
+  get incidenceData(): Array<DataPoint> {
+    // console.log("incidenceData for " + this.getCanton);
+
+    const data = this.dataset.map((x: DailyIncidence) => {
       return {
         xValue: formatDate(x.date),
         yValue: x.incidence
@@ -84,32 +91,44 @@ export default class IncidenceMiniChart extends Vue {
     return this.incidenceData[this.incidenceData.length - 1].yValue;
   }
 
-  get valueOneWeekAgo(): number {
+  get valueLastWeek(): number {
     if (this.incidenceData.length == 0) {
       return 0;
     }
     return this.incidenceData[this.incidenceData.length - 8].yValue;
   }
 
-  get incidenceChange() {
-    return (this.latestValue - this.valueOneWeekAgo) / this.valueOneWeekAgo;
+  get changeLastWeek() {
+    return (this.latestValue - this.valueLastWeek) / this.valueLastWeek;
+  }
+
+  get emaShort(): Array<number> {
+    return calculateEma(this.dataset.map((d: DailyIncidence) => d.incidence), 12);
+  }
+
+  get emaLong(): Array<number> {
+    return calculateEma(this.dataset.map((d: DailyIncidence) => d.incidence), 26);
   }
 
   get trendIconClass() {
-    const chg = this.incidenceChange;
-    // console.log("trendIconClass - chg " + chg);
-    const cls = "fas fa-long-arrow-alt-right fa-2x ";
-    if (chg < -0.1) {
-      return cls + "transform rotate-45 text-emerald-600";
-    } else if (chg < -0.01) {
-      return cls + "transform rotate-12 text-emerald-400";
-    } else if (chg > 0.1) {
-      return cls + "transform -rotate-45 text-pink-600";
-    } else if (chg > 0.01) {
-      return cls + "transform -rotate-12 text-pink-300";
-    }
+    const macd = calculateMacd(this.emaShort, this.emaLong);
+    const signal = calculateSignal(macd);
+    const trend = calculateTrend(macd, signal, 21);
 
-    return cls + "text-emerald-300";
+    const cls = "fas fa-long-arrow-alt-right fa-2x ";
+
+    switch (trend) {
+      case Trend.UP_UP:
+        return cls + "transform -rotate-45 text-pink-300";
+      case Trend.UP:
+        return cls + "transform -rotate-12 text-pink-300";
+      case Trend.DOWN:
+        return cls + "transform rotate-12 text-emerald-400";
+      case Trend.DOWN_DOWN:
+        return cls + "transform rotate-45 text-emerald-400";
+      default:
+        return cls + "text-gray-400";
+    }
   }
 
   private formatPct(decNum: number, fractionDigits = 0): string {
@@ -123,6 +142,11 @@ export default class IncidenceMiniChart extends Vue {
   private isTheme(theme: string) {
     return this.$store.state.viewProps.theme === theme;
   }
+
+  private detailsUrl() {
+    return `/details/${this.shortName}`;
+  }
+
 }
 </script>
 

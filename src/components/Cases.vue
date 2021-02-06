@@ -66,7 +66,6 @@ export default class Cases extends Vue {
 
   get displayData(): Array<DataPoint> {
     // console.log("displayData " + this.getCanton);
-    let data = null;
 
     if (this.showIncidence) {
       const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyIncidence>;
@@ -76,16 +75,17 @@ export default class Cases extends Vue {
           y2Value: x.incidence
         } as DataPoint;
       });
-    } else {
-      data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
     }
+
+    const data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
 
     // console.log(1111);
     // console.log(data);
 
-    const lastXDays = data.slice(-this.daysToShow);
     // console.log(lastXDays);
     const avgFieldName = this.fieldToShow + "Avg" as any;
+
+    const lastXDays = data.slice(-this.daysToShow);
 
     // limit to last x days and map to datapoints for display
     const result = lastXDays.map((x: DailyDataSet, i: number) => {
@@ -95,7 +95,7 @@ export default class Cases extends Vue {
         yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
         y2Value: (i < lastXDays.length - 1) ? getProperty(x, avgFieldName) : null,
-        y2ValueDescr: "Average"
+        y2ValueDescr: "Average",
       } as DataPoint;
     });
 
@@ -114,8 +114,6 @@ export default class Cases extends Vue {
     this.highlightDataPoint = data;
     // console.log(this.highlightDataPoint);
   }
-
-
 
   // @Watch('highlightDataPoint')
   private dataPointHighlight() {

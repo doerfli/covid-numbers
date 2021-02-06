@@ -9,7 +9,20 @@
             <span class="hidden lg:block">7-day Incidence</span>
           </th>
           <th>{{ startDate }} - {{ endDate }}</th>
-          <th>Trend</th>
+          <th>
+            Trend
+            <i class="fas fa-info-circle fa-sm" v-on:click="toggleTrendInfo()" title="Click for more details on Trend calculation"></i>
+          </th>
+        </tr>
+        <tr v-if="showTrendInfo">
+          <td colspan="4">
+            <div class="text-sm">
+              The indicated trend is based on analysis of incidence and derived MACD data on the new case numbers.
+              This analysis is based on the paper
+              <Ref uri="https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/predicting-sarscov2-infection-trend-using-technical-analysis-indicators/6421416657454D2F816979DD885562A1#article">Predicting SARS-CoV-2 Infection Trend Using Technical Analysis Indicators</Ref>
+              published by Cambridge University Press on July 17th 2020.
+            </div>
+          </td>
         </tr>
       </thead>
       <tbody>
@@ -32,14 +45,16 @@ import { Component, Vue } from 'vue-property-decorator'
 import Cases from '@/components/Cases.vue'
 import StaticData from '@/store/staticdata'
 import IncidenceMiniChart from '@/components/IncidenceMiniChart.vue'
+import Ref from '@/components/base/Ref.vue'
 
 @Component({
-  components: { IncidenceMiniChart, IncidenceOverview: IncidenceMiniChart, Cases }
+  components: { Ref, IncidenceMiniChart, IncidenceOverview: IncidenceMiniChart, Cases }
 })
-export default class IncidenceOverview extends Vue {
+export default class Trend extends Vue {
 
   private startDate = "";
   private endDate = "";
+  private showTrendInfo = false;
 
   private get cantons(): Array<any> {
     return StaticData.getCantonsFullWithCh();
@@ -51,6 +66,10 @@ export default class IncidenceOverview extends Vue {
 
   private setEndDate(date: string) {
     this.endDate = date;
+  }
+
+  private toggleTrendInfo() {
+    this.showTrendInfo = ! this.showTrendInfo;
   }
 
 }

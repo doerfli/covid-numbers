@@ -49,6 +49,9 @@ export default class BarChart extends Vue {
     // don't paint anything when no data is available
     if (dataPointsSize == 0) { return; }
 
+    const min = dataPoints.length > 0
+      ? (dataPoints.map((e) => Math.min(e.yValue ?? 0, e.y2Value ?? 0)).reduce((a, b) => Math.min(a, b))) * 1.01
+      : 0;
     const max = dataPoints.length > 0
       ? (dataPoints.map((e) => Math.max(e.yValue ?? 0, e.y2Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
@@ -102,26 +105,28 @@ export default class BarChart extends Vue {
     // paint y-axis
     const yScale = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, max])
+      .domain([min, max])
     chart.append('g')
       .call(d3.axisLeft(yScale)
         .scale(yScale)
         .tickSize(-width))
 
-    // plot bars
-    chart
-      .selectAll()
-      .data(dataPoints)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', (s) => xScale(s.xValue) as (number | null))
-      .attr('y', (s) => yScale(s.yValue))
-      .attr('height', (s) => height - yScale(s.yValue))
-      .attr('width', xScale.bandwidth())
-      // hover effect
-      .on('mouseenter', this.barMouseEnter)
-      .on('mouseleave', this.barMouseLeave)
+    if (dataPoints[0].yValue !== undefined) {
+      // plot bars
+      chart
+        .selectAll()
+        .data(dataPoints)
+        .enter()
+        .append('rect')
+        .attr('class', 'bar')
+        .attr('x', (s) => xScale(s.xValue) as (number | null))
+        .attr('y', (s) => yScale(s.yValue))
+        .attr('height', (s) => height - yScale(s.yValue))
+        .attr('width', xScale.bandwidth())
+        // hover effect
+        .on('mouseenter', this.barMouseEnter)
+        .on('mouseleave', this.barMouseLeave)
+    }
 
     if (dataPoints[0].y2Value !== undefined) {
       // plot line
@@ -130,8 +135,30 @@ export default class BarChart extends Vue {
         .y((d) => yScale(d.y2Value ?? 0))
 
       chart.append("path")
-        .attr("class", "line")
+        .attr("class", "line2")
         .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
+    }
+
+    if (dataPoints[0].y3Value !== undefined) {
+      // plot line
+      const line = d3.line<DataPoint>()
+        .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d.y3Value ?? 0))
+
+      chart.append("path")
+        .attr("class", "line3")
+        .attr("d", line(dataPoints.filter((d) => d.y3Value != null)) ?? ""); // exlude empty datapoints
+    }
+
+    if (dataPoints[0].y4Value !== undefined) {
+      // plot line
+      const line = d3.line<DataPoint>()
+        .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
+        .y((d) => yScale(d.y4Value ?? 0))
+
+      chart.append("path")
+        .attr("class", "line4")
+        .attr("d", line(dataPoints.filter((d) => d.y4Value != null)) ?? ""); // exlude empty datapoints
     }
 
     // cleanup
@@ -176,7 +203,7 @@ export default class BarChart extends Vue {
     height: 100%;
 
     .bar {
-      @apply fill-current text-emerald-400 dark:text-teal-400 opacity-90;
+      @apply fill-current text-emerald-400 dark:text-teal-400 opacity-80;
 
       title {
         @apply text-pink-500;
@@ -191,12 +218,28 @@ export default class BarChart extends Vue {
       stroke: #aaa;
     }
 
-    .line {
-      @apply text-emerald-700 dark:text-teal-100;
+    .line2 {
+      @apply text-emerald-700 dark:text-teal-200;
       @apply stroke-current;
       @apply stroke-2;
       fill: none;
       stroke-dasharray: 5px;
+    }
+
+    .line3 {
+      @apply text-indigo-700 dark:text-indigo-600;
+      @apply stroke-current;
+      @apply stroke-2;
+      fill: none;
+      stroke-dasharray: 1px;
+    }
+
+    .line4 {
+      @apply text-pink-700 dark:text-pink-600;
+      @apply stroke-current;
+      @apply stroke-2;
+      fill: none;
+      stroke-dasharray: 1px;
     }
 
     .chartText {
