@@ -36,7 +36,7 @@ import IncidenceMiniChart from '@/components/IncidenceMiniChart.vue'
 @Component({
   components: { IncidenceMiniChart, IncidenceOverview: IncidenceMiniChart, Cases }
 })
-export default class IncidenceOverview extends Vue {
+export default class Trend extends Vue {
 
   private startDate = "";
   private endDate = "";
