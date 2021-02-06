@@ -58,10 +58,18 @@ function calculateTrend(macd: any[], signal: Array<number>, range = 7): Trend {
     }
   }
 
-  // console.log(`macd > signal days ${trend}/${range}`)
+  console.log(`macd > signal days ${trend}/${range}`)
 
-  if (trend > 0) {
+  if (trend >= -1 && trend <= 1) {
+    return Trend.SIDE;
+  } else if (range > 10 && trend > range * 7 / 8) {
+    return Trend.UP_UP;
+  } else if (trend > 1) {
     return Trend.UP;
+  } else if (range > 10 && trend < -range * 7 / 8) {
+    return Trend.DOWN_DOWN;
+  } else if (trend < -1) {
+    return Trend.DOWN;
   } else {
     return Trend.DOWN;
   }

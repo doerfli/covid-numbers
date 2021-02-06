@@ -1,5 +1,5 @@
 enum Trend {
-  UP, DOWN
+  UP, DOWN, SIDE, UP_UP, DOWN_DOWN
 }
 
 export default Trend;
