@@ -62,12 +62,12 @@ function calculateTrend(macd: any[], signal: Array<number>, range = 7): Trend {
 
   if (trend >= -1 && trend <= 1) {
     return Trend.SIDE;
-  } else if (range > 10 && trend > range * 7 / 8) {
-    return Trend.UP_UP;
+  // } else if (range > 10 && trend > range * 7 / 8) {
+  //   return Trend.UP_UP;
   } else if (trend > 1) {
     return Trend.UP;
-  } else if (range > 10 && trend < -range * 7 / 8) {
-    return Trend.DOWN_DOWN;
+  // } else if (range > 10 && trend < -range * 7 / 8) {
+  //   return Trend.DOWN_DOWN;
   } else if (trend < -1) {
     return Trend.DOWN;
   } else {
