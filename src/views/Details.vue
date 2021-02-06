@@ -39,9 +39,10 @@ import DataPoint from '@/model/datapoint'
 import DailyDataSet from '@/model/dailyDataSet'
 import formatDate from '@/utils/format-date'
 import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
+import Ref from '@/components/base/Ref.vue'
 
 @Component({
-    components: { BarChart, CasesTable, H2, H1 }
+    components: { Ref, BarChart, CasesTable, H2, H1 }
   })
   export default class Details extends Vue {
     @Prop()
