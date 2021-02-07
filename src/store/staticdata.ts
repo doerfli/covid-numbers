@@ -28,6 +28,7 @@ export default class StaticData {
     { short: "ZG", name: "Zug", population: 127642 },
     { short: "ZH", name: "Zürich", population: 1539275 },
   ]
+  private static CH = { short: "CH", name: "Switzerland", population: 8606033 };
 
   public static getCantons(): Array<string> {
     return this.CANTONS.map(c => c.short);
@@ -38,15 +39,18 @@ export default class StaticData {
   }
 
   public static getCantonFull(short: string): any {
+    if (short === StaticData.CH.short) {
+      return StaticData.CH;
+    }
     return this.CANTONS.find((c) => c.short === short);
   }
 
   public static getCantonsFullWithCh(): Array<any> {
-    return [{ short: "CH", name: "Switzerland", population: this.getTotalPopulation() }].concat(this.CANTONS);
+    return [StaticData.CH].concat(this.CANTONS);
   }
 
   public static getTotalPopulation(): number {
-    return 8606033;
+    return StaticData.CH.population;
   }
 
   public static getPopulation(canton: string): number {
