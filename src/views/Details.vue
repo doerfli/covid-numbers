@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H2>Details for canton {{ getCanton }}</H2>
+    <H2>Data for {{ name }}</H2>
 
     <BarChart class="barchart w-full h-96 my-6"
               v-bind:data="displayData" />
@@ -40,13 +40,16 @@ import DailyDataSet from '@/model/dailyDataSet'
 import formatDate from '@/utils/format-date'
 import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
 import Ref from '@/components/base/Ref.vue'
+import StaticData from '@/store/staticdata'
 
 @Component({
     components: { Ref, BarChart, CasesTable, H2, H1 }
   })
   export default class Details extends Vue {
     @Prop()
-    private canton!: string;
+    private shortName!: string;
+    @Prop()
+    private name = "";
     @Prop({ default: 7 })
     private windowSize!: number;
     private daysInChart = 180;
@@ -55,14 +58,15 @@ import Ref from '@/components/base/Ref.vue'
 
     private mounted() {
       this.scroll();
+      this.name = StaticData.getCantonFull(this.getCanton).name;
     }
 
     private get getCanton() {
-      return this.canton;
+      return this.shortName;
     }
 
     get dataset(): Array<DailyDataSet> {
-      const d = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
+      const d = this.$store.getters["cases/dataPerCanton"](this.shortName) as Array<DailyDataSet>;
       return d.slice(-180);
     }
 

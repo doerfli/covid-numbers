@@ -37,6 +37,10 @@ export default class StaticData {
     return this.CANTONS;
   }
 
+  public static getCantonFull(short: string): any {
+    return this.CANTONS.find((c) => c.short === short);
+  }
+
   public static getCantonsFullWithCh(): Array<any> {
     return [{ short: "CH", name: "Switzerland", population: this.getTotalPopulation() }].concat(this.CANTONS);
   }
