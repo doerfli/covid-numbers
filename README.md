@@ -35,4 +35,9 @@ yarn build
 docker run -p 8080:8080 -e PORT=8080 <imageid>
 ```
 
+### Release new version
+
+```
+git switch main && git pull && git merge develop && git push && git switch develop
+```
 
