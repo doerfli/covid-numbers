@@ -8,6 +8,7 @@ import IncidenceOneWeek from '@/views/IncidenceOneWeek.vue'
 import IncidenceTwoWeek from '@/views/IncidenceTwoWeek.vue'
 import Details from '@/views/Details.vue'
 import Trend from '@/views/Trend.vue'
+import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -54,10 +55,15 @@ const routes: Array<RouteConfig> = [
     name: 'Trend',
     component: Trend
   },
+  { path: '*',
+    name: "BotFound",
+    component: NotFoundComponent
+  }
 ]
 
 const router = new VueRouter({
-  routes
+  mode: 'history',
+  routes: routes
 })
 
 export default router
