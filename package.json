@@ -44,7 +44,7 @@
     "eslint-plugin-vue": "^7.5.0",
     "postcss": "^7",
     "sass": "^1.32.6",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^11.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "~4",
     "vue-cli-plugin-sitemap": "~2.3.0",
