@@ -51,21 +51,24 @@ function calculateTrend(macd: any[], signal: Array<number>, range = 7): Trend {
   // console.log(lastWeekMacd);
   // console.log(lastWeekSignal);
 
+  let sumTrendAbs = 0;
+
   for (let i = 0; i < lastWeekMacd.length; i++) {
-    trend += lastWeekMacd[i] - lastWeekSignal[i];
-    // if (lastWeekMacd[i] > lastWeekSignal[i]) {
-    //   trend += 1;
-    // } else {
-    //   trend -= 1;
-    // }
+    const diff = lastWeekMacd[i] - lastWeekSignal[i];
+    trend += diff;
+    sumTrendAbs += Math.abs(diff);
   }
 
-  console.log(`macd > signal days ${trend}/${range}`)
+  const avgTrendAbs =  sumTrendAbs / range;
+  const threshold = avgTrendAbs * range / 7;
+  // console.log(`trend: ${trend} / range: ${range} / avgTrendAbs: ${avgTrendAbs} / threshold: ${threshold}`)
 
-  if (trend > 0) {
+  if (trend < threshold && trend > -threshold) {
+    return Trend.SIDE;
+  } else if (trend > threshold) {
     return Trend.UP;
-  } else if (trend < 0) {
-    return Trend.DOWN;
+  // } else if (trend < -threshold) {
+  //   return Trend.DOWN;
   } else {
     return Trend.DOWN;
   }
