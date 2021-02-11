@@ -48,7 +48,6 @@ import StaticData from '@/store/staticdata'
   export default class Details extends Vue {
     @Prop()
     private shortName!: string;
-    @Prop()
     private name = "";
     @Prop({ default: 7 })
     private windowSize!: number;
