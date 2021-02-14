@@ -51,7 +51,7 @@ const casesModule: Module<any, any> = {
       });
 
       // update cases
-      state.cases = cases;
+      state.cases = Object.freeze(cases);
       console.log("cases saved");
     }
   },
