@@ -1,12 +1,12 @@
 import { Module } from 'vuex'
 import superagent from 'superagent'
-import parse from 'csv-parse/lib/sync'
 import CantonData from '@/model/cantondata'
 import RecordsProcessor from '@/utils/records-processor'
 import DailyDataSet from '@/model/dailyDataSet'
 import DailyDiff from '@/model/dailyDiff'
 import DailyIncidence from '@/model/dailyIncidence'
 import StaticData from '@/store/staticdata'
+import Papa from 'papaparse'
 
 function calculateAverageValue (newCases: Array<DailyDiff>, averageWindowSize: number) {
   return newCases.map((value: DailyDiff, idx: number, arr: DailyDiff[]) => {
@@ -57,14 +57,12 @@ const casesModule: Module<any, any> = {
     async fetch({ commit }) {
       const url = "https://raw.githubusercontent.com/openZH/covid_19/master/COVID19_Fallzahlen_CH_total_v2.csv";
       const response = await superagent.get(url)
-      // console.log(response);
-      const records = parse(response.text, {
-        columns: true,
+      const parseResult = Papa.parse(response.text, {
+        header: true,
         skipEmptyLines: true,
-        relaxColumnCountLess: true
       });
-      // console.log(records);
-      const dataMap = new RecordsProcessor().process(records);
+      // console.log(parseResult);
+      const dataMap = new RecordsProcessor().process(parseResult.data);
       commit("saveRecords", { dataMap });
     }
   },
