@@ -39,11 +39,9 @@ const casesModule: Module<any, any> = {
   },
   mutations: {
     saveRecords(state, payload) {
-      const dataMap = new RecordsProcessor().process(payload.records);
-
       // create array entry per canton
       const cases = new Array<CantonData>();
-      dataMap.forEach((data, canton) => {
+      payload.dataMap.forEach((data: DailyDataSet[], canton: string) => {
         cases.push({
           canton: canton,
           data: data
@@ -64,9 +62,10 @@ const casesModule: Module<any, any> = {
         columns: true,
         skipEmptyLines: true,
         relaxColumnCountLess: true
-      })
+      });
       // console.log(records);
-      commit("saveRecords", { records });
+      const dataMap = new RecordsProcessor().process(records);
+      commit("saveRecords", { dataMap });
     }
   },
   getters: {
