@@ -34,6 +34,10 @@ export default class StaticData {
     return this.CANTONS.map(c => c.short);
   }
 
+  public static getCantonsWithCh(): Array<string> {
+    return this.getCantonsFullWithCh().map(c => c.short);
+  }
+
   public static getCantonsFull(): Array<any> {
     return this.CANTONS;
   }
