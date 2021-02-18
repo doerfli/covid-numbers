@@ -24,6 +24,9 @@
     <div :class="getClass('Deceased')">
       <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
     </div>
+    <div :class="getClass('Vaccinations')">
+      <router-link :to="{ name: 'Vaccinations' }">Vaccinations</router-link>
+    </div>
     <span v-if="! isDetailsPage()">
       <div @click="toggleViewOptions"
            v-if="! showViewOptions"

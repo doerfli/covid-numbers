@@ -44,7 +44,7 @@ const vaccModule: Module<any, any> = {
     // get data for a canton
     dataPerCanton: ((state) => (canton: string) => {
       // console.log(canton);
-      const cantonData = state.cases.filter((x: CantonData) => { return x.canton == canton});
+      const cantonData = state.vacc.filter((x: CantonData) => { return x.canton == canton});
       // console.log(cantonData);
       if (cantonData.length == 0) {
         return new Array<VaccDataSet>();
