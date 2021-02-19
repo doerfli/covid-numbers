@@ -42,7 +42,15 @@ export default class BarChart extends Vue {
     this.paintChart(dataPoints)
   }
 
-  private paintChart (inputData: Array<DataPoint>) {
+  private paintChart (origData: Array<DataPoint>) {
+
+    const inputData = origData.map((d: DataPoint) => { return {
+      xValue: d.xValue,
+      y3Value: d.y3Value - d.y2Value,
+      y2Value: d.y2Value - d.yValue,
+      yValue: d.yValue
+    } as DataPoint});
+
     // const dataPoints = StackedBarChart.restructureInputData(inputData);
     const stackGen = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])
@@ -63,7 +71,7 @@ export default class BarChart extends Vue {
 
     const min = 0;
     const max = inputData.length > 0
-      ? (inputData.map((e) => Math.max(e.yValue ?? 0, e.y2Value ?? 0, e.y3Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
+      ? (origData.map((e) => Math.max(e.yValue ?? 0, e.y2Value ?? 0, e.y3Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     console.log(`min: ${min} / max: ${max}`);
 
