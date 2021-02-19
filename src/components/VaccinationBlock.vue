@@ -8,7 +8,7 @@
         {{ getName }}
       </H2>
     </div>
-    <BarChart class="barchart w-full h-80"
+    <StackedBarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               />
   </div>
@@ -22,9 +22,10 @@ import H2 from '@/components/base/H2.vue'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
 import VaccDataSet from '@/model/vaccDataSet'
+import StackedBarChart from '@/components/charts/StackedBarChart.vue'
 
 @Component({
-  components: { HighlightLine, H2, BarChart }
+  components: { StackedBarChart, HighlightLine, H2, BarChart }
 })
 export default class Cases extends Vue {
 
