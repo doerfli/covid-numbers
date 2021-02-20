@@ -30,17 +30,15 @@
     <span v-if="! isDetailsPage()">
       <div @click="toggleViewOptions"
            v-if="! showViewOptions"
-           class="menuitem">
-        <i class="fas fa-cog pr-1"></i>
+           class="menuitem viewoptions">
+        Display view options
         <i class="fas fa-chevron-down"></i>
-        Show view options
       </div>
       <div @click="toggleViewOptions"
            v-else
-           class="menuitem">
-        <i class="fas fa-cog pr-1"></i>
-        <i class="fas fa-chevron-up"></i>
+           class="menuitem viewoptions">
         Hide view options
+        <i class="fas fa-chevron-up"></i>
       </div>
     </span>
     <Hideable :visible="showViewOptions">
@@ -87,6 +85,10 @@ export default class Header extends Vue {
     @apply text-sm;
     @apply cursor-pointer;
     @apply text-indigo-700 hover:text-indigo-500 dark:text-blue-500 dark:hover:text-blue-300;
+  }
+
+  .viewoptions {
+    @apply block md:float-right;
   }
 
   .menuitem_active {
