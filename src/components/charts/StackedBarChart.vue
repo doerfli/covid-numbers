@@ -62,7 +62,7 @@ export default class BarChart extends Vue {
     const height = this.$refs.chart.clientHeight - this.ymargin;
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.xmargin)}, 0)`);
-    const margin = ({top: 10, right: 10, bottom: 20, left: 40});
+    const margin = ({top: 0, right: 0, bottom: 0, left: 0});
 
     const series = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);

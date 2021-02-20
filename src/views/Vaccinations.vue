@@ -1,5 +1,6 @@
 <template>
   <div>
+    <H2 class="p-2">Vaccinations</H2>
     <div class="flex flex-wrap mt-1">
       <VaccinationBlock
         v-for="canton in selectedCantons"
@@ -23,9 +24,11 @@ import CantonConfig from '@/model/cantonconfig'
 import Hideable from '@/components/base/Hideable.vue'
 import ViewOptions from '@/components/ViewOptions.vue'
 import VaccinationBlock from '@/components/VaccinationBlock.vue'
+import H2 from '@/components/base/H2.vue'
 
 @Component({
   components: {
+    H2,
     VaccinationBlock,
     ViewOptions,
     Hideable,
