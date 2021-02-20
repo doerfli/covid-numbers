@@ -87,15 +87,16 @@ export default class BarChart extends Vue {
       .call(d3.axisLeft(y).ticks(null, "s"))
       .call((g: any) => g.selectAll(".domain").remove());
 
-    const color = d3.scaleOrdinal()
+    const cssClass = d3.scaleOrdinal()
       .domain(series.map((d: any) => d.key))
-      .range(d3.schemeSpectral[series.length]);
+      .range(["first", "second", "third"]);
 
     chart.append("g")
       .selectAll("g")
       .data(series)
       .join("g")
-        .attr("fill", (d: any) => color(d[0]) as any)
+        // .attr("fill", (d: any) => color(d[0]) as any)
+        .attr("class", (d: any) => cssClass(d[0]) as any)
       .selectAll("rect")
       .data(d => d)
       .join("rect")
@@ -127,32 +128,6 @@ export default class BarChart extends Vue {
       }
     })
   }
-
-  // eslint-disable-next-line
-  private barMouseEnter(event: any, data: DataPoint) {
-    this.$emit("bar-active", data);
-    d3.select(event.target).attr('class', 'bar highlight')
-  }
-
-  // eslint-disable-next-line
-  private barMouseLeave(event: any, data: DataPoint) {
-    // this.$emit("bar-active", data);
-    d3.select(event.target).attr('class', 'bar')
-  }
-
-  private static renderTooltipContent (s: DataPoint) {
-    let tooltip = ''
-    if (s.xValueDescr !== undefined) {
-      tooltip += s.xValueDescr + ': ' + s.xValue + '\n'
-    }
-    if (s.yValueDescr !== undefined) {
-      tooltip += s.yValueDescr + ': ' + s.yValue + '\n'
-    }
-    if (s.y2ValueDescr !== undefined) {
-      tooltip += s.y2ValueDescr + ': ' + s.y2Value + '\n'
-    }
-    return tooltip
-  }
 }
 </script>
 
@@ -162,7 +137,6 @@ export default class BarChart extends Vue {
     height: 100%;
 
     .bar {
-      @apply fill-current text-emerald-400 dark:text-teal-400 opacity-80;
 
       title {
         @apply text-pink-500;
@@ -177,28 +151,16 @@ export default class BarChart extends Vue {
       stroke: #aaa;
     }
 
-    .line2 {
-      @apply text-emerald-700 dark:text-teal-200;
-      @apply stroke-current;
-      @apply stroke-2;
-      fill: none;
-      stroke-dasharray: 5px;
+    .first {
+      @apply fill-current text-emerald-600 dark:text-teal-200;
     }
 
-    .line3 {
-      @apply text-indigo-700 dark:text-indigo-600;
-      @apply stroke-current;
-      @apply stroke-2;
-      fill: none;
-      stroke-dasharray: 1px;
+    .second {
+      @apply fill-current text-emerald-400 dark:text-teal-400;
     }
 
-    .line4 {
-      @apply text-pink-700 dark:text-pink-600;
-      @apply stroke-current;
-      @apply stroke-2;
-      fill: none;
-      stroke-dasharray: 1px;
+    .third {
+      @apply fill-current text-emerald-200 dark:text-teal-600;
     }
 
     .chartText {
