@@ -9,6 +9,7 @@ import IncidenceTwoWeek from '@/views/IncidenceTwoWeek.vue'
 import Details from '@/views/Details.vue'
 import Trend from '@/views/Trend.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
+import Vaccinations from '@/views/Vaccinations.vue'
 
 Vue.use(VueRouter)
 
@@ -55,8 +56,14 @@ const routes: Array<RouteConfig> = [
     name: 'Trend',
     component: Trend
   },
+  {
+    path: '/vaccinations',
+    alias: '/',
+    name: 'Vaccinations',
+    component: Vaccinations
+  },
   { path: '*',
-    name: "BotFound",
+    name: " NotFound",
     component: NotFoundComponent
   }
 ]

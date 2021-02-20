@@ -29,6 +29,7 @@ export default class App extends Vue {
     console.log("App.mounted");
     this.$store.dispatch("viewProps/init");
     this.$store.dispatch("cases/fetch");
+    this.$store.dispatch("vacc/fetch");
   }
 
   private showSpinner(): boolean {

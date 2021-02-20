@@ -24,20 +24,21 @@
     <div :class="getClass('Deceased')">
       <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
     </div>
+    <div :class="getClass('Vaccinations')">
+      <router-link :to="{ name: 'Vaccinations' }">Vaccinations</router-link>
+    </div>
     <span v-if="! isDetailsPage()">
       <div @click="toggleViewOptions"
            v-if="! showViewOptions"
-           class="menuitem">
-        <i class="fas fa-cog pr-1"></i>
+           class="menuitem viewoptions">
+        Display view options
         <i class="fas fa-chevron-down"></i>
-        Show view options
       </div>
       <div @click="toggleViewOptions"
            v-else
-           class="menuitem">
-        <i class="fas fa-cog pr-1"></i>
-        <i class="fas fa-chevron-up"></i>
+           class="menuitem viewoptions">
         Hide view options
+        <i class="fas fa-chevron-up"></i>
       </div>
     </span>
     <Hideable :visible="showViewOptions">
@@ -86,9 +87,13 @@ export default class Header extends Vue {
     @apply text-indigo-700 hover:text-indigo-500 dark:text-blue-500 dark:hover:text-blue-300;
   }
 
+  .viewoptions {
+    @apply md:float-right md:pr-2;
+  }
+
   .menuitem_active {
     @apply pb-1 pr-5 inline-block;
-    @apply text-sm;
+    @apply text-sm font-semibold underline;
     @apply text-emerald-700 dark:text-teal-500;
   }
 </style>
