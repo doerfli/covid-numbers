@@ -56,7 +56,7 @@ export default class Cases extends Vue {
     const lastXDays = data.slice(-this.daysToShow);
 
     // limit to last x days and map to datapoints for display
-    return lastXDays.map((x: VaccDataSet, i: number) => {
+    const origData =  lastXDays.map((x: VaccDataSet, i: number) => {
       return {
         xValue: formatDate(x.date),
         xValueDescr: "Date",
@@ -68,6 +68,18 @@ export default class Cases extends Vue {
         y3ValueDescr: "Delivered",
       } as DataPoint;
     });
+
+    // reformat data for stacked chart display
+    return origData.map((d: DataPoint) => { return {
+      xValue: d.xValue,
+      xValueDescr: d.xValueDescr,
+      y3Value: d.y3Value - d.y2Value,
+      y3ValueDescr: d.y3ValueDescr,
+      y2Value: d.y2Value - d.yValue,
+      y2ValueDescr: d.y2ValueDescr,
+      yValue: d.yValue,
+      yValueDescr: d.yValueDescr,
+    } as DataPoint});
   }
 }
 </script>
