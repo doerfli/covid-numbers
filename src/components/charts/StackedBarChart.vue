@@ -8,7 +8,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import * as d3 from 'd3'
 import DataPoint from '@/model/datapoint'
-import getProperty from '@/utils/get-property'
 
 @Component({
   components: {}
@@ -43,17 +42,7 @@ export default class BarChart extends Vue {
   }
 
   private paintChart (inputData: Array<DataPoint>) {
-    // const dataPoints = StackedBarChart.restructureInputData(inputData);
-    const stackGen = d3.stack()
-      .keys(["yValue", "y2Value", "y3Value"])
-      .value((obj, key) => getProperty(obj, key));
-
-    const colorScale = d3.scaleOrdinal()
-      .domain(["yValue", "y2Value", "y3Value"])
-      .range(["red", "yellow", "orange"]);
-
-    const stackedData = stackGen(inputData as any);
-
+    // console.log("inputData"); console.log(inputData);
     // clear existing contents
     d3.selectAll(`#${this.chartId} *`).remove();
     const dataPointsSize = inputData.length;
@@ -63,7 +52,7 @@ export default class BarChart extends Vue {
 
     const min = 0;
     const max = inputData.length > 0
-      ? (inputData.map((e) => e.yValue + e.y2Value + e.y3Value).reduce((a, b) => Math.max(a, b))) * 1.01
+      ? (inputData.map((e) => (e.yValue ?? 0) + (e.y2Value ?? 0) + (e.y3Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
     console.log(`min: ${min} / max: ${max}`);
 
@@ -73,30 +62,56 @@ export default class BarChart extends Vue {
     const height = this.$refs.chart.clientHeight - this.ymargin;
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.xmargin)}, 0)`);
+    const margin = ({top: 10, right: 10, bottom: 20, left: 40});
 
-    // paint x-axis
-    const xScale = d3.scaleBand()
-      .range([0, width])
-      .domain(inputData.map((s: any) => s.xValue))
-      .padding(0.2)
+    const series = d3.stack()
+      .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
 
-    chart.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .attr('class', 'xaxis')
-      .call(d3.axisBottom(xScale))
-      .selectAll('text')
-      .attr('class', 'xlabel')
-      .attr('x', -14)
-      .style('text-anchor', 'start')
+    const x = d3.scaleBand()
+      .domain(inputData.map((d: any) => d.xValue))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
 
-    // paint x-axis labels
-    let showEveryXthLabel = 7;
-    if (dataPointsSize > 120) {
-      showEveryXthLabel = showEveryXthLabel * 4;
-    } else if (dataPointsSize > 60) {
-      showEveryXthLabel = showEveryXthLabel * 2;
-    }
-    const labelOffset = dataPointsSize % showEveryXthLabel;
+    const xAxis = (g: any) => g
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .attr("class", "xaxis")
+      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .call((g: any) => g.selectAll(".domain").remove());
+
+    const y = d3.scaleLinear()
+      .domain([min, max])
+      .rangeRound([height - margin.bottom, margin.top]);
+
+    const yAxis = (g: any) => g
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(null, "s"))
+      .call((g: any) => g.selectAll(".domain").remove());
+
+    const color = d3.scaleOrdinal()
+      .domain(series.map((d: any) => d.key))
+      .range(d3.schemeSpectral[series.length]);
+
+    chart.append("g")
+      .selectAll("g")
+      .data(series)
+      .join("g")
+        .attr("fill", (d: any) => color(d[0]) as any)
+      .selectAll("rect")
+      .data(d => d)
+      .join("rect")
+        .attr("x", (d: any, _) => x(d.data.xValue) as number)
+        .attr("y", (d: any) => y(d[1]) as number)
+        .attr("height", (d: any) => y(d[0]) - y(d[1]))
+        .attr("width", x.bandwidth())
+
+    chart.append("g")
+      .call(xAxis);
+
+    chart.append("g")
+      .call(yAxis);
+
+    // only show every 7th label
+    const labelOffset = dataPointsSize % 7;
     const ticks = d3.selectAll(`#${this.chartId} .xaxis .tick`)
     ticks.each(function (_, i) {
       switch (i) {
@@ -106,94 +121,11 @@ export default class BarChart extends Vue {
           break
 
         default:
-          if ((i - labelOffset) % showEveryXthLabel != 0) {
+          if ((i - labelOffset) % 7 != 0) {
             d3.select(this).remove()
           }
       }
     })
-
-    // paint y-axis
-    const yScale = d3.scaleLinear()
-      .range([height, 0])
-      .domain([min, max])
-    chart.append('g')
-      .call(d3.axisLeft(yScale)
-        .scale(yScale)
-        .tickSize(-width));
-
-    const sel = chart
-      .selectAll()
-      .data(stackedData)
-      .join("g")
-      .classed("series", true)
-      .style('fill', (d: any) => colorScale(d.key) as any);
-
-    sel
-      .selectAll('rect')
-      .data((d: Array<any>) => d)
-      .join('rect')
-      .attr('width', xScale.bandwidth())
-      .attr('y', (d: any) => yScale(d[1]) as (number | null))
-      .attr('x', (d: any) => xScale(d.data.xValue) as (number | null) )
-      .attr('height', (d: any) => (yScale(d[0]) -  yScale(d[1])) as (number | null));
-
-
-    // if (dataPoints[0].yValue !== undefined) {
-    //   // plot bars
-    //   chart
-    //     .selectAll()
-    //     .data(dataPoints)
-    //     .enter()
-    //     .append('rect')
-    //     .attr('class', 'bar')
-    //     .attr('x', (s) => xScale(s.xValue) as (number | null))
-    //     .attr('y', (s) => yScale(s.yValue))
-    //     .attr('height', (s) => height - yScale(s.yValue))
-    //     .attr('width', xScale.bandwidth())
-    //     // hover effect
-    //     .on('mouseenter', this.barMouseEnter)
-    //     .on('mouseleave', this.barMouseLeave)
-    // }
-    //
-    // if (dataPoints[0].y2Value !== undefined) {
-    //   // plot line
-    //   const line = d3.line<DataPoint>()
-    //     .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
-    //     .y((d) => yScale(d.y2Value ?? 0))
-    //
-    //   chart.append("path")
-    //     .attr("class", "line2")
-    //     .attr("d", line(dataPoints.filter((d) => d.y2Value != null)) ?? ""); // exlude empty datapoints
-    // }
-    //
-    // if (dataPoints[0].y3Value !== undefined) {
-    //   // plot line
-    //   const line = d3.line<DataPoint>()
-    //     .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
-    //     .y((d) => yScale(d.y3Value ?? 0))
-    //
-    //   chart.append("path")
-    //     .attr("class", "line3")
-    //     .attr("d", line(dataPoints.filter((d) => d.y3Value != null)) ?? ""); // exlude empty datapoints
-    // }
-    //
-    // if (dataPoints[0].y4Value !== undefined) {
-    //   // plot line
-    //   const line = d3.line<DataPoint>()
-    //     .x((d) => (xScale(d.xValue) ?? 0) + xScale.bandwidth() / 2)
-    //     .y((d) => yScale(d.y4Value ?? 0))
-    //
-    //   chart.append("path")
-    //     .attr("class", "line4")
-    //     .attr("d", line(dataPoints.filter((d) => d.y4Value != null)) ?? ""); // exlude empty datapoints
-    // }
-
-    // cleanup
-    /** remove line around chart */
-    chart.selectAll('.domain').remove();
-
-    chart.selectAll('text')
-      .attr('class', 'chartText');
   }
 
   // eslint-disable-next-line

@@ -70,16 +70,18 @@ export default class Cases extends Vue {
     });
 
     // reformat data for stacked chart display
-    return origData.map((d: DataPoint) => { return {
-      xValue: d.xValue,
-      xValueDescr: d.xValueDescr,
-      y3Value: d.y3Value - d.y2Value,
-      y3ValueDescr: d.y3ValueDescr,
-      y2Value: d.y2Value - d.yValue,
-      y2ValueDescr: d.y2ValueDescr,
-      yValue: d.yValue,
-      yValueDescr: d.yValueDescr,
-    } as DataPoint});
+    return origData.map((d: DataPoint) => {
+      return {
+        xValue: d.xValue,
+        xValueDescr: d.xValueDescr,
+        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
+        y3ValueDescr: d.y3ValueDescr,
+        y2Value: (d.y2Value ?? 0) - d.yValue,
+        y2ValueDescr: d.y2ValueDescr,
+        yValue: d.yValue,
+        yValueDescr: d.yValueDescr,
+      } as DataPoint
+    });
   }
 }
 </script>
