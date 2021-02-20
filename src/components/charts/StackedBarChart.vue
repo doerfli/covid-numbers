@@ -139,17 +139,6 @@ export default class BarChart extends Vue {
     width: 100%;
     height: 100%;
 
-    .bar {
-
-      title {
-        @apply text-pink-500;
-      }
-    }
-
-    .bar.highlight {
-      @apply opacity-70;
-    }
-
     .tick line {
       stroke: #aaa;
     }
