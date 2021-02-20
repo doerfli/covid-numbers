@@ -1,6 +1,5 @@
 <template>
   <div>
-    <H2 class="p-2">Vaccinations</H2>
     <div class="flex flex-wrap mt-1">
       <VaccinationBlock
         v-for="canton in selectedCantons"
