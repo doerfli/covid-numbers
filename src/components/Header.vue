@@ -91,7 +91,7 @@ export default class Header extends Vue {
 
   .menuitem_active {
     @apply pb-1 pr-5 inline-block;
-    @apply text-sm;
+    @apply text-sm font-semibold underline;
     @apply text-emerald-700 dark:text-teal-500;
   }
 </style>
