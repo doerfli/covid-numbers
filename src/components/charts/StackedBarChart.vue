@@ -55,7 +55,7 @@ export default class BarChart extends Vue {
     const max = inputData.length > 0
       ? (inputData.map((e) => (e.yValue ?? 0) + (e.y2Value ?? 0) + (e.y3Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
       : 1;
-    console.log(`min: ${min} / max: ${max}`);
+    // console.log(`min: ${min} / max: ${max}`);
 
     // intialize chart
     const svg = d3.select(`#${this.chartId}`);

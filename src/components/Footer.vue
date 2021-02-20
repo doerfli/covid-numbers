@@ -2,11 +2,6 @@
   <div class="footer">
     <div class="flex flex-wrap">
       <div class="entryfirst">
-        <i class="fas fa-adjust"></i>&nbsp;
-        <span class="link" v-if="isTheme('dark')" @click="toggleTheme()">Switch to light theme</span>
-        <span class="link" v-if="isTheme('light')" @click="toggleTheme()">Switch to dark theme</span>
-      </div>
-      <div class="entry">
         <i class="fab fa-github"></i> <Ref uri="https://github.com/doerfli/covid-numbers/">doerfli/covid-numbers</Ref>
       </div>
       <div class="entry">
@@ -15,8 +10,13 @@
       <div class="entry">
         <i class="fas fa-database"></i> <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
       </div>
-      <div class="entrylast">
+      <div class="entry">
         <i class="fas fa-database"></i> <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>
+      </div>
+      <div class="entrylast">
+        <i class="fas fa-adjust"></i>&nbsp;
+        <span class="link" v-if="isTheme('dark')" @click="toggleTheme()">Switch to light theme</span>
+        <span class="link" v-if="isTheme('light')" @click="toggleTheme()">Switch to dark theme</span>
       </div>
     </div>
     <div class="disclaimer">
