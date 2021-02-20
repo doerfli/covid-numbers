@@ -41,6 +41,7 @@ export default class BarChart extends Vue {
     this.paintChart(dataPoints)
   }
 
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   private paintChart (inputData: Array<DataPoint>) {
     // console.log("inputData"); console.log(inputData);
     // clear existing contents
@@ -68,7 +69,7 @@ export default class BarChart extends Vue {
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
 
     const x = d3.scaleBand()
-      .domain(inputData.map((d: any) => d.xValue))
+      .domain(inputData.map((d: DataPoint) => d.xValue))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
@@ -91,6 +92,7 @@ export default class BarChart extends Vue {
       .domain(series.map((d: any) => d.key))
       .range(["first", "second", "third"]);
 
+    // eslint-disable-next-line
     chart.append("g")
       .selectAll("g")
       .data(series)
@@ -100,10 +102,10 @@ export default class BarChart extends Vue {
       .selectAll("rect")
       .data(d => d)
       .join("rect")
-        .attr("x", (d: any, _) => x(d.data.xValue) as number)
+        .attr("x", (d: any) => x(d.data.xValue) as number)
         .attr("y", (d: any) => y(d[1]) as number)
         .attr("height", (d: any) => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth())
+        .attr("width", x.bandwidth());
 
     chart.append("g")
       .call(xAxis);
@@ -126,8 +128,9 @@ export default class BarChart extends Vue {
             d3.select(this).remove()
           }
       }
-    })
+    });
   }
+  /* eslint-enable  @typescript-eslint/no-explicit-any */
 }
 </script>
 
