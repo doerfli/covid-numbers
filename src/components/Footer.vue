@@ -12,8 +12,11 @@
       <div class="entry">
         <i class="fab fa-twitter"></i> <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
       </div>
-      <div class="entrylast">
+      <div class="entry">
         <i class="fas fa-database"></i> <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
+      </div>
+      <div class="entrylast">
+        <i class="fas fa-database"></i> <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>
       </div>
     </div>
     <div class="disclaimer">
