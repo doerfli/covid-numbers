@@ -88,7 +88,7 @@ export default class Header extends Vue {
   }
 
   .viewoptions {
-    @apply block md:float-right;
+    @apply md:float-right md:pr-2;
   }
 
   .menuitem_active {
