@@ -129,6 +129,27 @@ export default class BarChart extends Vue {
           }
       }
     });
+
+    const firstDataPoint = inputData[0];
+    const legend = chart.selectAll(".legend")
+      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 2 )+ ")"; });
+
+    legend.append("rect")
+      .attr("x", 4)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("class", (d: any) => cssClass(d) as any);
+
+    legend.append("text")
+      .attr("x", 4 + 12 + 4)
+      .attr("y", 6)
+      .attr("dy", ".35em")
+      // .style("text-anchor", "end")
+      .attr("class", "legendtext")
+      .text(function(d: any) { return d;});
   }
   /* eslint-enable  @typescript-eslint/no-explicit-any */
 }
@@ -157,6 +178,12 @@ export default class BarChart extends Vue {
 
     .chartText {
       @apply text-gray-700 dark:text-gray-300;
+    }
+
+    .legend {
+      .legendtext {
+        @apply text-xs;
+      }
     }
   }
 </style>
