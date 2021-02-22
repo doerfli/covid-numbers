@@ -183,6 +183,7 @@ export default class BarChart extends Vue {
     .legend {
       .legendtext {
         @apply text-xs;
+        @apply text-gray-700 dark:text-gray-300 fill-current;
       }
     }
   }
