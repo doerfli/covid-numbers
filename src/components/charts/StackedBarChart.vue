@@ -69,6 +69,8 @@ export default class BarChart extends Vue {
     const series = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
 
+    console.log(series);
+
     const x = d3.scaleBand()
       .domain(inputData.map((d: DataPoint) => d.xValue))
       .range([margin.left, width - margin.right])
@@ -99,7 +101,7 @@ export default class BarChart extends Vue {
       .data(series)
       .join("g")
         // .attr("fill", (d: any) => color(d[0]) as any)
-        .attr("class", (d: any) => cssClass(d[0]) as any)
+        .attr("class", (d: any) => { console.log(d); return cssClass(d.key) as any;})
       .selectAll("rect")
       .data(d => d)
       .join("rect")

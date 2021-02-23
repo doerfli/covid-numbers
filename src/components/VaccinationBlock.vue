@@ -69,8 +69,10 @@ export default class Cases extends Vue {
       } as DataPoint;
     });
 
+    console.log(origData);
+
     // reformat data for stacked chart display
-    return origData.map((d: DataPoint) => {
+    const stacks = origData.map((d: DataPoint) => {
       return {
         xValue: d.xValue,
         xValueDescr: d.xValueDescr,
@@ -82,6 +84,9 @@ export default class Cases extends Vue {
         yValueDescr: d.yValueDescr,
       } as DataPoint
     });
+
+    console.log(stacks);
+    return stacks;
   }
 }
 </script>
