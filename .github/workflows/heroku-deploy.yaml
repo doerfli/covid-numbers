@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Heroku deploy to covid19-data-prod
-        uses: akhileshns/heroku-deploy@v3.11.10 # This is the action
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "covid19-data-prod"
