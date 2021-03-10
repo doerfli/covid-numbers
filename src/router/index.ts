@@ -49,7 +49,7 @@ const routes: Array<RouteConfig> = [
     path: '/details/:canton',
     name: 'Details',
     component: Details,
-    props: route => ({ shortName: route.params.canton, indicatorsShown: route.query.showTrendIndicators })
+    props: route => ({ shortName: route.params.canton, showTrendIndicators: route.query.showTrendIndicators })
   },
   {
     path: '/trend',

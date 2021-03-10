@@ -7,9 +7,9 @@
 
     <BarChart class="barchart w-full h-96 mt-6 mb-3"
               v-bind:data="displayDataMacd"
-              v-if="indicatorsShown"/>
+              v-if="showTrendIndicators"/>
 
-    <div class="indicator_link" v-if="!indicatorsShown" v-on:click="toggleTrendIndicators">
+    <div class="indicator_link" v-if="!showTrendIndicators" v-on:click="toggleTrendIndicators">
       Show trend indicators in chart
     </div>
     <div v-else >
@@ -54,7 +54,7 @@ import StaticData from '@/store/staticdata'
     private daysInChart = 180;
     private rowsToRender = 90;
     @Prop({default: false })
-    private indicatorsShown!: boolean;
+    private showTrendIndicators!: boolean;
 
     private mounted() {
       this.scrollToTop();
@@ -84,7 +84,7 @@ import StaticData from '@/store/staticdata'
       const emaShort = this.emaShort;
       const emaLong = this.emaLong;
       return dataset.map((x: DailyDataSet, i: number) => {
-        if (!this.indicatorsShown) {
+        if (!this.showTrendIndicators) {
           return {
             xValue: formatDate(x.date),
             yValue: x.confCasesChg,
@@ -137,7 +137,7 @@ import StaticData from '@/store/staticdata'
     }
 
     private toggleTrendIndicators() {
-      this.indicatorsShown = ! this.indicatorsShown;
+      this.showTrendIndicators = ! this.showTrendIndicators;
     }
 
     private scrollToTop () {
