@@ -55,12 +55,3 @@ jobs:
         with:
           name: vue-app
           path: dist
-
-      - name: Deploy to Github pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          build_dir: dist
-          jekyll: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
