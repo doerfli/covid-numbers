@@ -56,6 +56,7 @@ import StaticData from '@/store/staticdata'
     private indicatorsShown = false;
 
     private mounted() {
+      this.scrollToTop();
       this.scroll();
       this.name = StaticData.getCantonFull(this.getCanton).name;
     }
@@ -138,7 +139,10 @@ import StaticData from '@/store/staticdata'
       this.indicatorsShown = ! this.indicatorsShown;
     }
 
-  }
+    private scrollToTop () {
+      window.scrollTo(0, 0)
+    }
+}
 </script>
 
 <style scoped>
