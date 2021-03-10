@@ -144,7 +144,7 @@ export default class IncidenceMiniChart extends Vue {
   }
 
   private detailsUrl() {
-    return `/details/${this.shortName}`;
+    return `/details/${this.shortName}?showTrendIndicators=true`;
   }
 
 }

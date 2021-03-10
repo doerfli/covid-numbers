@@ -53,7 +53,8 @@ import StaticData from '@/store/staticdata'
     private windowSize!: number;
     private daysInChart = 180;
     private rowsToRender = 90;
-    private indicatorsShown = false;
+    @Prop({default: false })
+    private indicatorsShown!: boolean;
 
     private mounted() {
       this.scrollToTop();
