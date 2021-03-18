@@ -61,8 +61,33 @@ const casesModule: Module<any, any> = {
         header: true,
         skipEmptyLines: true,
       });
+
+      // filter ar data
+      let dataset = parseResult.data.filter((row: any) => row.abbreviation_canton_and_fl !== "AR");
+
+      // workaround - get ar data from foph
+      const arUrl = "https://raw.githubusercontent.com/doerfli/foph-covid19-data/main/cases/cases_AR.csv";
+      const arResponse = await superagent.get(arUrl)
+      const arParseResult = Papa.parse(arResponse.text, {
+        header: true,
+        skipEmptyLines: true,
+      });
+
+      // merge with foph ar data
+      dataset = dataset.concat(arParseResult.data);
+      // and sort by date again
+      dataset.sort((a: any, b: any) => {
+        if ( a.date < b.date ){
+          return -1;
+        }
+        if ( a.date > b.date ){
+          return 1;
+        }
+        return 0;
+      });
+
       // console.log(parseResult);
-      const dataMap = new RecordsProcessor().process(parseResult.data);
+      const dataMap = new RecordsProcessor().process(dataset);
       commit("saveRecords", { dataMap });
     }
   },
