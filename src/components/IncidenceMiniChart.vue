@@ -115,19 +115,19 @@ export default class IncidenceMiniChart extends Vue {
     const signal = calculateSignal(macd);
     const trend = calculateTrend(macd, signal, 21);
 
-    const cls = "fas fa-long-arrow-alt-right fa-2x ";
+    const cls = "fas fa-2x ";
 
     switch (trend) {
       case Trend.UP_UP:
-        return cls + "transform -rotate-45 text-pink-300";
+        return cls + "fa-angle-double-up text-pink-300";
       case Trend.UP:
-        return cls + "transform -rotate-12 text-pink-300";
+        return cls + "fa-angle-up text-pink-300";
       case Trend.DOWN:
-        return cls + "transform rotate-12 text-emerald-400";
+        return cls + "fa-angle-down text-emerald-400";
       case Trend.DOWN_DOWN:
-        return cls + "transform rotate-45 text-emerald-400";
+        return cls + "fa-angle-double-down text-emerald-400";
       default:
-        return cls + "text-gray-400";
+        return cls + "fa-angle-right text-gray-400";
     }
   }
 
