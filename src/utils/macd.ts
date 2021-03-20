@@ -59,16 +59,17 @@ function calculateTrend(macd: any[], signal: Array<number>, range = 7): Trend {
     sumTrendAbs += Math.abs(diff);
   }
 
-  const avgTrendAbs =  sumTrendAbs / range;
-  const threshold = avgTrendAbs * range / 7;
-  // console.log(`trend: ${trend} / range: ${range} / avgTrendAbs: ${avgTrendAbs} / threshold: ${threshold}`)
+  const threshold = sumTrendAbs / 7;
+  const thresholdDouble = sumTrendAbs / 7 * 5;
 
   if (trend < threshold && trend > -threshold) {
     return Trend.SIDE;
+  } else if (trend > thresholdDouble) {
+    return Trend.UP_UP;
   } else if (trend > threshold) {
     return Trend.UP;
-  // } else if (trend < -threshold) {
-  //   return Trend.DOWN;
+  } else if (trend < -thresholdDouble) {
+    return Trend.DOWN_DOWN;
   } else {
     return Trend.DOWN;
   }
