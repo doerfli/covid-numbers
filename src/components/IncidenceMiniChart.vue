@@ -119,13 +119,13 @@ export default class IncidenceMiniChart extends Vue {
 
     switch (trend) {
       case Trend.UP_UP:
-        return cls + "fa-angle-double-up text-pink-300";
+        return cls + "fa-angle-double-up text-pink-500 dark:text-pink-300";
       case Trend.UP:
-        return cls + "fa-angle-up text-pink-300";
+        return cls + "fa-angle-up text-pink-500 dark:text-pink-300";
       case Trend.DOWN:
-        return cls + "fa-angle-down text-emerald-400";
+        return cls + "fa-angle-down text-emerald-500 dark:text-emerald-300";
       case Trend.DOWN_DOWN:
-        return cls + "fa-angle-double-down text-emerald-400";
+        return cls + "fa-angle-double-down text-emerald-500 dark:text-emerald-300";
       default:
         return cls + "fa-angle-right text-gray-400";
     }
