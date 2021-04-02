@@ -12,7 +12,7 @@ import DataPoint from '@/model/datapoint'
 @Component({
   components: {}
 })
-export default class BarChart extends Vue {
+export default class StackedBarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
