@@ -27,7 +27,7 @@ import StackedBarChart from '@/components/charts/StackedBarChart.vue'
 @Component({
   components: { StackedBarChart, HighlightLine, H2, BarChart }
 })
-export default class Cases extends Vue {
+export default class VaccinationBlock extends Vue {
 
   @Prop({ default: 28 })
   private daysToShow!: number;
