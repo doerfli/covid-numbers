@@ -12,13 +12,13 @@ import DataPoint from '@/model/datapoint'
 @Component({
   components: {}
 })
-export default class StackedBarChart extends Vue {
+export default class HorizontalStackedBarChart extends Vue {
 
   @Prop()
   private data!: Array<DataPoint>
 
   private leftMargin = 35;
-  private topMargin = 12;
+  private topMargin = 18;
   private bottomMargin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
@@ -53,9 +53,7 @@ export default class StackedBarChart extends Vue {
     if (dataPointsSize == 0) { return; }
 
     const min = 0;
-    const max = inputData.length > 0
-      ? (inputData.map((e) => (e.yValue ?? 0) + (e.y2Value ?? 0) + (e.y3Value ?? 0)).reduce((a, b) => Math.max(a, b))) * 1.01
-      : 1;
+    const max = 100;
     // console.log(`min: ${min} / max: ${max}`);
 
     // intialize chart
@@ -64,31 +62,31 @@ export default class StackedBarChart extends Vue {
     const height = this.$refs.chart.clientHeight - this.bottomMargin - this.topMargin;
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.leftMargin)}, ${this.topMargin})`);
-    const margin = ({top: 0, right: 0, bottom: 0, left: 0});
+    const margin = ({top: 0, right: 5, bottom: 16, left: 0});
 
     const series = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
 
     // console.log(series);
 
-    const x = d3.scaleBand()
+    const y = d3.scaleBand()
       .domain(inputData.map((d: DataPoint) => d.xValue))
-      .range([margin.left, width - margin.right])
+      .range([margin.top, height - margin.bottom])
       .padding(0.1);
 
-    const xAxis = (g: any) => g
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .attr("class", "xaxis")
-      .call(d3.axisBottom(x).tickSizeOuter(0))
+    const yAxis = (g: any) => g
+      .attr("transform", `translate(0,${width - margin.left})`)
+      .attr("class", "yaxis")
+      .call(d3.axisLeft(y).tickSizeOuter(0))
       .call((g: any) => g.selectAll(".domain").remove());
 
-    const y = d3.scaleLinear()
+    const x = d3.scaleLinear()
       .domain([min, max])
-      .rangeRound([height - margin.bottom, margin.top]);
+      .rangeRound([margin.left, width - margin.right]);
 
-    const yAxis = (g: any) => g
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(null, "s"))
+    const xAxis = (g: any) => g
+      .attr("transform", `translate(${margin.left},${margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(null, "s"))
       .call((g: any) => g.selectAll(".domain").remove());
 
     const cssClass = d3.scaleOrdinal()
@@ -108,10 +106,14 @@ export default class StackedBarChart extends Vue {
       .selectAll("rect")
       .data(d => d)
       .join("rect")
-        .attr("x", (d: any) => x(d.data.xValue) as number)
-        .attr("y", (d: any) => y(d[1]) as number)
-        .attr("height", (d: any) => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth());
+        .attr("y", (d: any) => y(d.data.xValue) as number)
+        .attr("x", (d: any) => x(d[0]) as number)
+        .attr("width", (d: any) => {
+          const t = x(d[1]) - x(d[0]) as number;
+          console.log(t);
+          return t;
+        })
+        .attr("height", y.bandwidth());
 
     chart.append("g")
       .call(xAxis);
@@ -119,29 +121,12 @@ export default class StackedBarChart extends Vue {
     chart.append("g")
       .call(yAxis);
 
-    // only show every 7th label
-    const labelOffset = dataPointsSize % 7;
-    const ticks = d3.selectAll(`#${this.chartId} .xaxis .tick`)
-    ticks.each(function (_, i) {
-      switch (i) {
-        // case 0:
-        case dataPointsSize - 1:
-          // ignore
-          break
-
-        default:
-          if ((i - labelOffset) % 7 != 0) {
-            d3.select(this).remove()
-          }
-      }
-    });
-
     const firstDataPoint = inputData[0];
     const legend = svg.selectAll(".legend")
       .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
       .enter().append("g")
       .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(" + ( 40 + i * 120 )+ ", 0)"; });
+      .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 120 )+ ", 2)"; });
 
     legend.append("rect")
       .attr("x", 4)

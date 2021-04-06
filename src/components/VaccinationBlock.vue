@@ -11,6 +11,9 @@
     <StackedBarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               />
+    <HorizontalStackedBarChart class="barchart w-full h-20 mt-2"
+                               v-bind:data="vaccProgressData"
+    />
   </div>
 </template>
 
@@ -19,13 +22,13 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import H2 from '@/components/base/H2.vue'
-import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
 import VaccDataSet from '@/model/vaccDataSet'
 import StackedBarChart from '@/components/charts/StackedBarChart.vue'
+import HorizontalStackedBarChart from '@/components/charts/HorizontalStackedBarChart.vue'
 
 @Component({
-  components: { StackedBarChart, HighlightLine, H2, BarChart }
+  components: { HorizontalStackedBarChart, StackedBarChart, H2, BarChart }
 })
 export default class VaccinationBlock extends Vue {
 
@@ -69,19 +72,64 @@ export default class VaccinationBlock extends Vue {
       } as DataPoint;
     });
 
-    console.log(origData);
+    // console.log(origData);
 
     // reformat data for stacked chart display
     const stacks = origData.map((d: DataPoint) => {
       return {
         xValue: d.xValue,
         xValueDescr: d.xValueDescr,
-        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
-        y3ValueDescr: d.y3ValueDescr,
-        y2Value: (d.y2Value ?? 0) - d.yValue,
-        y2ValueDescr: d.y2ValueDescr,
         yValue: d.yValue,
         yValueDescr: d.yValueDescr,
+        y2Value: (d.y2Value ?? 0) - d.yValue,
+        y2ValueDescr: d.y2ValueDescr,
+        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
+        y3ValueDescr: d.y3ValueDescr,
+      } as DataPoint
+    });
+
+    // console.log(stacks);
+    return stacks;
+  }
+
+  get vaccProgressData(): Array<DataPoint> {
+    // console.log("displayData " + this.getCanton);
+
+    const data = this.$store.getters["vacc/dataPerCanton"](this.canton) as Array<VaccDataSet>;
+
+    // console.log(1111);
+    // console.log(data);
+
+    // console.log(lastXDays);
+    const lastDay = data.slice(-1);
+
+    // limit to last x days and map to datapoints for display
+    const origData =  lastDay.map((x: VaccDataSet, i: number) => {
+      return {
+        xValue: formatDate(x.date),
+        xValueDescr: "Date",
+        yValue: x.fullyVaccinatedPer100,
+        yValueDescr: "Fully vaccinated",
+        y2Value: x.oneDoseVaccinatedPer100,
+        y2ValueDescr: "First dose rcvd",
+        y3Value: 100,
+        y3ValueDescr: "Remaining",
+      } as DataPoint;
+    });
+
+    // console.log(origData);
+
+    // reformat data for stacked chart display
+    const stacks = origData.map((d: DataPoint) => {
+      return {
+        xValue: d.xValue,
+        xValueDescr: d.xValueDescr,
+        yValue: d.yValue,
+        yValueDescr: d.yValueDescr,
+        y2Value: (d.y2Value ?? 0),
+        y2ValueDescr: d.y2ValueDescr,
+        y3Value: (d.y3Value ?? 0) - ((d.y2Value ?? 0) + (d.yValue ?? 0)),
+        y3ValueDescr: d.y3ValueDescr,
       } as DataPoint
     });
 
