@@ -87,14 +87,24 @@ export  default class VaccRecordsProcessor {
 
   // eslint-disable-next-line
   private static parseRecord (val: any): VaccDataSet {
+    const deliveredTotal = parseFloat(val.deliveredTotal)
+    const deliveredPer100 = parseFloat(val.deliveredPer100)
+    const administeredTotal = parseFloat(val.administeredTotal)
+    const administeredPer100 = parseFloat(val.administeredPer100)
+    const fullyVaccinatedTotal = parseFloat(val.fullyVaccinatedTotal)
+    const fullyVaccinatedPer100 = parseFloat(val.fullyVaccinatedPer100)
+    const oneDoseVaccinatedTotal = administeredTotal - fullyVaccinatedTotal
+    const oneDoseVaccinatedPer100 =  administeredPer100 - fullyVaccinatedPer100
     return {
       date: val.date,
-      deliveredTotal: parseFloat(val.deliveredTotal) || undefined,
-      deliveredPer100: parseFloat(val.deliveredPer100) || undefined,
-      administeredTotal: parseFloat(val.administeredTotal) || undefined,
-      administeredPer100: parseFloat(val.administeredPer100) || undefined,
-      fullyVaccinatedTotal: parseFloat(val.fullyVaccinatedTotal) || undefined,
-      fullyVaccinatedPer100: parseFloat(val.fullyVaccinatedPer100) || undefined,
+      deliveredTotal: deliveredTotal || undefined,
+      deliveredPer100: deliveredPer100 || undefined,
+      administeredTotal: administeredTotal || undefined,
+      administeredPer100: administeredPer100 || undefined,
+      fullyVaccinatedTotal: fullyVaccinatedTotal || undefined,
+      fullyVaccinatedPer100: fullyVaccinatedPer100 || undefined,
+      oneDoseVaccinatedTotal: oneDoseVaccinatedTotal || undefined,
+      oneDoseVaccinatedPer100: oneDoseVaccinatedPer100 || undefined
     } as VaccDataSet;
   }
 
