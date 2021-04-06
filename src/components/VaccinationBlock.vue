@@ -11,7 +11,7 @@
     <StackedBarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               />
-    <HorizontalStackedBarChart class="barchart w-full h-20"
+    <HorizontalStackedBarChart class="barchart w-full h-20 mt-2"
                                v-bind:data="vaccProgressData"
     />
   </div>

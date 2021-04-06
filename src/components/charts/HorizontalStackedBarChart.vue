@@ -18,7 +18,7 @@ export default class HorizontalStackedBarChart extends Vue {
   private data!: Array<DataPoint>
 
   private leftMargin = 35;
-  private topMargin = 12;
+  private topMargin = 18;
   private bottomMargin = 20;
   private eid = Math.floor(Math.random() * 10000);
 
@@ -62,7 +62,7 @@ export default class HorizontalStackedBarChart extends Vue {
     const height = this.$refs.chart.clientHeight - this.bottomMargin - this.topMargin;
     const chart = svg.append('g')
       .attr('transform', `translate(${(this.leftMargin)}, ${this.topMargin})`);
-    const margin = ({top: 0, right: 5, bottom: 19, left: 0});
+    const margin = ({top: 0, right: 5, bottom: 16, left: 0});
 
     const series = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
@@ -121,25 +121,25 @@ export default class HorizontalStackedBarChart extends Vue {
     chart.append("g")
       .call(yAxis);
 
-    // const firstDataPoint = inputData[0];
-    // const legend = svg.selectAll(".legend")
-    //   .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
-    //   .enter().append("g")
-    //   .attr("class", "legend")
-    //   .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 120 )+ ", 0)"; });
-    //
-    // legend.append("rect")
-    //   .attr("x", 4)
-    //   .attr("width", 12)
-    //   .attr("height", 12)
-    //   .attr("class", (d: any) => cssClass(d) as any);
-    //
-    // legend.append("text")
-    //   .attr("x", 4 + 12 + 4)
-    //   .attr("y", 10)
-    //   // .attr("dy", ".35em")
-    //   .attr("class", "legendtext")
-    //   .text(function(d: any) { return d;});
+    const firstDataPoint = inputData[0];
+    const legend = svg.selectAll(".legend")
+      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 120 )+ ", 2)"; });
+
+    legend.append("rect")
+      .attr("x", 4)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("class", (d: any) => cssClass(d) as any);
+
+    legend.append("text")
+      .attr("x", 4 + 12 + 4)
+      .attr("y", 10)
+      // .attr("dy", ".35em")
+      .attr("class", "legendtext")
+      .text(function(d: any) { return d;});
   }
   /* eslint-enable  @typescript-eslint/no-explicit-any */
 }
