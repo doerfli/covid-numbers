@@ -19,13 +19,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
 import H2 from '@/components/base/H2.vue'
-import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
 import VaccDataSet from '@/model/vaccDataSet'
 import StackedBarChart from '@/components/charts/StackedBarChart.vue'
 
 @Component({
-  components: { StackedBarChart, HighlightLine, H2, BarChart }
+  components: { StackedBarChart, H2, BarChart }
 })
 export default class VaccinationBlock extends Vue {
 
