@@ -68,7 +68,7 @@ export default class VaccinationBlock extends Vue {
       } as DataPoint;
     });
 
-    console.log(origData);
+    // console.log(origData);
 
     // reformat data for stacked chart display
     const stacks = origData.map((d: DataPoint) => {
@@ -84,7 +84,7 @@ export default class VaccinationBlock extends Vue {
       } as DataPoint
     });
 
-    console.log(stacks);
+    // console.log(stacks);
     return stacks;
   }
 }

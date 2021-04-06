@@ -69,7 +69,7 @@ export default class StackedBarChart extends Vue {
     const series = d3.stack()
       .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
 
-    console.log(series);
+    // console.log(series);
 
     const x = d3.scaleBand()
       .domain(inputData.map((d: DataPoint) => d.xValue))
@@ -101,7 +101,10 @@ export default class StackedBarChart extends Vue {
       .data(series)
       .join("g")
         // .attr("fill", (d: any) => color(d[0]) as any)
-        .attr("class", (d: any) => { console.log(d); return cssClass(d.key) as any;})
+        .attr("class", (d: any) => {
+          // console.log(d);
+          return cssClass(d.key) as any;
+        })
       .selectAll("rect")
       .data(d => d)
       .join("rect")
