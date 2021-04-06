@@ -93,8 +93,8 @@ export  default class VaccRecordsProcessor {
     const administeredPer100 = parseFloat(val.administeredPer100)
     const fullyVaccinatedTotal = parseFloat(val.fullyVaccinatedTotal)
     const fullyVaccinatedPer100 = parseFloat(val.fullyVaccinatedPer100)
-    const oneDoseVaccinatedTotal = administeredTotal - fullyVaccinatedTotal
-    const oneDoseVaccinatedPer100 =  administeredPer100 - fullyVaccinatedPer100
+    const oneDoseVaccinatedTotal = administeredTotal - (fullyVaccinatedTotal * 2)
+    const oneDoseVaccinatedPer100 =  administeredPer100 - (fullyVaccinatedPer100 * 2)
     return {
       date: val.date,
       deliveredTotal: deliveredTotal || undefined,

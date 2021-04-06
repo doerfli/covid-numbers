@@ -11,6 +11,9 @@
     <StackedBarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               />
+    <StackedBarChart class="barchart w-full h-80"
+                     v-bind:data="vaccProgressData"
+    />
   </div>
 </template>
 
@@ -85,6 +88,51 @@ export default class VaccinationBlock extends Vue {
     });
 
     // console.log(stacks);
+    return stacks;
+  }
+
+  get vaccProgressData(): Array<DataPoint> {
+    // console.log("displayData " + this.getCanton);
+
+    const data = this.$store.getters["vacc/dataPerCanton"](this.canton) as Array<VaccDataSet>;
+
+    // console.log(1111);
+    // console.log(data);
+
+    // console.log(lastXDays);
+    const lastDay = data.slice(-1);
+
+    // limit to last x days and map to datapoints for display
+    const origData =  lastDay.map((x: VaccDataSet, i: number) => {
+      return {
+        xValue: formatDate(x.date),
+        xValueDescr: "Date",
+        yValue: x.fullyVaccinatedPer100,
+        yValueDescr: "Fully vaccinated",
+        y2Value: x.oneDoseVaccinatedPer100,
+        y2ValueDescr: "First dose",
+        y3Value: 100,
+        y3ValueDescr: "Remaining",
+      } as DataPoint;
+    });
+
+    // console.log(origData);
+
+    // reformat data for stacked chart display
+    const stacks = origData.map((d: DataPoint) => {
+      return {
+        xValue: d.xValue,
+        xValueDescr: d.xValueDescr,
+        yValue: d.yValue,
+        yValueDescr: d.yValueDescr,
+        y2Value: (d.y2Value ?? 0),
+        y2ValueDescr: d.y2ValueDescr,
+        y3Value: (d.y3Value ?? 0) - ((d.y2Value ?? 0) + (d.yValue ?? 0)),
+        y3ValueDescr: d.y3ValueDescr,
+      } as DataPoint
+    });
+
+    console.log(stacks);
     return stacks;
   }
 }
