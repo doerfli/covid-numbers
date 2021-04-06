@@ -11,8 +11,8 @@
     <StackedBarChart class="barchart w-full h-80"
               v-bind:data="displayData"
               />
-    <StackedBarChart class="barchart w-full h-80"
-                     v-bind:data="vaccProgressData"
+    <HorizontalStackedBarChart class="barchart w-full h-20"
+                               v-bind:data="vaccProgressData"
     />
   </div>
 </template>
@@ -25,9 +25,10 @@ import H2 from '@/components/base/H2.vue'
 import formatDate from '@/utils/format-date'
 import VaccDataSet from '@/model/vaccDataSet'
 import StackedBarChart from '@/components/charts/StackedBarChart.vue'
+import HorizontalStackedBarChart from '@/components/charts/HorizontalStackedBarChart.vue'
 
 @Component({
-  components: { StackedBarChart, H2, BarChart }
+  components: { HorizontalStackedBarChart, StackedBarChart, H2, BarChart }
 })
 export default class VaccinationBlock extends Vue {
 
@@ -78,12 +79,12 @@ export default class VaccinationBlock extends Vue {
       return {
         xValue: d.xValue,
         xValueDescr: d.xValueDescr,
-        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
-        y3ValueDescr: d.y3ValueDescr,
-        y2Value: (d.y2Value ?? 0) - d.yValue,
-        y2ValueDescr: d.y2ValueDescr,
         yValue: d.yValue,
         yValueDescr: d.yValueDescr,
+        y2Value: (d.y2Value ?? 0) - d.yValue,
+        y2ValueDescr: d.y2ValueDescr,
+        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
+        y3ValueDescr: d.y3ValueDescr,
       } as DataPoint
     });
 
