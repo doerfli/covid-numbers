@@ -1,0 +1,21 @@
+name: Build container
+
+on: [push]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
+      - uses: rlespinasse/github-slug-action@v2.x
+      - run: docker build -t ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }} .
+      - run: docker push ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }}
+  dockerArm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
+      - uses: rlespinasse/github-slug-action@v2.x
+      - run: docker build -f Dockerfile_arm64v8 -t ghcr.io/doerfli/covid-numbers-arm64:${{ env.GITHUB_REF_SLUG }} .
+      - run: docker push ghcr.io/doerfli/covid-numbers-arm64:${{ env.GITHUB_REF_SLUG }}
