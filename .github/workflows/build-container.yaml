@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u doerfli --password-stdin
+      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
       - uses: rlespinasse/github-slug-action@v2.x
       - run: docker build -t ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }} .
       - run: docker push ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }}
