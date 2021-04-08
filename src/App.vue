@@ -26,7 +26,7 @@ import Footer from '@/components/Footer.vue'
 export default class App extends Vue {
 
   public mounted() {
-    console.log("App.mounted");
+    console.log("App component mounted");
     this.$store.dispatch("viewProps/init");
     this.$store.dispatch("cases/fetch");
     this.$store.dispatch("vacc/fetch");
