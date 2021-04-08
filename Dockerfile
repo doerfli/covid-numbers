@@ -1,8 +1,8 @@
-FROM node:lts-alpine as build
+FROM node:current-alpine as build
 WORKDIR /app
 ADD . .
-RUN yarn install
-RUN yarn run build
+RUN npm install
+RUN npm run build
 
 FROM nginx:stable-alpine
 EXPOSE 80

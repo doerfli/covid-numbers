@@ -12,32 +12,13 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '15'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: NPM install
+        run: npm install
 
-      - uses: actions/cache@v2.1.4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Yarn install
-        run: |
-          yarn policies set-version
-          yarn install
-
-      - name: set environment variables
-        uses: allenevans/set-env@v2.0.1
-        with:
-          DIST_SUBDIR: '/covid-numbers/'
-
-      - name: Yarn run build
-        run: yarn run build
+      - name: NPM run build
+        run: npm run build
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
