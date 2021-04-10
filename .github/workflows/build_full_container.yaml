@@ -1,4 +1,4 @@
-name: Build in containers
+name: Full build inside container
 
 on: [workflow_dispatch]
 

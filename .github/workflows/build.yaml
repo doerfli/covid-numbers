@@ -1,4 +1,4 @@
-name: Build static application
+name: Build and deploy application
 
 on: [push]
 
@@ -45,6 +45,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: vue-app
+          path: dist
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
       - uses: rlespinasse/github-slug-action@v2.x
       - run: docker build -t ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }} .
@@ -55,6 +60,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: vue-app
+          path: dist
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
       - uses: rlespinasse/github-slug-action@v2.x
       - run: docker build -f Dockerfile_arm64v8 -t ghcr.io/doerfli/covid-numbers-arm64:${{ env.GITHUB_REF_SLUG }} .
@@ -66,6 +76,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2.3.4
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: vue-app
+          path: dist
       - name: Heroku deploy to covid19-data-prod
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
