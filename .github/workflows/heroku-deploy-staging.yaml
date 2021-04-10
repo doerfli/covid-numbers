@@ -34,6 +34,23 @@ jobs:
       - name: NPM run build
         run: npm run build
 
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: vue-app
+          path: |
+            dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: vue-app
+          path: dist
       - name: Heroku deploy to covid19-data-staging
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
