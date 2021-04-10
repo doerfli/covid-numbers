@@ -4,7 +4,6 @@ on: [workflow_dispatch]
 
 jobs:
   container:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
@@ -13,7 +12,6 @@ jobs:
       - run: docker build -f Docker_fullbuild.Dockerfile -t ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }} .
       - run: docker push ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }}
   containerArm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
