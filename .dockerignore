@@ -1,5 +1,5 @@
-.idea/
+.devcontainer/
 .git/
 .github/
-dist/
+.idea/
 node_modules/
