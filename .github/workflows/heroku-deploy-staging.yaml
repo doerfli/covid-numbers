@@ -5,6 +5,7 @@ on: workflow_dispatch
 
 jobs:
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
