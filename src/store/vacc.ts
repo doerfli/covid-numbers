@@ -7,7 +7,7 @@ import VaccRecordsProcessor from '@/utils/vacc-records-processor'
 
 // eslint-disable-next-line
 const vaccModule: Module<any, any> = {
-  namespaced: true as true,
+  namespaced: true,
   state: {
     vacc: [] as VaccDataSet[]
   },

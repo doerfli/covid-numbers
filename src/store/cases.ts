@@ -33,7 +33,7 @@ function calculateAverageValue (newCases: Array<DailyDiff>, averageWindowSize: n
 
 // eslint-disable-next-line
 const casesModule: Module<any, any> = {
-  namespaced: true as true,
+  namespaced: true,
   state: {
     cases: [] as CantonData[]
   },

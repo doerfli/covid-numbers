@@ -17,7 +17,7 @@ function persistThemeToLocalStorage (theme: string) {
 
 // eslint-disable-next-line
 const viewpropsModule: Module<any, any> = {
-  namespaced: true as true,
+  namespaced: true,
   state: {
     cantons: [] as CantonConfig[],
     daysToShow: 30,
