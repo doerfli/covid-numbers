@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: rlespinasse/github-slug-action@v2.x
       - name: Download built vue-app
         uses: actions/download-artifact@v2
         with:
@@ -53,11 +54,9 @@ jobs:
       - name: Login to registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u doerfli --password-stdin
       - name: Build container
-        uses: rlespinasse/github-slug-action@v2.x
         run: docker build -t ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }} .
       - name: Publish container
         if: github.actor != 'dependabot[bot]'
-        uses: rlespinasse/github-slug-action@v2.x
         run: docker push ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }}
 
   deploy:
