@@ -88,6 +88,9 @@ jobs:
         with:
           name: vue-app
           path: dist
+      - name: Copy index.html to 200.html
+        # (make router history mode work on surge)
+        run: cp dist/index.html dist/200.html
       - name: Deploy to surge.covid19-data.ch
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
