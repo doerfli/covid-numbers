@@ -21,7 +21,7 @@
     </div>
     <div class="disclaimer">
       <span>Disclaimer</span>:
-      All data shown on this page is based on the data provided by <Ref uri="https://github.com/openZH/">OpenZH</Ref>.
+      All data shown on this page is based on the data provided by <Ref uri="https://github.com/openZH/">OpenZH</Ref> and <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>.
       Calculations are done to the best of my knowledge, but i do not guarantee correctness.
       <br/>
       If you find a mistake, I will be happy to fix it.
