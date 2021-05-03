@@ -77,3 +77,21 @@ jobs:
           heroku_app_name: "covid19-data-prod"
           heroku_email: "linux@doerf.li"
           usedocker: true
+
+  deploy_surge:
+    needs: build
+    runs-on: ubuntu-latest
+    #if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download built vue-app
+        uses: actions/download-artifact@v2
+        with:
+          name: vue-app
+          path: dist
+      - name: Deploy to surge.covid19-data.ch
+        uses: dswistowski/surge-sh-action@v1.0.1
+        with:
+          domain: 'surge.covid19-data.ch'
+          project: 'dist'
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
