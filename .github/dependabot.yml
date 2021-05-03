@@ -14,6 +14,8 @@ updates:
         versions: ["8.x"]
       - dependency-name: "sass-loader"
         versions: [ "11.x" ]
+      - dependency-name: "eslint"
+        versions: [ "7.x" ]
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
