@@ -94,7 +94,7 @@ jobs:
       - name: Deploy to surge.covid19-data.ch
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
-          domain: 'surge.covid19-data.ch'
+          domain: 'www.covid19-data.ch'
           project: 'dist'
           login: ${{ secrets.SURGE_LOGIN }}
           token: ${{ secrets.SURGE_TOKEN }}
