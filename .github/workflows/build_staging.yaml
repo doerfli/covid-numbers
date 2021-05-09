@@ -1,4 +1,4 @@
-name: Build and deploy to stating
+name: Build and deploy to staging
 
 on: workflow_dispatch
 
