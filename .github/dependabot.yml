@@ -16,6 +16,7 @@ updates:
         versions: [ "11.x" ]
       - dependency-name: "eslint"
         versions: [ "7.x" ]
+    open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
