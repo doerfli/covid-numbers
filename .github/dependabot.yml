@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     ignore:
       - dependency-name: "postcss"
         versions: ["8.x"]
@@ -16,12 +16,12 @@ updates:
         versions: [ "11.x" ]
       - dependency-name: "eslint"
         versions: [ "7.x" ]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 25
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
