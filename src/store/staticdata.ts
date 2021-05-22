@@ -10,7 +10,7 @@ export default class StaticData {
     { short: "FR", name: "Freiburg", population: 321783 },
     { short: "GE", name: "Genève", population: 504128 },
     { short: "GL", name: "Glarus", population: 40590 },
-    { short: "GR", name: "Genève", population: 199021 },
+    { short: "GR", name: "Graubünden", population: 199021 },
     { short: "JU", name: "Jura", population: 73584 },
     { short: "LU", name: "Luzern", population: 413120 },
     { short: "NE", name: "Neuchâtel", population: 176496 },
