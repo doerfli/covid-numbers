@@ -16,19 +16,13 @@ updates:
         versions: [ "11.x" ]
       - dependency-name: "eslint"
         versions: [ "7.x" ]
-    reviewers:
-      - "doerfli"
     open-pull-requests-limit: 25
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "doerfli"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "doerfli"
     
