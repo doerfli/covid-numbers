@@ -10,6 +10,8 @@
            @click="setDaysToShow(90)">Last 90 days</div>
       <div :class="getDaysToShowClass(180)"
            @click="setDaysToShow(180)">Last 180 days</div>
+      <div :class="getDaysToShowClass(365)"
+           @click="setDaysToShow(365)">Last 365 days</div>
     </div>
     <div class="flex flex-wrap">
       <div class="py-2 pr-2">Cantons: </div>
