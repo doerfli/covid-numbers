@@ -33,14 +33,10 @@ jobs:
       - name: NPM run build
         run: npm run build
 
-      - name: Copy index.html to 200.html
-        # (make router history mode work on surge)
-        run: cp dist/index.html dist/200.html
-
-      - name: Deploy to surge.covid19-data.ch
-        uses: dswistowski/surge-sh-action@v1.0.1
+      - name: Heroku deploy to covid19-data-staging
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          domain: 'covid-numbers-staging.surge.sh'
-          project: 'dist'
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "covid19-data-staging"
+          heroku_email: "linux@doerf.li"
+          usedocker: true

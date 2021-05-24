@@ -60,42 +60,22 @@ jobs:
         if: github.actor != 'dependabot[bot]'
         run: docker push ghcr.io/doerfli/covid-numbers:${{ env.GITHUB_REF_SLUG }}
 
-#  deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    if: github.ref == 'refs/heads/main'
-#    steps:
-#      - uses: actions/checkout@v2.3.4
-#      - name: Download built vue-app
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: vue-app
-#          path: dist
-#      - name: Heroku deploy to covid19-data-prod
-#        uses: akhileshns/heroku-deploy@v3.12.12
-#        with:
-#          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-#          heroku_app_name: "covid19-data-prod"
-#          heroku_email: "linux@doerf.li"
-#          usedocker: true
-
-  deploy_surge:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
+      - uses: actions/checkout@v2.3.4
       - name: Download built vue-app
         uses: actions/download-artifact@v2
         with:
           name: vue-app
           path: dist
-      - name: Copy index.html to 200.html
-        # (make router history mode work on surge)
-        run: cp dist/index.html dist/200.html
-      - name: Deploy to surge.covid19-data.ch
-        uses: dswistowski/surge-sh-action@v1.0.1
+      - name: Heroku deploy to covid19-data-prod
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          domain: 'covid-numbers.surge.sh'
-          project: 'dist'
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "covid19-data-prod"
+          heroku_email: "linux@doerf.li"
+          usedocker: true
+
