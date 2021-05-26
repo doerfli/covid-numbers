@@ -34,6 +34,7 @@ import getProperty from '@/utils/get-property'
 import DailyDataSet from '@/model/dailyDataSet'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
+import moment from "moment/moment";
 
 @Component({
   components: { HighlightLine, H2, BarChart }
@@ -82,19 +83,25 @@ export default class Cases extends Vue {
     // console.log(1111);
     // console.log(data);
 
-    // console.log(lastXDays);
+    // console.log(dataset);
     const avgFieldName = this.fieldToShow + "Avg" as any;
 
-    const lastXDays = data.slice(-this.daysToShow);
+    // limit to last x days
+    let dataset = data.slice(-this.daysToShow);
 
-    // limit to last x days and map to datapoints for display
-    const result = lastXDays.map((x: DailyDataSet, i: number) => {
+    if (this.daysToShow > 180) {
+      // aggregate per week
+      dataset = this.aggregateDataPerWeek(dataset);
+    }
+
+    // map to datapoints for display
+    const result = dataset.map((x: DailyDataSet, i: number) => {
       return {
         xValue: formatDate(x.date),
         xValueDescr: "Date",
         yValue: getProperty(x, this.fieldToShow),
         yValueDescr: "Count",
-        y2Value: (i < lastXDays.length - 1) ? getProperty(x, avgFieldName) : null,
+        y2Value: (i < dataset.length - 1) ? getProperty(x, avgFieldName) : null,
         y2ValueDescr: "Average",
       } as DataPoint;
     });
@@ -103,6 +110,48 @@ export default class Cases extends Vue {
     this.highlightDataPoint = result[result.length - 2];
 
     return result;
+  }
+
+  private aggregateDataPerWeek(dataset: DailyDataSet[]) {
+    const x = dataset.reduce(function (weekMap: Map<string, DailyDataSet>, currentDay: DailyDataSet) {
+      const week = moment(currentDay.date, "YYYY-MM-DD").week().toString();
+      if (weekMap.has(week)) {
+        const wk = weekMap.get(week) as DailyDataSet;
+        weekMap.set(week, {
+          date: wk.date,
+          confCases: wk.confCases + currentDay.confCases,
+          confCasesChg: wk.confCasesChg + currentDay.confCasesChg,
+          confCasesChgAvg: wk.confCasesChgAvg + currentDay.confCasesChgAvg,
+          currHosp: wk.currHosp + currentDay.currHosp,
+          currHospChg: wk.currHospChg + currentDay.currHospChg,
+          currHospAvg: wk.currHospAvg + currentDay.currHospAvg,
+          currIcu: wk.currIcu + currentDay.currIcu,
+          currIcuChg: wk.currIcuChg + currentDay.currIcuChg,
+          currIcuAvg: wk.currIcuAvg + currentDay.currIcuAvg,
+          deceased: wk.deceased + currentDay.deceased,
+          deceasedChg: wk.deceasedChg + currentDay.deceasedChg,
+          deceasedChgAvg: wk.deceasedChgAvg + currentDay.deceasedChgAvg,
+        } as DailyDataSet);
+      } else {
+        weekMap.set(week, {
+          date: currentDay.date,
+          confCases: currentDay.confCases,
+          confCasesChg: currentDay.confCasesChg,
+          confCasesChgAvg: currentDay.confCasesChgAvg,
+          currHosp: currentDay.currHosp,
+          currHospChg: currentDay.currHospChg,
+          currHospAvg: currentDay.currHospAvg,
+          currIcu: currentDay.currIcu,
+          currIcuChg: currentDay.currIcuChg,
+          currIcuAvg: currentDay.currIcuAvg,
+          deceased: currentDay.deceased,
+          deceasedChg: currentDay.deceasedChg,
+          deceasedChgAvg: currentDay.deceasedChgAvg,
+        } as DailyDataSet);
+      }
+      return weekMap;
+    }, new Map()).values();
+    return [...x];
   }
 
   private detailsUrl() {
