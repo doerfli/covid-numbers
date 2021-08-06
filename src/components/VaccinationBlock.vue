@@ -67,8 +67,8 @@ export default class VaccinationBlock extends Vue {
         yValueDescr: "Fully vaccinated",
         y2Value: x.administeredTotal,
         y2ValueDescr: "Administered",
-        y3Value: x.deliveredTotal,
-        y3ValueDescr: "Delivered",
+        // y3Value: x.deliveredTotal,
+        // y3ValueDescr: "Delivered",
       } as DataPoint;
     });
 
@@ -83,8 +83,8 @@ export default class VaccinationBlock extends Vue {
         yValueDescr: d.yValueDescr,
         y2Value: (d.y2Value ?? 0) - d.yValue,
         y2ValueDescr: d.y2ValueDescr,
-        y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
-        y3ValueDescr: d.y3ValueDescr,
+        // y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
+        // y3ValueDescr: d.y3ValueDescr,
       } as DataPoint
     });
 
