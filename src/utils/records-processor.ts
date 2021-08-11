@@ -19,6 +19,10 @@ export  default class RecordsProcessor {
     records.forEach((val: any) => {
       // console.log(val);
 
+      if (val.date < "2020-01-01") {
+        return;
+      }
+
       const canton = val.abbreviation_canton_and_fl;
       if (canton === "FL") {
         return;
