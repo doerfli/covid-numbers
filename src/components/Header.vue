@@ -25,7 +25,10 @@
       <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
     </div>
     <div :class="getClass('Vaccinations')">
-      <router-link :to="{ name: 'Vaccinations' }">Vaccinations</router-link>
+      <router-link :to="{ name: 'Vaccinations' }">Vaccinations total </router-link>
+    </div>
+    <div :class="getClass('VaccinationsChg')">
+      <router-link :to="{ name: 'VaccinationsChg' }">Vaccinations per day</router-link>
     </div>
     <span v-if="! isDetailsPage()">
       <div @click="toggleViewOptions"

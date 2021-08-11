@@ -18,6 +18,10 @@ export  default class VaccRecordsProcessor {
     records.forEach((val: any) => {
       // console.log(val);
 
+      if (val.date < "2020-01-01") {
+        return;
+      }
+
       const canton = val.canton;
       if (canton === "FL" || canton === "CHFL") {
         return;
@@ -36,6 +40,11 @@ export  default class VaccRecordsProcessor {
 
       const cantonData = dataMap.get(canton);
       if (dataMap.has(canton) && cantonData !== undefined) {
+        const yesterdaysData = cantonData.slice(-1);
+        if (yesterdaysData.length > 0) {
+          record.administeredChg = record.administeredTotal - yesterdaysData[0].administeredTotal;
+          record.fullyVaccinatedChg = record.fullyVaccinatedTotal - cantonData.slice(-1)[0].fullyVaccinatedTotal;
+        }
         cantonData.push(record);
       } else {
         console.log("undefined dataMap entry for " + canton);
@@ -100,11 +109,14 @@ export  default class VaccRecordsProcessor {
       deliveredTotal: deliveredTotal || undefined,
       deliveredPer100: deliveredPer100 || undefined,
       administeredTotal: administeredTotal || undefined,
+      administeredChg: 0,
       administeredPer100: administeredPer100 || undefined,
       fullyVaccinatedTotal: fullyVaccinatedTotal || undefined,
+      fullyVaccinatedChg: 0,
       fullyVaccinatedPer100: fullyVaccinatedPer100 || undefined,
       oneDoseVaccinatedTotal: oneDoseVaccinatedTotal || undefined,
-      oneDoseVaccinatedPer100: oneDoseVaccinatedPer100 || undefined
+      oneDoseVaccinatedChg: 0,
+      oneDoseVaccinatedPer100: oneDoseVaccinatedPer100 || undefined,
     } as VaccDataSet;
   }
 

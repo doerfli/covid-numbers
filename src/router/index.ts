@@ -10,6 +10,7 @@ import Details from '@/views/Details.vue'
 import Trend from '@/views/Trend.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 import Vaccinations from '@/views/Vaccinations.vue'
+import VaccinationsChg from "@/views/VaccinationsChg.vue";
 
 Vue.use(VueRouter)
 
@@ -58,9 +59,13 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/vaccinations',
-    alias: '/',
     name: 'Vaccinations',
     component: Vaccinations
+  },
+  {
+    path: '/vaccinations/chg',
+    name: 'VaccinationsChg',
+    component: VaccinationsChg
   },
   { path: '*',
     name: " NotFound",
