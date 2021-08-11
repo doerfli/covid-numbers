@@ -16,6 +16,8 @@ module.exports = {
         'https://covid19-data.ch/incidence-7-days',
         'https://covid19-data.ch/incidence-14-days',
         'https://covid19-data.ch/trend',
+        'https://covid19-data.ch/vaccinations',
+        'https://covid19-data.ch/vaccinations/chg',
       ],
       defaults: {
         changefreq: 'daily',
