@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@types/d3": "^7.0.0",
     "@types/papaparse": "^5.2.6",
-    "@types/superagent": "^4.1.12",
+    "@types/superagent": "^4.1.13",
     "core-js": "^3.17.2",
     "csv-parse": "^4.16.3",
     "d3": "^7.0.1",
