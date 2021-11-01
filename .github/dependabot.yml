@@ -15,12 +15,15 @@ updates:
       - dependency-name: "sass-loader"
         versions: [ "11.x", "12.x" ]
       - dependency-name: "eslint"
-        versions: [ "7.x" ]
+        versions: [ "7.x", "8.x" ]
     open-pull-requests-limit: 25
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "monthly"
+    ignore:
+      - dependency-name: "node"
+        versions: [ "17-alpine" ]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
