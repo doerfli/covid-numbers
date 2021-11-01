@@ -21,6 +21,9 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    ignore:
+      - dependency-name: "node"
+        versions: [ "17-alpine" ]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
