@@ -46,51 +46,6 @@ export default class VaccinationBlock extends Vue {
     return this.name;
   }
 
-  get displayData(): Array<DataPoint> {
-    // console.log("displayData " + this.getCanton);
-
-    const data = this.$store.getters["vacc/dataPerCanton"](this.canton) as Array<VaccDataSet>;
-
-    // console.log(1111);
-    // console.log(data);
-
-    // console.log(lastXDays);
-    const lastXDays = data.slice(-this.daysToShow);
-
-    // limit to last x days and map to datapoints for display
-    const origData =  lastXDays.map((x: VaccDataSet, i: number) => {
-      return {
-        xValue: formatDate(x.date),
-        xValueDescr: "Date",
-        yValue: x.fullyVaccinatedTotal,
-        yValueDescr: "Fully vaccinated",
-        y2Value: x.administeredTotal,
-        y2ValueDescr: "Administered",
-        // y3Value: x.deliveredTotal,
-        // y3ValueDescr: "Delivered",
-      } as DataPoint;
-    });
-
-    // console.log(origData);
-
-    // reformat data for stacked chart display
-    const stacks = origData.map((d: DataPoint) => {
-      return {
-        xValue: d.xValue,
-        xValueDescr: d.xValueDescr,
-        yValue: d.yValue,
-        yValueDescr: d.yValueDescr,
-        y2Value: (d.y2Value ?? 0) - d.yValue,
-        y2ValueDescr: d.y2ValueDescr,
-        // y3Value: (d.y3Value ?? 0) - (d.y2Value ?? 0),
-        // y3ValueDescr: d.y3ValueDescr,
-      } as DataPoint
-    });
-
-    // console.log(stacks);
-    return stacks;
-  }
-
   get vaccProgressData(): Array<DataPoint> {
     // console.log("displayData " + this.getCanton);
 
@@ -139,10 +94,6 @@ export default class VaccinationBlock extends Vue {
 </script>
 
 <style scoped>
-  .details_link {
-    @apply px-2;
-    @apply text-indigo-700 hover:text-indigo-500;
-    @apply dark:text-blue-500 dark:hover:text-blue-300;
-  }
+
 </style>
 
