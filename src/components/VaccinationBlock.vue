@@ -1,12 +1,12 @@
 <template>
   <tr class="case">
     <td>
-      <H2 class="pl-2 block sm:hidden">
+      <span class="pl-2 block sm:hidden">
         {{ getCanton }}
-      </H2>
-      <H2 class="pl-2 hidden sm:block">
+      </span>
+      <span class="pl-2 hidden sm:block">
         {{ getName }}
-      </H2>
+      </span>
     </td>
     <td class="">
       <HorizontalStackedBarChart class="barchart w-full h-20 mt-2"
