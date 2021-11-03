@@ -126,7 +126,7 @@ export default class HorizontalStackedBarChart extends Vue {
       .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
       .enter().append("g")
       .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 120 )+ ", 2)"; });
+      .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 150 )+ ", 2)"; });
 
     legend.append("rect")
       .attr("x", 4)

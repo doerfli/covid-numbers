@@ -64,10 +64,10 @@ export default class VaccinationBlock extends Vue {
         xValueDescr: "Date",
         yValue: x.fullyVaccinatedPer100,
         yValueDescr: "Fully vaccinated",
-        y2Value: x.oneDoseVaccinatedPer100,
-        y2ValueDescr: "First dose rcvd",
+        y2Value: x.partiallyVaccPer100,
+        y2ValueDescr: "Partially vaccinated",
         y3Value: 100,
-        y3ValueDescr: "Remaining",
+        y3ValueDescr: "Not vaccinated",
       } as DataPoint;
     });
 
