@@ -1,20 +1,19 @@
 <template>
-  <div class="case w-full md:w-1/2 lg:w-1/3 mb-4">
-    <div class="flex justify-between">
-      <H2 class="pl-2 inline-block block sm:hidden">
+  <tr class="case">
+    <td>
+      <H2 class="pl-2 block sm:hidden">
         {{ getCanton }}
       </H2>
-      <H2 class="pl-2 inline-block hidden sm:block">
+      <H2 class="pl-2 hidden sm:block">
         {{ getName }}
       </H2>
-    </div>
-    <StackedBarChart class="barchart w-full h-80"
-              v-bind:data="displayData"
-              />
-    <HorizontalStackedBarChart class="barchart w-full h-20 mt-2"
-                               v-bind:data="vaccProgressData"
-    />
-  </div>
+    </td>
+    <td class="">
+      <HorizontalStackedBarChart class="barchart w-full h-20 mt-2"
+                                 v-bind:data="vaccProgressData"
+      />
+    </td>
+  </tr>
 </template>
 
 <script lang="ts">
