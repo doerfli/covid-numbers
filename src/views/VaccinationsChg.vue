@@ -6,9 +6,7 @@
         :key="canton.nameShort"
         :canton="canton.nameShort"
         :name="canton.name"
-        field-to-show="confCasesChg"
         :days-to-show="getDaysToShow"
-        calculate-average="true"
       ></VaccinationChgBlock>
     </div>
   </div>

@@ -29,17 +29,22 @@ export  default class VaccRecordsProcessor {
 
       const record = VaccRecordsProcessor.parseRecord(val);
 
-      if (record.fullyVaccinatedTotal === undefined) {
-        record.fullyVaccinatedTotal = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedTotal ?? 0;
-      }
-      if (record.fullyVaccinatedPer100 === undefined) {
-        record.fullyVaccinatedPer100 = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedPer100 ?? 0;
-      }
+      // if (record.fullyVaccinatedTotal === undefined) {
+      //   record.fullyVaccinatedTotal = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedTotal ?? 0;
+      // }
+      // if (record.fullyVaccinatedPer100 === undefined) {
+      //   record.fullyVaccinatedPer100 = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedPer100 ?? 0;
+      // }
 
       currentDay = this.updateCurrentDayData(currentDay, record.date, dataMap);
 
       const cantonData = dataMap.get(canton);
       if (dataMap.has(canton) && cantonData !== undefined) {
+        const yesterdaysData = cantonData.slice(-1);
+        if (yesterdaysData.length > 0) {
+          record.atLeastOneDoseChg = record.atLeastOneDoseTotal - yesterdaysData[0].atLeastOneDoseTotal;
+          record.fullyVaccinatedChg = record.fullyVaccinatedTotal - yesterdaysData[0].fullyVaccinatedTotal;
+        }
         cantonData.push(record);
       } else {
         console.log("undefined dataMap entry for " + canton);
@@ -73,10 +78,13 @@ export  default class VaccRecordsProcessor {
       date: val.date,
       atLeastOneDoseTotal: atLeastOneDoseTotal || undefined,
       atLeastOneDosePer100: atLeastOneDosePer100 || undefined,
+      atLeastOneDoseChg: 0,
       partiallyVaccTotal: partiallyVaccTotal || undefined,
       partiallyVaccPer100: partiallyVaccPer100 || undefined,
+      partiallyVaccChg: 0,
       fullyVaccinatedTotal: fullyVaccinatedTotal || undefined,
       fullyVaccinatedPer100: fullyVaccinatedPer100 || undefined,
+      fullyVaccinatedChg: 0,
     } as VaccDataSet;
   }
 

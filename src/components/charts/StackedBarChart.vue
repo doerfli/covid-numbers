@@ -138,7 +138,7 @@ export default class StackedBarChart extends Vue {
 
     const firstDataPoint = inputData[0];
     const legend = svg.selectAll(".legend")
-      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr])
+      .data([firstDataPoint.y2ValueDescr, firstDataPoint.yValueDescr])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(" + ( 40 + i * 120 )+ ", 0)"; });
