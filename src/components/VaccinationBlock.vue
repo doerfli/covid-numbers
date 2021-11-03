@@ -87,7 +87,7 @@ export default class VaccinationBlock extends Vue {
       } as DataPoint
     });
 
-    console.log(stacks);
+    // console.log(stacks);
     return stacks;
   }
 }

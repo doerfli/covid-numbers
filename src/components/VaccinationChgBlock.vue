@@ -67,7 +67,7 @@ export default class VaccinationChgBlock extends Vue {
       } as DataPoint;
     });
 
-    console.log(origData);
+    // console.log(origData);
 
     // reformat data for stacked chart display
     const stacks = origData.map((d: DataPoint) => {

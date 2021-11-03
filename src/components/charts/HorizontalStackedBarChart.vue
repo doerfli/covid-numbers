@@ -110,7 +110,7 @@ export default class HorizontalStackedBarChart extends Vue {
         .attr("x", (d: any) => x(d[0]) as number)
         .attr("width", (d: any) => {
           const t = x(d[1]) - x(d[0]) as number;
-          console.log(t);
+          // console.log(t);
           return t;
         })
         .attr("height", y.bandwidth());

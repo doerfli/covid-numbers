@@ -29,13 +29,6 @@ export  default class VaccRecordsProcessor {
 
       const record = VaccRecordsProcessor.parseRecord(val);
 
-      // if (record.fullyVaccinatedTotal === undefined) {
-      //   record.fullyVaccinatedTotal = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedTotal ?? 0;
-      // }
-      // if (record.fullyVaccinatedPer100 === undefined) {
-      //   record.fullyVaccinatedPer100 = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedPer100 ?? 0;
-      // }
-
       currentDay = this.updateCurrentDayData(currentDay, record.date, dataMap);
 
       const cantonData = dataMap.get(canton);
