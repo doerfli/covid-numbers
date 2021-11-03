@@ -60,9 +60,9 @@ export default class VaccinationChgBlock extends Vue {
       return {
         xValue: formatDate(x.date),
         xValueDescr: "Date",
-        yValue: x.fullyVaccinatedChg,
-        yValueDescr: "Administered",
-        y2Value: x.administeredChg,
+        yValue: x.atLeastOneDoseChg,
+        yValueDescr: "First dose",
+        y2Value: x.fullyVaccinatedChg,
         y2ValueDescr: "Second dose",
       } as DataPoint;
     });
@@ -76,7 +76,7 @@ export default class VaccinationChgBlock extends Vue {
         xValueDescr: d.xValueDescr,
         yValue: d.yValue,
         yValueDescr: d.yValueDescr,
-        y2Value: (d.y2Value ?? 0) - d.yValue,
+        y2Value: d.y2Value,
         y2ValueDescr: d.y2ValueDescr,
       } as DataPoint
     });

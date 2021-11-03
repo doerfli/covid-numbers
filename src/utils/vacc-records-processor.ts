@@ -29,21 +29,14 @@ export  default class VaccRecordsProcessor {
 
       const record = VaccRecordsProcessor.parseRecord(val);
 
-      if (record.fullyVaccinatedTotal === undefined) {
-        record.fullyVaccinatedTotal = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedTotal ?? 0;
-      }
-      if (record.fullyVaccinatedPer100 === undefined) {
-        record.fullyVaccinatedPer100 = dataMap.get(canton)?.slice(-1)[0]?.fullyVaccinatedPer100 ?? 0;
-      }
-
       currentDay = this.updateCurrentDayData(currentDay, record.date, dataMap);
 
       const cantonData = dataMap.get(canton);
       if (dataMap.has(canton) && cantonData !== undefined) {
         const yesterdaysData = cantonData.slice(-1);
         if (yesterdaysData.length > 0) {
-          record.administeredChg = record.administeredTotal - yesterdaysData[0].administeredTotal;
-          record.fullyVaccinatedChg = record.fullyVaccinatedTotal - cantonData.slice(-1)[0].fullyVaccinatedTotal;
+          record.atLeastOneDoseChg = record.atLeastOneDoseTotal - yesterdaysData[0].atLeastOneDoseTotal;
+          record.fullyVaccinatedChg = record.fullyVaccinatedTotal - yesterdaysData[0].fullyVaccinatedTotal;
         }
         cantonData.push(record);
       } else {
@@ -60,34 +53,6 @@ export  default class VaccRecordsProcessor {
     return dataMap;
   }
 
-  // private calculateChgAndAverages (dataMap: Map<string, DailyDataSet[]>) {
-  //   dataMap.forEach((dataset) => {
-  //     dataset.forEach((dailyData, i) => {
-  //       if (i > 0) {
-  //         dailyData.confCasesChg = dailyData.confCases - dataset[i - 1].confCases;
-  //         dailyData.currHospChg = dailyData.currHosp - dataset[i - 1].currHosp;
-  //         dailyData.currIcuChg = dailyData.currIcu - dataset[i - 1].currIcu;
-  //         dailyData.deceasedChg = dailyData.deceased - dataset[i - 1].deceased;
-  //       }
-  //       if (i >= 6) {
-  //         dailyData.confCasesChgAvg = this.calcAvg(dataset, i, "confCasesChg");
-  //         dailyData.currHospAvg = this.calcAvg(dataset, i, "currHosp");
-  //         dailyData.currIcuAvg = this.calcAvg(dataset, i, "currIcu");
-  //         dailyData.deceasedChgAvg = this.calcAvg(dataset, i, "deceasedChg");
-  //       }
-  //     });
-  //   })
-  // }
-
-  // private calcAvg(dataset: DailyDataSet[], i: number, fieldname: any, duration = 7) {
-  //   return Math.round(
-  //     dataset.slice(i - duration + 1, i + 1)
-  //       .map((x) => getProperty(x, fieldname))
-  //       .reduce((sum, current) => sum + current)
-  //     / duration
-  //   );
-  // }
-
   private initializedMap(): Map<string,Array<VaccDataSet>> {
     const map = new Map<string,Array<VaccDataSet>>();
     StaticData.getCantonsWithCh().forEach((i) => map.set(i, new Array<VaccDataSet>()));
@@ -96,27 +61,23 @@ export  default class VaccRecordsProcessor {
 
   // eslint-disable-next-line
   private static parseRecord (val: any): VaccDataSet {
-    const deliveredTotal = parseFloat(val.deliveredTotal)
-    const deliveredPer100 = parseFloat(val.deliveredPer100)
-    const administeredTotal = parseFloat(val.administeredTotal)
-    const administeredPer100 = parseFloat(val.administeredPer100)
+    const atLeastOneDoseTotal = parseFloat(val.atLeastOneDoseTotal)
+    const atLeastOneDosePer100 = parseFloat(val.atLeastOneDosePer100)
+    const partiallyVaccTotal = parseFloat(val.partiallyVaccTotal)
+    const partiallyVaccPer100 = parseFloat(val.partiallyVaccPer100)
     const fullyVaccinatedTotal = parseFloat(val.fullyVaccinatedTotal)
     const fullyVaccinatedPer100 = parseFloat(val.fullyVaccinatedPer100)
-    const oneDoseVaccinatedTotal = administeredTotal - (fullyVaccinatedTotal * 2)
-    const oneDoseVaccinatedPer100 =  administeredPer100 - (fullyVaccinatedPer100 * 2)
     return {
       date: val.date,
-      deliveredTotal: deliveredTotal || undefined,
-      deliveredPer100: deliveredPer100 || undefined,
-      administeredTotal: administeredTotal || undefined,
-      administeredChg: 0,
-      administeredPer100: administeredPer100 || undefined,
+      atLeastOneDoseTotal: atLeastOneDoseTotal || undefined,
+      atLeastOneDosePer100: atLeastOneDosePer100 || undefined,
+      atLeastOneDoseChg: 0,
+      partiallyVaccTotal: partiallyVaccTotal || undefined,
+      partiallyVaccPer100: partiallyVaccPer100 || undefined,
+      partiallyVaccChg: 0,
       fullyVaccinatedTotal: fullyVaccinatedTotal || undefined,
-      fullyVaccinatedChg: 0,
       fullyVaccinatedPer100: fullyVaccinatedPer100 || undefined,
-      oneDoseVaccinatedTotal: oneDoseVaccinatedTotal || undefined,
-      oneDoseVaccinatedChg: 0,
-      oneDoseVaccinatedPer100: oneDoseVaccinatedPer100 || undefined,
+      fullyVaccinatedChg: 0,
     } as VaccDataSet;
   }
 
@@ -132,44 +93,5 @@ export  default class VaccRecordsProcessor {
 
     return currentDay;
   }
-
-  /**
-   * check every canton has an entry, if not, copy last entry
-   */
-  private completeDataMap (date: string, dataMap: Map<string, DailyDataSet[]>) {
-    StaticData.getCantons()
-      .filter((canton) => {
-        if (! dataMap.has(canton) ) return true;
-        if ((dataMap.get(canton)?.length ?? 0) == 0) { return true; }
-        if (dataMap.get(canton)?.slice(-1)[0].date !== date) { return true; }
-      })
-      .forEach((canton) => {
-        const entries = dataMap.get(canton);
-        if (entries !== undefined) {
-          if (entries.length == 0) { // first entry missing
-            entries.push({
-              date: date,
-              confCases: 0,
-              currHosp: 0,
-              currIcu: 0,
-              deceased: 0,
-            } as DailyDataSet)
-          } else {
-            const lastEntry = entries[entries.length - 1];
-            // console.log(date + " " + canton + " - " + lastEntry.confCases);
-              entries.push({
-                date: date,
-                confCases: lastEntry.confCases,
-                currHosp: lastEntry.currHosp,
-                currIcu: lastEntry.currIcu,
-                deceased: lastEntry.deceased,
-              } as DailyDataSet);
-
-          }
-        }
-      });
-  }
-
-
 
 }

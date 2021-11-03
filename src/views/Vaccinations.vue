@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <div class="flex flex-wrap mt-1">
-      <VaccinationBlock
-        v-for="canton in selectedCantons"
-        :key="canton.nameShort"
-        :canton="canton.nameShort"
-        :name="canton.name"
-        field-to-show="confCasesChg"
-        :days-to-show="getDaysToShow"
-        calculate-average="true"
-      ></VaccinationBlock>
-    </div>
-  </div>
+  <table class="table-auto mt-1">
+    <VaccinationBlock
+      v-for="canton in selectedCantons"
+      :key="canton.nameShort"
+      :canton="canton.nameShort"
+      :name="canton.name"
+      field-to-show="confCasesChg"
+      :days-to-show="getDaysToShow"
+      calculate-average="true"
+    ></VaccinationBlock>
+  </table>
 </template>
 
 <script lang="ts">

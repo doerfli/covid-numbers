@@ -29,7 +29,7 @@ const vaccModule: Module<any, any> = {
   },
   actions: {
     async fetch({ commit }) {
-      const url = "https://raw.githubusercontent.com/doerfli/foph-covid19-data/main/vacc_data.csv";
+      const url = "https://raw.githubusercontent.com/doerfli/foph-covid19-data/main/vacc_data/vacc_data2_total.csv";
       const response = await superagent.get(url)
       const parseResult = Papa.parse(response.text, {
         header: true,
