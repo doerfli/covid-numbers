@@ -17,10 +17,14 @@
         </span>
       </div>
     </div>
-    <HighlightLine :highlight-data-point="highlightDataPoint" />
     <BarChart class="barchart w-full h-80"
               v-bind:data="displayData"
-              v-on:bar-active="setHighlightDataPoint"/>
+              v-on:bar-active="setHighlightDataPoint"
+              v-if="isBarChart()"/>
+    <LineChart class="barchart w-full h-80"
+              v-bind:data="displayData"
+              v-on:bar-active="setHighlightDataPoint"
+              v-else />
   </div>
 </template>
 
@@ -28,6 +32,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import DataPoint from '@/model/datapoint'
 import BarChart from '@/components/charts/BarChart.vue'
+import LineChart from '@/components/charts/LineChart.vue'
 import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import getProperty from '@/utils/get-property'
@@ -35,9 +40,10 @@ import DailyDataSet from '@/model/dailyDataSet'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
 import moment from "moment/moment";
+import ChartType from "@/model/chartType";
 
 @Component({
-  components: { HighlightLine, H2, BarChart }
+  components: { HighlightLine, H2, BarChart, LineChart }
 })
 export default class Cases extends Vue {
 
@@ -55,6 +61,9 @@ export default class Cases extends Vue {
   private windowSize!: number;
   @Prop({ default: false })
   private showIncidence!: boolean;
+  @Prop({ default: ChartType.Bar })
+  private chartType!: ChartType;
+
   private highlightDataPoint: DataPoint = { } as DataPoint;
 
   get getCanton() {
@@ -182,6 +191,10 @@ export default class Cases extends Vue {
     }
 
     return this.displayData[this.displayData.length - 1];
+  }
+
+  private isBarChart() {
+    return this.chartType === ChartType.Bar;
   }
 }
 </script>
