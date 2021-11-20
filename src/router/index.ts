@@ -11,6 +11,7 @@ import Trend from '@/views/Trend.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 import Vaccinations from '@/views/Vaccinations.vue'
 import VaccinationsChg from "@/views/VaccinationsChg.vue";
+import HospitalizedChg from "@/views/HospitalizedChg.vue";
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,11 @@ const routes: Array<RouteConfig> = [
     path: '/hospitalized',
     name: 'Hospitalized',
     component: Hospitalized
+  },
+  {
+    path: '/hospitalized/chg',
+    name: 'HospitalizedChg',
+    component: HospitalizedChg
   },
   {
     path: '/icu',
