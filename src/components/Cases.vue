@@ -55,8 +55,6 @@ export default class Cases extends Vue {
   private canton!: string;
   @Prop()
   private name!: string;
-  @Prop({ default: false })
-  private calculateAverage!: boolean;
   @Prop({ default: 7 })
   private windowSize!: number;
   @Prop({ default: false })

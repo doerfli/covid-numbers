@@ -57,6 +57,14 @@
         <router-link :to="{ name: 'HospitalizedChg' }">Change per day</router-link>
       </div>
     </div>
+    <div class="secondary" v-if="isIcuPage()">
+      <div :class="getClass('Icu')">
+        <router-link :to="{ name: 'Icu' }">Absolute</router-link>
+      </div>
+      <div :class="getClass('IcuChg')">
+        <router-link :to="{ name: 'IcuChg' }">Change per day</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -92,6 +100,10 @@ export default class Header extends Vue {
 
   private isHospitalizedPage() {
     return this.$route.name === "Hospitalized" || this.$route.name === "HospitalizedChg" ;
+  }
+
+  private isIcuPage() {
+    return this.$route.name === "Icu" || this.$route.name === "IcuChg" ;
   }
 }
 </script>

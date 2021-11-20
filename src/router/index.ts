@@ -12,6 +12,7 @@ import NotFoundComponent from '@/components/NotFoundComponent.vue'
 import Vaccinations from '@/views/Vaccinations.vue'
 import VaccinationsChg from "@/views/VaccinationsChg.vue";
 import HospitalizedChg from "@/views/HospitalizedChg.vue";
+import IcuChg from "@/views/IcuChg.vue";
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,11 @@ const routes: Array<RouteConfig> = [
     path: '/icu',
     name: 'Icu',
     component: Icu
+  },
+  {
+    path: '/icu/chg',
+    name: 'IcuChg',
+    component: IcuChg
   },
   {
     path: '/deceased',

@@ -10,6 +10,7 @@ interface DailyDataSet {
   currIcu: number;
   currIcuChg: number;
   currIcuAvg: number;
+  currIcuChgAvg: number;
   deceased: number;
   deceasedChg: number;
   deceasedChgAvg: number;
