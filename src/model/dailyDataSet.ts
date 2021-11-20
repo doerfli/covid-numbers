@@ -6,6 +6,7 @@ interface DailyDataSet {
   currHosp: number;
   currHospChg: number;
   currHospAvg: number;
+  currHospChgAvg: number;
   currIcu: number;
   currIcuChg: number;
   currIcuAvg: number;

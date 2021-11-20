@@ -9,7 +9,7 @@
           {{ getName }}
         </H2>
       </div>
-      <div class="">
+      <div>
         <span class="details_link text-xs">
           <router-link :to="detailsUrl()">
             <i class="fas fa-eye"></i> Show details

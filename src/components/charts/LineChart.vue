@@ -1,6 +1,6 @@
 <template>
   <div class="p-1">
-    <svg ref="chart" :id="chartId" class="chart"></svg>
+    <svg ref="chart" :id="chartId" class="linechart"></svg>
   </div>
 </template>
 
@@ -144,7 +144,7 @@ export default class LineChart extends Vue {
 </script>
 
 <style lang="scss">
-  .chart {
+  .linechart {
     width: 100%;
     height: 100%;
 
@@ -165,11 +165,10 @@ export default class LineChart extends Vue {
     }
 
     .line1 {
-      @apply text-emerald-700 dark:text-teal-200;
+      @apply text-emerald-400 dark:text-teal-400;
       @apply stroke-current;
       @apply stroke-2;
       fill: none;
-      stroke-dasharray: 5px;
     }
 
     .line2 {
@@ -178,22 +177,6 @@ export default class LineChart extends Vue {
       @apply stroke-2;
       fill: none;
       stroke-dasharray: 5px;
-    }
-
-    .line3 {
-      @apply text-indigo-700 dark:text-indigo-600;
-      @apply stroke-current;
-      @apply stroke-2;
-      fill: none;
-      stroke-dasharray: 1px;
-    }
-
-    .line4 {
-      @apply text-pink-700 dark:text-pink-600;
-      @apply stroke-current;
-      @apply stroke-2;
-      fill: none;
-      stroke-dasharray: 1px;
     }
 
     .chartText {

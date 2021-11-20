@@ -8,7 +8,7 @@
         :name="canton.name"
         :days-to-show="getDaysToShow"
         field-to-show="currHospChg"
-        calculate-average="false"
+        calculate-average="true"
         chart-type="line"
       ></Cases>
     </div>
