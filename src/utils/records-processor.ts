@@ -83,7 +83,9 @@ export  default class RecordsProcessor {
         if (i >= 6) {
           dailyData.confCasesChgAvg = this.calcAvg(dataset, i, "confCasesChg");
           dailyData.currHospAvg = this.calcAvg(dataset, i, "currHosp");
+          dailyData.currHospChgAvg = this.calcAvg(dataset, i, "currHospChg");
           dailyData.currIcuAvg = this.calcAvg(dataset, i, "currIcu");
+          dailyData.currIcuChgAvg = this.calcAvg(dataset, i, "currIcuChg");
           dailyData.deceasedChgAvg = this.calcAvg(dataset, i, "deceasedChg");
         }
       });

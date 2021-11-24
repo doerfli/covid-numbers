@@ -3,50 +3,68 @@
     <div class="flex-initial">
       <H1>Covid-19 Statistics Switzerland</H1>
     </div>
-    <div :class="getClass('ConfirmedCases')">
-      <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
-    </div>
-    <div :class="getClass('Trend')">
-      <router-link :to="{ name: 'Trend' }">Incidence Trend</router-link>
-    </div>
-    <div :class="getClass('IncidenceOneWeek')">
-      <router-link :to="{ name: 'IncidenceOneWeek' }">7-day Incidence</router-link>
-    </div>
-    <div :class="getClass('IncidenceTwoWeek')">
-      <router-link :to="{ name: 'IncidenceTwoWeek' }">14-day Incidence</router-link>
-    </div>
-    <div :class="getClass('Hospitalized')">
-      <router-link :to="{ name: 'Hospitalized' }">Hospitalized</router-link>
-    </div>
-    <div :class="getClass('Icu')">
-      <router-link :to="{ name: 'Icu' }">Icu</router-link>
-    </div>
-    <div :class="getClass('Deceased')">
-      <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
-    </div>
-    <div :class="getClass('Vaccinations')">
-      <router-link :to="{ name: 'Vaccinations' }">Vaccination rate</router-link>
-    </div>
-    <div :class="getClass('VaccinationsChg')">
-      <router-link :to="{ name: 'VaccinationsChg' }">Vaccinations per day</router-link>
-    </div>
-    <span v-if="! isDetailsPage()">
-      <div @click="toggleViewOptions"
-           v-if="! showViewOptions"
-           class="menuitem viewoptions">
-        Display view options
-        <i class="fas fa-chevron-down"></i>
+    <div class="primary">
+      <div :class="getClass('ConfirmedCases')">
+        <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
       </div>
-      <div @click="toggleViewOptions"
-           v-else
-           class="menuitem viewoptions">
-        Hide view options
-        <i class="fas fa-chevron-up"></i>
+      <div :class="getClass('Trend')">
+        <router-link :to="{ name: 'Trend' }">Incidence Trend</router-link>
       </div>
-    </span>
-    <Hideable :visible="showViewOptions">
-      <ViewOptions />
-    </Hideable>
+      <div :class="getClass('IncidenceOneWeek')">
+        <router-link :to="{ name: 'IncidenceOneWeek' }">7-day Incidence</router-link>
+      </div>
+      <div :class="getClass('IncidenceTwoWeek')">
+        <router-link :to="{ name: 'IncidenceTwoWeek' }">14-day Incidence</router-link>
+      </div>
+      <div :class="getClass('Hospitalized')">
+        <router-link :to="{ name: 'Hospitalized' }">Hospitalized</router-link>
+      </div>
+      <div :class="getClass('Icu')">
+        <router-link :to="{ name: 'Icu' }">Icu</router-link>
+      </div>
+      <div :class="getClass('Deceased')">
+        <router-link :to="{ name: 'Deceased' }">Deceased</router-link>
+      </div>
+      <div :class="getClass('Vaccinations')">
+        <router-link :to="{ name: 'Vaccinations' }">Vaccination rate</router-link>
+      </div>
+      <div :class="getClass('VaccinationsChg')">
+        <router-link :to="{ name: 'VaccinationsChg' }">Vaccinations per day</router-link>
+      </div>
+      <span v-if="! isDetailsPage()">
+        <div @click="toggleViewOptions"
+             v-if="! showViewOptions"
+             class="menuitem viewoptions">
+          Display view options
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div @click="toggleViewOptions"
+             v-else
+             class="menuitem viewoptions">
+          Hide view options
+          <i class="fas fa-chevron-up"></i>
+        </div>
+      </span>
+      <Hideable :visible="showViewOptions">
+        <ViewOptions />
+      </Hideable>
+    </div>
+    <div class="secondary" v-if="isHospitalizedPage()">
+      <div :class="getClass('Hospitalized')">
+        <router-link :to="{ name: 'Hospitalized' }">Absolute</router-link>
+      </div>
+      <div :class="getClass('HospitalizedChg')">
+        <router-link :to="{ name: 'HospitalizedChg' }">Change per day</router-link>
+      </div>
+    </div>
+    <div class="secondary" v-if="isIcuPage()">
+      <div :class="getClass('Icu')">
+        <router-link :to="{ name: 'Icu' }">Absolute</router-link>
+      </div>
+      <div :class="getClass('IcuChg')">
+        <router-link :to="{ name: 'IcuChg' }">Change per day</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -78,6 +96,14 @@ export default class Header extends Vue {
 
   private isDetailsPage() {
     return this.$route.name === "Details";
+  }
+
+  private isHospitalizedPage() {
+    return this.$route.name === "Hospitalized" || this.$route.name === "HospitalizedChg" ;
+  }
+
+  private isIcuPage() {
+    return this.$route.name === "Icu" || this.$route.name === "IcuChg" ;
   }
 }
 </script>
