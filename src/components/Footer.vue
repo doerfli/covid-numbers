@@ -22,7 +22,7 @@
     <div class="disclaimer">
       <span>Disclaimer</span>:
       All data shown on this page is based on the data provided by <Ref uri="https://github.com/openZH/">OpenZH</Ref> and <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>.
-      Calculations are done to the best of my knowledge, but i do not guarantee correctness.
+      Calculations are done to the best of my knowledge, but I do not guarantee correctness.
       <br/>
       If you find a mistake, I will be happy to fix it.
       Please bring it to my attention by raising an issue on the <Ref uri="https://github.com/doerfli/covid-numbers/">Github project</Ref> or contact me via <Ref uri="https://twitter.com/doerfli">Twitter</Ref>.
