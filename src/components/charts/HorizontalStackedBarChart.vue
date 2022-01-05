@@ -91,7 +91,7 @@ export default class HorizontalStackedBarChart extends Vue {
 
     const cssClass = d3.scaleOrdinal()
       .domain(series.map((d: any) => d.key))
-      .range(["first", "second", "third", "fourth"]);
+      .range(["hfirst", "hsecond", "hthird", "hfourth"]);
 
     // eslint-disable-next-line
     chart.append("g")
@@ -154,19 +154,19 @@ export default class HorizontalStackedBarChart extends Vue {
       stroke: #aaa;
     }
 
-    .first {
+    .hfirst {
       @apply fill-current text-emerald-600 dark:text-teal-200;
     }
 
-    .second {
+    .hsecond {
       @apply fill-current text-emerald-400 dark:text-teal-400;
     }
 
-    .third {
+    .hthird {
       @apply fill-current text-emerald-200 dark:text-teal-600;
     }
 
-    .fourth {
+    .hfourth {
       @apply fill-current text-emerald-100 dark:text-teal-900;
     }
 

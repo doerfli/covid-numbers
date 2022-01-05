@@ -25,7 +25,7 @@ import StackedBarChart from '@/components/charts/StackedBarChart.vue'
 import HorizontalStackedBarChart from '@/components/charts/HorizontalStackedBarChart.vue'
 
 @Component({
-  components: { HorizontalStackedBarChart, StackedBarChart, H2, BarChart }
+  components: { StackedBarChart, H2, BarChart }
 })
 export default class VaccinationChgBlock extends Vue {
 

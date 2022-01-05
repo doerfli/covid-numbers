@@ -170,7 +170,7 @@ export default class StackedBarChart extends Vue {
     }
 
     .first {
-      @apply fill-current text-emerald-600 dark:text-teal-200;
+      @apply fill-current text-emerald-200 dark:text-teal-600;
     }
 
     .second {
@@ -178,7 +178,7 @@ export default class StackedBarChart extends Vue {
     }
 
     .third {
-      @apply fill-current text-emerald-200 dark:text-teal-600;
+      @apply fill-current text-emerald-600 dark:text-teal-200;
     }
 
     .chartText {
