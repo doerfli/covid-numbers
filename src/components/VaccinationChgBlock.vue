@@ -93,10 +93,6 @@ export default class VaccinationChgBlock extends Vue {
 </script>
 
 <style scoped>
-  .details_link {
-    @apply px-2;
-    @apply text-indigo-700 hover:text-indigo-500;
-    @apply dark:text-blue-500 dark:hover:text-blue-300;
-  }
+
 </style>
 
