@@ -37,6 +37,7 @@ export  default class VaccRecordsProcessor {
         if (yesterdaysData.length > 0) {
           record.atLeastOneDoseChg = record.atLeastOneDoseTotal - yesterdaysData[0].atLeastOneDoseTotal;
           record.fullyVaccinatedChg = record.fullyVaccinatedTotal - yesterdaysData[0].fullyVaccinatedTotal;
+          record.firstBoosterVaccinatedChg = record.firstBoosterVaccinatedTotal - yesterdaysData[0].firstBoosterVaccinatedTotal;
         }
         cantonData.push(record);
       } else {
@@ -67,17 +68,22 @@ export  default class VaccRecordsProcessor {
     const partiallyVaccPer100 = parseFloat(val.partiallyVaccPer100)
     const fullyVaccinatedTotal = parseFloat(val.fullyVaccinatedTotal)
     const fullyVaccinatedPer100 = parseFloat(val.fullyVaccinatedPer100)
+    const firstBoosterVaccinatedTotal = parseFloat(val.firstBoosterVaccinatedTotal)
+    const firstBoosterVaccinatedPer100 = parseFloat(val.firstBoosterVaccinatedPer100)
     return {
       date: val.date,
-      atLeastOneDoseTotal: atLeastOneDoseTotal || undefined,
-      atLeastOneDosePer100: atLeastOneDosePer100 || undefined,
+      atLeastOneDoseTotal: atLeastOneDoseTotal || 0,
+      atLeastOneDosePer100: atLeastOneDosePer100 || 0,
       atLeastOneDoseChg: 0,
-      partiallyVaccTotal: partiallyVaccTotal || undefined,
-      partiallyVaccPer100: partiallyVaccPer100 || undefined,
+      partiallyVaccTotal: partiallyVaccTotal || 0,
+      partiallyVaccPer100: partiallyVaccPer100 || 0,
       partiallyVaccChg: 0,
-      fullyVaccinatedTotal: fullyVaccinatedTotal || undefined,
-      fullyVaccinatedPer100: fullyVaccinatedPer100 || undefined,
+      fullyVaccinatedTotal: fullyVaccinatedTotal || 0,
+      fullyVaccinatedPer100: fullyVaccinatedPer100 || 0,
       fullyVaccinatedChg: 0,
+      firstBoosterVaccinatedTotal: firstBoosterVaccinatedTotal || 0,
+      firstBoosterVaccinatedPer100: firstBoosterVaccinatedPer100 || 0,
+      firstBoosterVaccinatedChg: 0
     } as VaccDataSet;
   }
 

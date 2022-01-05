@@ -64,6 +64,8 @@ export default class VaccinationChgBlock extends Vue {
         yValueDescr: "First dose",
         y2Value: x.fullyVaccinatedChg,
         y2ValueDescr: "Second dose",
+        y3Value: x.firstBoosterVaccinatedChg,
+        y3ValueDescr: "Booster",
       } as DataPoint;
     });
 
@@ -78,6 +80,8 @@ export default class VaccinationChgBlock extends Vue {
         yValueDescr: d.yValueDescr,
         y2Value: d.y2Value,
         y2ValueDescr: d.y2ValueDescr,
+        y3Value: d.y3Value,
+        y3ValueDescr: d.y3ValueDescr,
       } as DataPoint
     });
 
