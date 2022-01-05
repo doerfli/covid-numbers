@@ -25,7 +25,7 @@ import StackedBarChart from '@/components/charts/StackedBarChart.vue'
 import HorizontalStackedBarChart from '@/components/charts/HorizontalStackedBarChart.vue'
 
 @Component({
-  components: { HorizontalStackedBarChart, StackedBarChart, H2, BarChart }
+  components: { StackedBarChart, H2, BarChart }
 })
 export default class VaccinationChgBlock extends Vue {
 
@@ -64,6 +64,8 @@ export default class VaccinationChgBlock extends Vue {
         yValueDescr: "First dose",
         y2Value: x.fullyVaccinatedChg,
         y2ValueDescr: "Second dose",
+        y3Value: x.firstBoosterVaccinatedChg,
+        y3ValueDescr: "Booster",
       } as DataPoint;
     });
 
@@ -78,6 +80,8 @@ export default class VaccinationChgBlock extends Vue {
         yValueDescr: d.yValueDescr,
         y2Value: d.y2Value,
         y2ValueDescr: d.y2ValueDescr,
+        y3Value: d.y3Value,
+        y3ValueDescr: d.y3ValueDescr,
       } as DataPoint
     });
 
@@ -89,10 +93,6 @@ export default class VaccinationChgBlock extends Vue {
 </script>
 
 <style scoped>
-  .details_link {
-    @apply px-2;
-    @apply text-indigo-700 hover:text-indigo-500;
-    @apply dark:text-blue-500 dark:hover:text-blue-300;
-  }
+
 </style>
 

@@ -93,7 +93,7 @@ export default class StackedBarChart extends Vue {
 
     const cssClass = d3.scaleOrdinal()
       .domain(series.map((d: any) => d.key))
-      .range(["first", "second"]);
+      .range(["first", "second", "third"]);
 
     // eslint-disable-next-line
     chart.append("g")
@@ -138,7 +138,7 @@ export default class StackedBarChart extends Vue {
 
     const firstDataPoint = inputData[0];
     const legend = svg.selectAll(".legend")
-      .data([firstDataPoint.y2ValueDescr, firstDataPoint.yValueDescr])
+      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(" + ( 40 + i * 120 )+ ", 0)"; });
@@ -170,7 +170,7 @@ export default class StackedBarChart extends Vue {
     }
 
     .first {
-      @apply fill-current text-emerald-600 dark:text-teal-200;
+      @apply fill-current text-emerald-200 dark:text-teal-600;
     }
 
     .second {
@@ -178,7 +178,7 @@ export default class StackedBarChart extends Vue {
     }
 
     .third {
-      @apply fill-current text-emerald-200 dark:text-teal-600;
+      @apply fill-current text-emerald-600 dark:text-teal-200;
     }
 
     .chartText {

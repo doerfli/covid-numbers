@@ -65,7 +65,7 @@ export default class HorizontalStackedBarChart extends Vue {
     const margin = ({top: 0, right: 5, bottom: 16, left: 0});
 
     const series = d3.stack()
-      .keys(["yValue", "y2Value", "y3Value"])(inputData as any);
+      .keys(["yValue", "y2Value", "y3Value", "y4Value"])(inputData as any);
 
     // console.log(series);
 
@@ -91,7 +91,7 @@ export default class HorizontalStackedBarChart extends Vue {
 
     const cssClass = d3.scaleOrdinal()
       .domain(series.map((d: any) => d.key))
-      .range(["first", "second", "third"]);
+      .range(["hfirst", "hsecond", "hthird", "hfourth"]);
 
     // eslint-disable-next-line
     chart.append("g")
@@ -123,7 +123,7 @@ export default class HorizontalStackedBarChart extends Vue {
 
     const firstDataPoint = inputData[0];
     const legend = svg.selectAll(".legend")
-      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr])
+      .data([firstDataPoint.yValueDescr, firstDataPoint.y2ValueDescr, firstDataPoint.y3ValueDescr, firstDataPoint.y4ValueDescr])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(" + ( 31 + i * 150 )+ ", 2)"; });
@@ -154,16 +154,20 @@ export default class HorizontalStackedBarChart extends Vue {
       stroke: #aaa;
     }
 
-    .first {
+    .hfirst {
       @apply fill-current text-emerald-600 dark:text-teal-200;
     }
 
-    .second {
+    .hsecond {
       @apply fill-current text-emerald-400 dark:text-teal-400;
     }
 
-    .third {
+    .hthird {
       @apply fill-current text-emerald-200 dark:text-teal-600;
+    }
+
+    .hfourth {
+      @apply fill-current text-emerald-100 dark:text-teal-900;
     }
 
     .chartText {
