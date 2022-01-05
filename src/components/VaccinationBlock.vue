@@ -62,12 +62,14 @@ export default class VaccinationBlock extends Vue {
       return {
         xValue: formatDate(x.date),
         xValueDescr: "Date",
-        yValue: x.fullyVaccinatedPer100,
-        yValueDescr: "Fully vaccinated",
-        y2Value: x.partiallyVaccPer100,
-        y2ValueDescr: "Partially vaccinated",
-        y3Value: 100,
-        y3ValueDescr: "Not vaccinated",
+        yValue: x.firstBoosterVaccinatedPer100,
+        yValueDescr: "With Booster",
+        y2Value: x.fullyVaccinatedPer100,
+        y2ValueDescr: "Fully vaccinated",
+        y3Value: x.partiallyVaccPer100,
+        y3ValueDescr: "Partially vaccinated",
+        y4Value: 100,
+        y4ValueDescr: "Not vaccinated",
       } as DataPoint;
     });
 
@@ -80,10 +82,12 @@ export default class VaccinationBlock extends Vue {
         xValueDescr: d.xValueDescr,
         yValue: d.yValue,
         yValueDescr: d.yValueDescr,
-        y2Value: (d.y2Value ?? 0),
+        y2Value: (d.y2Value ?? 0) - (d.yValue ?? 0),
         y2ValueDescr: d.y2ValueDescr,
-        y3Value: (d.y3Value ?? 0) - ((d.y2Value ?? 0) + (d.yValue ?? 0)),
+        y3Value: (d.y3Value ?? 0),
         y3ValueDescr: d.y3ValueDescr,
+        y4Value: (d.y4Value ?? 0) - ((d.y3Value ?? 0) + (d.y2Value ?? 0)),
+        y4ValueDescr: d.y4ValueDescr,
       } as DataPoint
     });
 
