@@ -1,15 +1,15 @@
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import StaticData from '@/store/staticdata'
 import getProperty from '@/utils/get-property'
 
 export  default class RecordsProcessor {
 
   // eslint-disable-next-line
-  public process(records: any[]): Map<string, DailyDataSet[]> {
+  public process(records: any[]): Map<string, DataSetEntity[]> {
     // canton -> Array<DailyData>
-    const dataMap: Map<string, DailyDataSet[]> = this.initializedMap();
+    const dataMap: Map<string, DataSetEntity[]> = this.initializedMap();
     // console.log(payload.records);
-    const totalCh = new Array<DailyDataSet>();
+    const totalCh = new Array<DataSetEntity>();
     let currentDay: string = records[0].date;
 
     const beginTime = new Date().getTime();
@@ -71,7 +71,7 @@ export  default class RecordsProcessor {
     return dataMap;
   }
 
-  private calculateChgAndAverages (dataMap: Map<string, DailyDataSet[]>) {
+  private calculateChgAndAverages (dataMap: Map<string, DataSetEntity[]>) {
     dataMap.forEach((dataset) => {
       dataset.forEach((dailyData, i) => {
         if (i > 0) {
@@ -92,7 +92,7 @@ export  default class RecordsProcessor {
     })
   }
 
-  private calcAvg(dataset: DailyDataSet[], i: number, fieldname: any, duration = 7) {
+  private calcAvg(dataset: DataSetEntity[], i: number, fieldname: any, duration = 7) {
     return Math.round(
       dataset.slice(i - duration + 1, i + 1)
         .map((x) => getProperty(x, fieldname))
@@ -101,27 +101,27 @@ export  default class RecordsProcessor {
     );
   }
 
-  private initializedMap(): Map<string,Array<DailyDataSet>> {
-    const map = new Map<string,Array<DailyDataSet>>();
-    StaticData.getCantons().forEach((i) => map.set(i, new Array<DailyDataSet>()));
+  private initializedMap(): Map<string,Array<DataSetEntity>> {
+    const map = new Map<string,Array<DataSetEntity>>();
+    StaticData.getCantons().forEach((i) => map.set(i, new Array<DataSetEntity>()));
     return map;
   }
 
   // eslint-disable-next-line
-  private static parseRecord (val: any): DailyDataSet {
+  private static parseRecord (val: any): DataSetEntity {
     return {
       date: val.date,
       confCases: parseInt(val.ncumul_conf) || undefined,
       currHosp: parseInt(val.current_hosp) || undefined,
       currIcu: parseInt(val.current_icu) || undefined,
       deceased: parseInt(val.ncumul_deceased) || undefined
-    } as DailyDataSet;
+    } as DataSetEntity;
   }
 
   /**
    * adds missing entries and calculates totals for day across all cantons
    */
-  private updateCurrentDayData (currentDay: string, recordDate: string, totalCh: DailyDataSet[], dataMap: Map<string, DailyDataSet[]>) {
+  private updateCurrentDayData (currentDay: string, recordDate: string, totalCh: DataSetEntity[], dataMap: Map<string, DataSetEntity[]>) {
     if (recordDate !== currentDay) {
       // console.log(data.date + " <- " + currentDay)
       this.completeDataMap(currentDay, dataMap);
@@ -135,7 +135,7 @@ export  default class RecordsProcessor {
   /**
    * check every canton has an entry, if not, copy last entry
    */
-  private completeDataMap (date: string, dataMap: Map<string, DailyDataSet[]>) {
+  private completeDataMap (date: string, dataMap: Map<string, DataSetEntity[]>) {
     StaticData.getCantons()
       .filter((canton) => {
         if (! dataMap.has(canton) ) return true;
@@ -152,7 +152,7 @@ export  default class RecordsProcessor {
               currHosp: 0,
               currIcu: 0,
               deceased: 0,
-            } as DailyDataSet)
+            } as DataSetEntity)
           } else {
             const lastEntry = entries[entries.length - 1];
             // console.log(date + " " + canton + " - " + lastEntry.confCases);
@@ -162,7 +162,7 @@ export  default class RecordsProcessor {
                 currHosp: lastEntry.currHosp,
                 currIcu: lastEntry.currIcu,
                 deceased: lastEntry.deceased,
-              } as DailyDataSet);
+              } as DataSetEntity);
 
           }
         }
@@ -172,7 +172,7 @@ export  default class RecordsProcessor {
   /**
    * calculate total for this day across all cantons and push to totals array
    */
-  private calculateTotal(currentDay: string, dataMap: Map<string, DailyDataSet[]>, totalCh: DailyDataSet[]) {
+  private calculateTotal(currentDay: string, dataMap: Map<string, DataSetEntity[]>, totalCh: DataSetEntity[]) {
     let confCases = 0;
     let currHosp = 0;
     let currIcu = 0;
@@ -193,7 +193,7 @@ export  default class RecordsProcessor {
       currHosp: currHosp,
       currIcu: currIcu,
       deceased: currDeceased,
-    } as DailyDataSet;
+    } as DataSetEntity;
     // console.log(d);
     totalCh.push(d);
   }

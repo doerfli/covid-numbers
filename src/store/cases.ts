@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import superagent from 'superagent'
 import CantonData from '@/model/cantondata'
 import RecordsProcessor from '@/utils/records-processor'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import DailyDiff from '@/model/dailyDiff'
 import DailyIncidence from '@/model/dailyIncidence'
 import StaticData from '@/store/staticdata'
@@ -41,7 +41,7 @@ const casesModule: Module<any, any> = {
     saveRecords(state, payload) {
       // create array entry per canton
       const cases = new Array<CantonData>();
-      payload.dataMap.forEach((data: DailyDataSet[], canton: string) => {
+      payload.dataMap.forEach((data: DataSetEntity[], canton: string) => {
         cases.push({
           canton: canton,
           data: data
@@ -98,7 +98,7 @@ const casesModule: Module<any, any> = {
       const cantonData = state.cases.filter((x: CantonData) => { return x.canton == canton});
       // console.log(cantonData);
       if (cantonData.length == 0) {
-        return new Array<DailyDataSet>();
+        return new Array<DataSetEntity>();
       }
       return cantonData[0].data;
     }),
@@ -108,7 +108,7 @@ const casesModule: Module<any, any> = {
         fieldName: any = "confCases",
         windowSize = 7): Array<DailyIncidence> => {
 
-      return getters.dataPerCanton(canton).map((dataPoint: DailyDataSet, idx: number, arr: Array<DailyDataSet>) => {
+      return getters.dataPerCanton(canton).map((dataPoint: DataSetEntity, idx: number, arr: Array<DataSetEntity>) => {
         let incidence = null;
 
         // calculate from first value data point up to second last day (current day data is rarely complete)

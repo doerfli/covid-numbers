@@ -36,7 +36,7 @@ import H2 from '@/components/base/H2.vue'
 import CasesTable from '@/components/CasesTable.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import DataPoint from '@/model/datapoint'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import formatDate from '@/utils/format-date'
 import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
 import Ref from '@/components/base/Ref.vue'
@@ -66,24 +66,24 @@ import StaticData from '@/store/staticdata'
       return this.shortName;
     }
 
-    get dataset(): Array<DailyDataSet> {
-      const d = this.$store.getters["cases/dataPerCanton"](this.shortName) as Array<DailyDataSet>;
+    get dataset(): Array<DataSetEntity> {
+      const d = this.$store.getters["cases/dataPerCanton"](this.shortName) as Array<DataSetEntity>;
       return d.slice(-180);
     }
 
     get emaShort(): Array<number> {
-      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 12);
+      return calculateEma(this.dataset.map((d: DataSetEntity) => d.confCasesChg), 12);
     }
 
     get emaLong(): Array<number> {
-      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 26);
+      return calculateEma(this.dataset.map((d: DataSetEntity) => d.confCasesChg), 26);
     }
 
     get displayData(): Array<DataPoint> {
       const dataset = this.dataset;
       const emaShort = this.emaShort;
       const emaLong = this.emaLong;
-      return dataset.map((x: DailyDataSet, i: number) => {
+      return dataset.map((x: DataSetEntity, i: number) => {
         if (!this.showTrendIndicators) {
           return {
             xValue: formatDate(x.date),

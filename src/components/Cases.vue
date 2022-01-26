@@ -36,7 +36,7 @@ import LineChart from '@/components/charts/LineChart.vue'
 import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import getProperty from '@/utils/get-property'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
 import moment from "moment/moment";
@@ -85,7 +85,7 @@ export default class Cases extends Vue {
       });
     }
 
-    const data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
+    const data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DataSetEntity>;
 
     // console.log(1111);
     // console.log(data);
@@ -102,7 +102,7 @@ export default class Cases extends Vue {
     }
 
     // map to datapoints for display
-    const result = dataset.map((x: DailyDataSet, i: number) => {
+    const result = dataset.map((x: DataSetEntity, i: number) => {
       return {
         xValue: formatDate(x.date),
         xValueDescr: "Date",
@@ -119,11 +119,11 @@ export default class Cases extends Vue {
     return result;
   }
 
-  private aggregateDataPerWeek(dataset: DailyDataSet[]) {
-    const x = dataset.reduce(function (weekMap: Map<string, DailyDataSet>, currentDay: DailyDataSet) {
+  private aggregateDataPerWeek(dataset: DataSetEntity[]) {
+    const x = dataset.reduce(function (weekMap: Map<string, DataSetEntity>, currentDay: DataSetEntity) {
       const week = moment(currentDay.date, "YYYY-MM-DD").week().toString();
       if (weekMap.has(week)) {
-        const wk = weekMap.get(week) as DailyDataSet;
+        const wk = weekMap.get(week) as DataSetEntity;
         weekMap.set(week, {
           date: wk.date,
           confCases: wk.confCases + currentDay.confCases,
@@ -138,7 +138,7 @@ export default class Cases extends Vue {
           deceased: wk.deceased + currentDay.deceased,
           deceasedChg: wk.deceasedChg + currentDay.deceasedChg,
           deceasedChgAvg: wk.deceasedChgAvg + currentDay.deceasedChgAvg,
-        } as DailyDataSet);
+        } as DataSetEntity);
       } else {
         weekMap.set(week, {
           date: currentDay.date,
@@ -154,7 +154,7 @@ export default class Cases extends Vue {
           deceased: currentDay.deceased,
           deceasedChg: currentDay.deceasedChg,
           deceasedChgAvg: currentDay.deceasedChgAvg,
-        } as DailyDataSet);
+        } as DataSetEntity);
       }
       return weekMap;
     }, new Map()).values();
