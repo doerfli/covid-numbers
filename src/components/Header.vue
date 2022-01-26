@@ -4,7 +4,7 @@
       <H1>Covid-19 Statistics Switzerland</H1>
     </div>
     <div class="primary">
-      <div :class="getClass('ConfirmedCases')">
+      <div :class="getClassByRouteActive(isConfirmedCasesPage)">
         <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
       </div>
       <div :class="getClass('Trend')">
@@ -16,10 +16,10 @@
       <div :class="getClass('IncidenceTwoWeek')">
         <router-link :to="{ name: 'IncidenceTwoWeek' }">14-day Incidence</router-link>
       </div>
-      <div :class="getClass('Hospitalized')">
+      <div :class="getClassByRouteActive(isHospitalizedPage)">
         <router-link :to="{ name: 'Hospitalized' }">Hospitalized</router-link>
       </div>
-      <div :class="getClass('Icu')">
+      <div :class="getClassByRouteActive(isIcuPage)">
         <router-link :to="{ name: 'Icu' }">Icu</router-link>
       </div>
       <div :class="getClass('Deceased')">
@@ -99,6 +99,14 @@ export default class Header extends Vue {
 
   private getClass(routeName: string) {
     if (this.$route.name === routeName) {
+      return "menuitem_active";
+    } else {
+      return "menuitem";
+    }
+  }
+
+  private getClassByRouteActive(isRouteActive: () => boolean) {
+    if (isRouteActive()) {
       return "menuitem_active";
     } else {
       return "menuitem";
