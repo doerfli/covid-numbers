@@ -8,7 +8,7 @@
         :name="canton.name"
         :days-to-show="getDaysToShow"
         field-to-show="currIcu"
-        calculate-average="true"
+        show-average="true"
       ></Cases>
     </div>
   </div>
