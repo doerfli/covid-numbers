@@ -64,6 +64,8 @@ export default class Cases extends Vue {
   private showAverage!: boolean;
   @Prop({ default: false })
   private showPerWeek!: boolean;
+  @Prop({ default: false })
+  private showPerSevenDays!: boolean;
 
   private highlightDataPoint: DataPoint = { } as DataPoint;
 
@@ -92,6 +94,8 @@ export default class Cases extends Vue {
     let dataset: Array<DataSetEntity>;
     if (this.daysToShow > 180 || this.showPerWeek ) {
       dataset = this.$store.getters["cases/dataPerCantonPerWeek"](this.canton, this.daysToShow) as Array<DataSetEntity>;
+    } else if (this.showPerSevenDays ) {
+      dataset = this.$store.getters["cases/dataPerCantonPerSevenDays"](this.canton, this.daysToShow) as Array<DataSetEntity>;
     } else {
       dataset = this.$store.getters["cases/dataPerCanton"](this.canton, this.daysToShow) as Array<DataSetEntity>;
     }

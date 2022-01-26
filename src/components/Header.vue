@@ -54,7 +54,10 @@
         <router-link :to="{ name: 'ConfirmedCases' }">Per day</router-link>
       </div>
       <div :class="getClass('ConfirmedCasesPerWeek')">
-        <router-link :to="{ name: 'ConfirmedCasesPerWeek' }">Per Week</router-link>
+        <router-link :to="{ name: 'ConfirmedCasesPerWeek' }">Total per Week</router-link>
+      </div>
+      <div :class="getClass('ConfirmedCasesPerSevenDays')">
+        <router-link :to="{ name: 'ConfirmedCasesPerSevenDays' }">Total per 7 days</router-link>
       </div>
     </div>
     <div class="secondary" v-if="isHospitalizedPage()">
@@ -107,7 +110,7 @@ export default class Header extends Vue {
   }
 
   private isConfirmedCasesPage() {
-    return this.$route.name === "ConfirmedCases" || this.$route.name === "ConfirmedCasesPerWeek" ;
+    return this.$route.name === "ConfirmedCases" || this.$route.name === "ConfirmedCasesPerWeek" || this.$route.name === "ConfirmedCasesPerSevenDays" ;
   }
 
   private isHospitalizedPage() {

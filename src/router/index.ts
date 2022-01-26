@@ -14,6 +14,7 @@ import VaccinationsChg from "@/views/VaccinationsChg.vue";
 import HospitalizedChg from "@/views/HospitalizedChg.vue";
 import IcuChg from "@/views/IcuChg.vue";
 import ConfirmedCasesPerWeek from "@/views/ConfirmedCasesPerWeek.vue";
+import ConfirmedCasesPerSevenDays from "@/views/ConfirmedCasesPerSevenDays.vue";
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes: Array<RouteConfig> = [
     path: '/confirmedcases/perWeek',
     name: 'ConfirmedCasesPerWeek',
     component: ConfirmedCasesPerWeek
+  },
+  {
+    path: '/confirmedcases/per7days',
+    name: 'ConfirmedCasesPerSevenDays',
+    component: ConfirmedCasesPerSevenDays
   },
   {
     path: '/hospitalized',
