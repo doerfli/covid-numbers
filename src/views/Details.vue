@@ -36,7 +36,7 @@ import H2 from '@/components/base/H2.vue'
 import CasesTable from '@/components/CasesTable.vue'
 import BarChart from '@/components/charts/BarChart.vue'
 import DataPoint from '@/model/datapoint'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import formatDate from '@/utils/format-date'
 import { calculateEma, calculateMacd, calculateSignal } from '@/utils/macd'
 import Ref from '@/components/base/Ref.vue'
@@ -66,24 +66,23 @@ import StaticData from '@/store/staticdata'
       return this.shortName;
     }
 
-    get dataset(): Array<DailyDataSet> {
-      const d = this.$store.getters["cases/dataPerCanton"](this.shortName) as Array<DailyDataSet>;
-      return d.slice(-180);
+    get dataset(): Array<DataSetEntity> {
+      return this.$store.getters["cases/dataPerCanton"](this.shortName, this.daysInChart) as Array<DataSetEntity>;
     }
 
     get emaShort(): Array<number> {
-      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 12);
+      return calculateEma(this.dataset.map((d: DataSetEntity) => d.confCasesChg), 12);
     }
 
     get emaLong(): Array<number> {
-      return calculateEma(this.dataset.map((d: DailyDataSet) => d.confCasesChg), 26);
+      return calculateEma(this.dataset.map((d: DataSetEntity) => d.confCasesChg), 26);
     }
 
     get displayData(): Array<DataPoint> {
       const dataset = this.dataset;
       const emaShort = this.emaShort;
       const emaLong = this.emaLong;
-      return dataset.map((x: DailyDataSet, i: number) => {
+      return dataset.map((x: DataSetEntity, i: number) => {
         if (!this.showTrendIndicators) {
           return {
             xValue: formatDate(x.date),
@@ -107,15 +106,13 @@ import StaticData from '@/store/staticdata'
       const dataset = this.dataset;
       const macd = calculateMacd(this.emaShort, this.emaLong);
       const signal = calculateSignal(macd);
-      const d = macd.map((m: number, i: number) => {
+      return macd.map((m: number, i: number) => {
         return {
           xValue: formatDate(dataset[i].date),
           y2Value: (i >= 26) ? m : null,
           y3Value: (i >= 35) ? signal[i] : null,
         } as DataPoint;
       });
-
-      return d;
     }
 
     private static isScrolledIntoView(el: Element) {

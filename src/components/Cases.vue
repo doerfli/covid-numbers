@@ -36,10 +36,9 @@ import LineChart from '@/components/charts/LineChart.vue'
 import H2 from '@/components/base/H2.vue'
 import DailyIncidence from '@/model/dailyIncidence'
 import getProperty from '@/utils/get-property'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import HighlightLine from '@/components/HighlightLine.vue'
 import formatDate from '@/utils/format-date'
-import moment from "moment/moment";
 import ChartType from "@/model/chartType";
 
 @Component({
@@ -61,6 +60,12 @@ export default class Cases extends Vue {
   private showIncidence!: boolean;
   @Prop({ default: ChartType.Bar })
   private chartType!: ChartType;
+  @Prop({ default: false })
+  private showAverage!: boolean;
+  @Prop({ default: false })
+  private showPerWeek!: boolean;
+  @Prop({ default: false })
+  private showPerSevenDays!: boolean;
 
   private highlightDataPoint: DataPoint = { } as DataPoint;
 
@@ -76,8 +81,8 @@ export default class Cases extends Vue {
     // console.log("displayData " + this.getCanton);
 
     if (this.showIncidence) {
-      const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.windowSize) as Array<DailyIncidence>;
-      return inc.slice(-this.daysToShow).map((x: DailyIncidence) => {
+      const inc = this.$store.getters["cases/incidence"](this.canton, this.fieldToShow, this.daysToShow, this.windowSize) as Array<DailyIncidence>;
+      return inc.map((x: DailyIncidence) => {
         return {
           xValue: formatDate(x.date),
           y2Value: x.incidence
@@ -85,32 +90,22 @@ export default class Cases extends Vue {
       });
     }
 
-    const data = this.$store.getters["cases/dataPerCanton"](this.canton) as Array<DailyDataSet>;
-
-    // console.log(1111);
-    // console.log(data);
-
-    // console.log(dataset);
     const avgFieldName = this.fieldToShow + "Avg" as any;
-
-    // limit to last x days
-    let dataset = data.slice(-this.daysToShow);
-
-    if (this.daysToShow > 180) {
-      // aggregate per week
-      dataset = this.aggregateDataPerWeek(dataset);
+    let dataset: Array<DataSetEntity>;
+    if (this.daysToShow > 180 || this.showPerWeek ) {
+      dataset = this.$store.getters["cases/dataPerCantonPerWeek"](this.canton, this.daysToShow) as Array<DataSetEntity>;
+    } else if (this.showPerSevenDays ) {
+      dataset = this.$store.getters["cases/dataPerCantonPerSevenDays"](this.canton, this.daysToShow) as Array<DataSetEntity>;
+    } else {
+      dataset = this.$store.getters["cases/dataPerCanton"](this.canton, this.daysToShow) as Array<DataSetEntity>;
     }
 
+    // console.log(1111);
+    // console.log(dataset);
+
     // map to datapoints for display
-    const result = dataset.map((x: DailyDataSet, i: number) => {
-      return {
-        xValue: formatDate(x.date),
-        xValueDescr: "Date",
-        yValue: getProperty(x, this.fieldToShow),
-        yValueDescr: "Count",
-        y2Value: (i < dataset.length - 1) ? getProperty(x, avgFieldName) : null,
-        y2ValueDescr: "Average",
-      } as DataPoint;
+    const result = dataset.map((x: DataSetEntity, i: number) => {
+      return this.mapToDataPoint(x, i, dataset, avgFieldName, this.showAverage);
     });
 
     // show second last day when initializing dataset
@@ -119,46 +114,24 @@ export default class Cases extends Vue {
     return result;
   }
 
-  private aggregateDataPerWeek(dataset: DailyDataSet[]) {
-    const x = dataset.reduce(function (weekMap: Map<string, DailyDataSet>, currentDay: DailyDataSet) {
-      const week = moment(currentDay.date, "YYYY-MM-DD").week().toString();
-      if (weekMap.has(week)) {
-        const wk = weekMap.get(week) as DailyDataSet;
-        weekMap.set(week, {
-          date: wk.date,
-          confCases: wk.confCases + currentDay.confCases,
-          confCasesChg: wk.confCasesChg + currentDay.confCasesChg,
-          confCasesChgAvg: wk.confCasesChgAvg + currentDay.confCasesChgAvg,
-          currHosp: wk.currHosp + currentDay.currHosp,
-          currHospChg: wk.currHospChg + currentDay.currHospChg,
-          currHospAvg: wk.currHospAvg + currentDay.currHospAvg,
-          currIcu: wk.currIcu + currentDay.currIcu,
-          currIcuChg: wk.currIcuChg + currentDay.currIcuChg,
-          currIcuAvg: wk.currIcuAvg + currentDay.currIcuAvg,
-          deceased: wk.deceased + currentDay.deceased,
-          deceasedChg: wk.deceasedChg + currentDay.deceasedChg,
-          deceasedChgAvg: wk.deceasedChgAvg + currentDay.deceasedChgAvg,
-        } as DailyDataSet);
-      } else {
-        weekMap.set(week, {
-          date: currentDay.date,
-          confCases: currentDay.confCases,
-          confCasesChg: currentDay.confCasesChg,
-          confCasesChgAvg: currentDay.confCasesChgAvg,
-          currHosp: currentDay.currHosp,
-          currHospChg: currentDay.currHospChg,
-          currHospAvg: currentDay.currHospAvg,
-          currIcu: currentDay.currIcu,
-          currIcuChg: currentDay.currIcuChg,
-          currIcuAvg: currentDay.currIcuAvg,
-          deceased: currentDay.deceased,
-          deceasedChg: currentDay.deceasedChg,
-          deceasedChgAvg: currentDay.deceasedChgAvg,
-        } as DailyDataSet);
-      }
-      return weekMap;
-    }, new Map()).values();
-    return [...x];
+  private mapToDataPoint(x: DataSetEntity, i: number, dataset: Array<DataSetEntity>, avgFieldName: any, showAverage: boolean) {
+    if (showAverage) {
+      return {
+        xValue: formatDate(x.date),
+        xValueDescr: "Date",
+        yValue: getProperty(x, this.fieldToShow),
+        yValueDescr: "Count",
+        y2Value: (i < dataset.length - 1) ? getProperty(x, avgFieldName) : null,
+        y2ValueDescr: "Average",
+      } as DataPoint;
+    } else {
+      return {
+        xValue: formatDate(x.date),
+        xValueDescr: "Date",
+        yValue: getProperty(x, this.fieldToShow),
+        yValueDescr: "Count",
+      } as DataPoint;
+    }
   }
 
   private detailsUrl() {
@@ -169,26 +142,6 @@ export default class Cases extends Vue {
     // console.log(data);
     this.highlightDataPoint = data;
     // console.log(this.highlightDataPoint);
-  }
-
-  // @Watch('highlightDataPoint')
-  private dataPointHighlight() {
-    console.log("w");
-    if (this.highlightDataPoint !== undefined) {
-      return this.highlightDataPoint;
-    }
-    if (this.displayData.length == 0) {
-      return {
-        xValue: "-",
-        yValue: 0,
-        y2Value: 0,
-        xValueDescr: "",
-        yValueDescr: "",
-        y2ValueDescr: "",
-      } as DataPoint;
-    }
-
-    return this.displayData[this.displayData.length - 1];
   }
 
   private isBarChart() {

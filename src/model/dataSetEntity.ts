@@ -1,4 +1,4 @@
-interface DailyDataSet {
+interface DataSetEntity {
   date: string;
   confCases: number;
   confCasesChg: number;
@@ -16,4 +16,4 @@ interface DailyDataSet {
   deceasedChgAvg: number;
 }
 
-export default DailyDataSet;
+export default DataSetEntity;

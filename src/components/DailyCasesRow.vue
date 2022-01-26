@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import TableData from '@/components/tables/TableData.vue'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import TableRow from '@/components/tables/TableRow.vue'
 
 @Component({
@@ -19,9 +19,9 @@ import TableRow from '@/components/tables/TableRow.vue'
   })
   export default class DailyCasesRow extends Vue {
     @Prop()
-    private day!: DailyDataSet;
+    private day!: DataSetEntity;
     @Prop({ default: null })
-    private lastWeek!: DailyDataSet | null;
+    private lastWeek!: DataSetEntity | null;
     @Prop({ default: null })
     private index!: number | null;
 

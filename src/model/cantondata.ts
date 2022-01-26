@@ -1,9 +1,9 @@
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import VaccDataSet from '@/model/vaccDataSet'
 
 interface CantonData {
   canton: string;
-  data: Array<DailyDataSet>;
+  data: Array<DataSetEntity>;
   vaccData: Array<VaccDataSet>;
 }
 

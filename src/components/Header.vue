@@ -4,7 +4,7 @@
       <H1>Covid-19 Statistics Switzerland</H1>
     </div>
     <div class="primary">
-      <div :class="getClass('ConfirmedCases')">
+      <div :class="getClassByRouteActive(isConfirmedCasesPage)">
         <router-link :to="{ name: 'ConfirmedCases' }">Confirmed cases</router-link>
       </div>
       <div :class="getClass('Trend')">
@@ -16,10 +16,10 @@
       <div :class="getClass('IncidenceTwoWeek')">
         <router-link :to="{ name: 'IncidenceTwoWeek' }">14-day Incidence</router-link>
       </div>
-      <div :class="getClass('Hospitalized')">
+      <div :class="getClassByRouteActive(isHospitalizedPage)">
         <router-link :to="{ name: 'Hospitalized' }">Hospitalized</router-link>
       </div>
-      <div :class="getClass('Icu')">
+      <div :class="getClassByRouteActive(isIcuPage)">
         <router-link :to="{ name: 'Icu' }">Icu</router-link>
       </div>
       <div :class="getClass('Deceased')">
@@ -48,6 +48,17 @@
       <Hideable :visible="showViewOptions">
         <ViewOptions />
       </Hideable>
+    </div>
+    <div class="secondary" v-if="isConfirmedCasesPage()">
+      <div :class="getClass('ConfirmedCases')">
+        <router-link :to="{ name: 'ConfirmedCases' }">Per day</router-link>
+      </div>
+      <div :class="getClass('ConfirmedCasesPerWeek')">
+        <router-link :to="{ name: 'ConfirmedCasesPerWeek' }">Total per Week</router-link>
+      </div>
+      <div :class="getClass('ConfirmedCasesPerSevenDays')">
+        <router-link :to="{ name: 'ConfirmedCasesPerSevenDays' }">Total per 7 days</router-link>
+      </div>
     </div>
     <div class="secondary" v-if="isHospitalizedPage()">
       <div :class="getClass('Hospitalized')">
@@ -94,8 +105,20 @@ export default class Header extends Vue {
     }
   }
 
+  private getClassByRouteActive(isRouteActive: () => boolean) {
+    if (isRouteActive()) {
+      return "menuitem_active";
+    } else {
+      return "menuitem";
+    }
+  }
+
   private isDetailsPage() {
     return this.$route.name === "Details";
+  }
+
+  private isConfirmedCasesPage() {
+    return this.$route.name === "ConfirmedCases" || this.$route.name === "ConfirmedCasesPerWeek" || this.$route.name === "ConfirmedCasesPerSevenDays" ;
   }
 
   private isHospitalizedPage() {

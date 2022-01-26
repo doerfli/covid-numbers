@@ -25,7 +25,7 @@ import CantonData from '@/model/cantondata'
 import Table from '@/components/tables/Table.vue'
 import TableRow from '@/components/tables/TableRow.vue'
 import TableData from '@/components/tables/TableData.vue'
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import TableHeader from '@/components/tables/TableHeader.vue'
 import TableRowHeader from '@/components/tables/TableRowHeader.vue'
 import DailyCasesRow from '@/components/DailyCasesRow.vue'
@@ -40,7 +40,7 @@ export default class CasesTable extends Vue {
   @Prop()
   private rowsToRender!: number;
 
-  private get cases(): Array<DailyDataSet> {
+  private get cases(): Array<DataSetEntity> {
     const t = this.$store.state.cases.cases;
     // console.log(t);
     if (t.length === 0) {
@@ -51,7 +51,7 @@ export default class CasesTable extends Vue {
     return dt.slice(Math.max(-dt.length, -this.rowsToRender)).reverse();
   }
 
-  private getLastWeek(cases: Array<DailyDataSet>, currIdx: number): DailyDataSet | null {
+  private getLastWeek(cases: Array<DataSetEntity>, currIdx: number): DataSetEntity | null {
     if (currIdx + 7 >= cases.length) {
       return null;
     }

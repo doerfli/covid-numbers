@@ -1,4 +1,4 @@
-import DailyDataSet from '@/model/dailyDataSet'
+import DataSetEntity from '@/model/dataSetEntity'
 import StaticData from '@/store/staticdata'
 import VaccDataSet from '@/model/vaccDataSet'
 

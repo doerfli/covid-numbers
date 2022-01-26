@@ -6,9 +6,9 @@
         :key="canton.nameShort"
         :canton="canton.nameShort"
         :name="canton.name"
-        field-to-show="deceasedChg"
+        field-to-show="confCasesChg"
         :days-to-show="getDaysToShow"
-        show-average="true"
+        show-per-seven-days="true"
       ></Cases>
     </div>
   </div>
@@ -22,11 +22,9 @@ import Footer from '@/components/Footer.vue'
 import CantonConfig from '@/model/cantonconfig'
 import Hideable from '@/components/base/Hideable.vue'
 import ViewOptions from '@/components/ViewOptions.vue'
-import Alert from '@/components/base/Alert.vue'
 
 @Component({
   components: {
-    Alert,
     ViewOptions,
     Hideable,
     Footer,
@@ -34,7 +32,7 @@ import Alert from '@/components/base/Alert.vue'
     BarChart
   }
 })
-export default class Deceased extends Vue {
+export default class ConfirmedCasesPerSevenDays extends Vue {
 
   private get selectedCantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons.filter((c: CantonConfig) => c.show);

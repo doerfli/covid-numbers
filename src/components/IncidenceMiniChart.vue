@@ -59,8 +59,7 @@ export default class IncidenceMiniChart extends Vue {
   }
 
   get dataset(): Array<DailyIncidence> {
-    const inc = this.$store.getters["cases/incidence"](this.shortName, this.fieldToShow) as Array<DailyIncidence>;
-    const range = inc.slice(-180);
+    const range = this.$store.getters["cases/incidence"](this.shortName, this.fieldToShow, 180) as Array<DailyIncidence>;
 
     // TODO make range configurable
     return range.slice(0, range.length - 1)

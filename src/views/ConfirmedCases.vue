@@ -8,7 +8,7 @@
         :name="canton.name"
         field-to-show="confCasesChg"
         :days-to-show="getDaysToShow"
-        calculate-average="true"
+        show-average="true"
       ></Cases>
     </div>
   </div>
