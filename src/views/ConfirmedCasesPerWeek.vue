@@ -8,7 +8,7 @@
         :name="canton.name"
         field-to-show="confCasesChg"
         :days-to-show="getDaysToShow"
-        show-average="true"
+        show-per-week="true"
       ></Cases>
     </div>
   </div>
@@ -32,7 +32,7 @@ import ViewOptions from '@/components/ViewOptions.vue'
     BarChart
   }
 })
-export default class ConfirmedCases extends Vue {
+export default class ConfirmedCasesPerWeek extends Vue {
 
   private get selectedCantons(): CantonConfig[] {
     return this.$store.state.viewProps.cantons.filter((c: CantonConfig) => c.show);

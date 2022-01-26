@@ -49,6 +49,14 @@
         <ViewOptions />
       </Hideable>
     </div>
+    <div class="secondary" v-if="isConfirmedCasesPage()">
+      <div :class="getClass('ConfirmedCases')">
+        <router-link :to="{ name: 'ConfirmedCases' }">Per day</router-link>
+      </div>
+      <div :class="getClass('ConfirmedCasesPerWeek')">
+        <router-link :to="{ name: 'ConfirmedCasesPerWeek' }">Per Week</router-link>
+      </div>
+    </div>
     <div class="secondary" v-if="isHospitalizedPage()">
       <div :class="getClass('Hospitalized')">
         <router-link :to="{ name: 'Hospitalized' }">Absolute</router-link>
@@ -96,6 +104,10 @@ export default class Header extends Vue {
 
   private isDetailsPage() {
     return this.$route.name === "Details";
+  }
+
+  private isConfirmedCasesPage() {
+    return this.$route.name === "ConfirmedCases" || this.$route.name === "ConfirmedCasesPerWeek" ;
   }
 
   private isHospitalizedPage() {

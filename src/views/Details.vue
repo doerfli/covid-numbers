@@ -67,8 +67,7 @@ import StaticData from '@/store/staticdata'
     }
 
     get dataset(): Array<DataSetEntity> {
-      const d = this.$store.getters["cases/dataPerCanton"](this.shortName) as Array<DataSetEntity>;
-      return d.slice(-180);
+      return this.$store.getters["cases/dataPerCanton"](this.shortName, this.daysInChart) as Array<DataSetEntity>;
     }
 
     get emaShort(): Array<number> {
@@ -107,15 +106,13 @@ import StaticData from '@/store/staticdata'
       const dataset = this.dataset;
       const macd = calculateMacd(this.emaShort, this.emaLong);
       const signal = calculateSignal(macd);
-      const d = macd.map((m: number, i: number) => {
+      return macd.map((m: number, i: number) => {
         return {
           xValue: formatDate(dataset[i].date),
           y2Value: (i >= 26) ? m : null,
           y3Value: (i >= 35) ? signal[i] : null,
         } as DataPoint;
       });
-
-      return d;
     }
 
     private static isScrolledIntoView(el: Element) {
