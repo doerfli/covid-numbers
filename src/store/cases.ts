@@ -19,7 +19,7 @@ function calculateWeekKey(date: moment.Moment, today: moment.Moment | null = nul
     }
   } else {
     if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
-      year = year - 1;
+      year = date.add(-1, "week").year();
     }
   }
   return year.toString() + "_" + week.toString();
