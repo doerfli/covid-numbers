@@ -8,16 +8,19 @@ import StaticData from '@/store/staticdata'
 import Papa from 'papaparse'
 import moment from "moment/moment";
 
-function calculateWeekKey(date: moment.Moment, todayWeekday = -1) {
+function calculateWeekKey(date: moment.Moment, today: moment.Moment | null = null) {
   const weekday = date.weekday();
   let year = date.year();
   const month = date.month();
   let week = date.week();
-  if (todayWeekday > -1 && weekday > todayWeekday) {
-    week = week + 1;
-  }
-  if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
-    year = year - 1;
+  if (today != null) {
+    if (weekday > today.weekday()) {
+      week = week + 1;
+    }
+  } else {
+    if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
+      year = year - 1;
+    }
   }
   return year.toString() + "_" + week.toString();
 }
@@ -66,9 +69,9 @@ function aggregateDataPerWeek(dataset: DataSetEntity[]) {
 }
 
 function aggregateDataPerSevenDays(dataset: DataSetEntity[]) {
-  const todayWeekday = moment().weekday();
+  const today = moment();
   const x = dataset.reduce(function (weekMap: Map<string, DataSetEntity>, currentDay: DataSetEntity) {
-    const weekKey = calculateWeekKey(moment(currentDay.date, "YYYY-MM-DD"), todayWeekday);
+    const weekKey = calculateWeekKey(moment(currentDay.date, "YYYY-MM-DD"), today);
     console.log(weekKey + " " + currentDay.date);
     if (weekMap.has(weekKey)) {
       const wk = weekMap.get(weekKey) as DataSetEntity;
