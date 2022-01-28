@@ -15,7 +15,7 @@ function calculateWeekKey(date: moment.Moment, today: moment.Moment | null = nul
   let week = date.week();
   if (today != null) {
     if (weekday > today.weekday()) {
-      week = week + 1;
+      week = date.add(1, "week").week();
     }
   } else {
     if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
@@ -148,7 +148,7 @@ const casesModule: Module<any, any> = {
       const data = cantonData[0].data.slice(-numDays);
       return aggregateDataPerWeek(data, (date: string) => {
         const key = calculateWeekKey(moment(date, "YYYY-MM-DD"));
-        console.log(key + " " + date);
+        console.log(`date: ${date} / key: ${key}`);
         return key;
       });
     }),
