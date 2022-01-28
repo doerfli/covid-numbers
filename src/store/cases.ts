@@ -25,54 +25,9 @@ function calculateWeekKey(date: moment.Moment, today: moment.Moment | null = nul
   return year.toString() + "_" + week.toString();
 }
 
-function aggregateDataPerWeek(dataset: DataSetEntity[]) {
+function aggregateDataPerWeek(dataset: DataSetEntity[], calculateKey: (date: string) => string) {
   const x = dataset.reduce(function (weekMap: Map<string, DataSetEntity>, currentDay: DataSetEntity) {
-    const weekKey = calculateWeekKey(moment(currentDay.date, "YYYY-MM-DD"));
-    console.log(weekKey + " " + currentDay.date);
-    if (weekMap.has(weekKey)) {
-      const wk = weekMap.get(weekKey) as DataSetEntity;
-      weekMap.set(weekKey, {
-        date: wk.date,
-        confCases: wk.confCases + currentDay.confCases,
-        confCasesChg: wk.confCasesChg + currentDay.confCasesChg,
-        confCasesChgAvg: wk.confCasesChgAvg + currentDay.confCasesChgAvg,
-        currHosp: wk.currHosp + currentDay.currHosp,
-        currHospChg: wk.currHospChg + currentDay.currHospChg,
-        currHospAvg: wk.currHospAvg + currentDay.currHospAvg,
-        currIcu: wk.currIcu + currentDay.currIcu,
-        currIcuChg: wk.currIcuChg + currentDay.currIcuChg,
-        currIcuAvg: wk.currIcuAvg + currentDay.currIcuAvg,
-        deceased: wk.deceased + currentDay.deceased,
-        deceasedChg: wk.deceasedChg + currentDay.deceasedChg,
-        deceasedChgAvg: wk.deceasedChgAvg + currentDay.deceasedChgAvg,
-      } as DataSetEntity);
-    } else {
-      weekMap.set(weekKey, {
-        date: currentDay.date,
-        confCases: currentDay.confCases,
-        confCasesChg: currentDay.confCasesChg,
-        confCasesChgAvg: currentDay.confCasesChgAvg,
-        currHosp: currentDay.currHosp,
-        currHospChg: currentDay.currHospChg,
-        currHospAvg: currentDay.currHospAvg,
-        currIcu: currentDay.currIcu,
-        currIcuChg: currentDay.currIcuChg,
-        currIcuAvg: currentDay.currIcuAvg,
-        deceased: currentDay.deceased,
-        deceasedChg: currentDay.deceasedChg,
-        deceasedChgAvg: currentDay.deceasedChgAvg,
-      } as DataSetEntity);
-    }
-    return weekMap;
-  }, new Map()).values();
-  return [...x];
-}
-
-function aggregateDataPerSevenDays(dataset: DataSetEntity[]) {
-  const today = moment();
-  const x = dataset.reduce(function (weekMap: Map<string, DataSetEntity>, currentDay: DataSetEntity) {
-    const weekKey = calculateWeekKey(moment(currentDay.date, "YYYY-MM-DD"), today);
-    console.log(weekKey + " " + currentDay.date);
+    const weekKey = calculateKey(currentDay.date);
     if (weekMap.has(weekKey)) {
       const wk = weekMap.get(weekKey) as DataSetEntity;
       weekMap.set(weekKey, {
@@ -191,7 +146,11 @@ const casesModule: Module<any, any> = {
         return new Array<DataSetEntity>();
       }
       const data = cantonData[0].data.slice(-numDays);
-      return aggregateDataPerWeek(data);
+      return aggregateDataPerWeek(data, (date: string) => {
+        const key = calculateWeekKey(moment(date, "YYYY-MM-DD"));
+        console.log(key + " " + date);
+        return key;
+      });
     }),
     dataPerCantonPerSevenDays: ((state) => (canton: string, numDays: number) => {
       // console.log(canton);
@@ -201,7 +160,12 @@ const casesModule: Module<any, any> = {
         return new Array<DataSetEntity>();
       }
       const data = cantonData[0].data.slice(-numDays);
-      return aggregateDataPerSevenDays(data);
+      const today = moment();
+      return aggregateDataPerWeek(data, (date: string) => {
+        const key = calculateWeekKey(moment(date, "YYYY-MM-DD"), today);
+        console.log(`date: ${date} / key: ${key}`);
+        return key;
+      });
     }),
     incidence: ((state, getters) =>
       (canton: string,
