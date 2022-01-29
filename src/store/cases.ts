@@ -14,13 +14,12 @@ function calculateWeekKey(date: moment.Moment, today: moment.Moment | null = nul
   const month = date.month();
   let week = date.week();
   if (today != null) {
-    if (weekday > today.weekday()) {
+    if (weekday > today.weekday()) { // days in the week after threshold day (weekday of today) are added to next week
       week = date.add(1, "week").week();
     }
-  } else {
-    if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
-      year = date.add(-1, "week").year();
-    }
+  }
+  if (month == 0 && week >= 52) { // if date in january but week is 52 or 53, then week key belongs to last year
+    year = date.add(-1, "week").year();
   }
   return year.toString() + "_" + week.toString();
 }
