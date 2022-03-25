@@ -5,7 +5,7 @@
 This project shows Covid-19 data for Switzerland and its cantons. 
 Displayed values are _confirmed cases_, _incidence numbers_, _hospitalization as well as icu counts_ and the _number of deceased_. 
 
-All data is directly retrieved from the [OpenZH/covid_19](https://github.com/openZH/covid_19) repository without any backend to process the data. 
+All data is directly retrieved from the [doerfli/foph-covid19-data](https://github.com/doerfli/foph-covid19-data) repository without any backend to handle the data. 
 
 The frontend is build using [Vue.js](https://github.com/vuejs/vue) and [Typescript](https://github.com/microsoft/TypeScript), the graphs are rendered with [d3.js](https://github.com/d3/d3).
 Styling is done using [tailwindcss](https://github.com/tailwindlabs/tailwindcss). 

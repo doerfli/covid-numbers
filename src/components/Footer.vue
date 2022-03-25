@@ -8,9 +8,6 @@
         <i class="fab fa-twitter"></i> <Ref uri="https://twitter.com/doerfli">@doerfli</Ref>
       </div>
       <div class="entry">
-        <i class="fas fa-database"></i> <Ref uri="https://github.com/openZH/covid_19">OpenZH/Covid19</Ref>
-      </div>
-      <div class="entry">
         <i class="fas fa-database"></i> <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>
       </div>
       <div class="entrylast">
@@ -21,7 +18,7 @@
     </div>
     <div class="disclaimer">
       <span>Disclaimer</span>:
-      All data shown on this page is based on the data provided by <Ref uri="https://github.com/openZH/">OpenZH</Ref> and <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>.
+      All data shown on this page is based on the data provided by <Ref uri="https://www.covid19.admin.ch">FOPH</Ref>.
       Calculations are done to the best of my knowledge, but I do not guarantee correctness.
       <br/>
       If you find a mistake, I will be happy to fix it.
