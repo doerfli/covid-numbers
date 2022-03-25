@@ -90,7 +90,7 @@ const casesModule: Module<any, any> = {
   },
   actions: {
     async fetch({ commit }) {
-      const url = "https://raw.githubusercontent.com/openZH/covid_19/master/COVID19_Fallzahlen_CH_total_v2.csv";
+      const url = "https://raw.githubusercontent.com/doerfli/foph-covid19-data/main/cases/cases_total.csv";
       const response = await superagent.get(url)
       const parseResult = Papa.parse(response.text, {
         header: true,
