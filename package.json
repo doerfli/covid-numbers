@@ -15,7 +15,7 @@
     "@types/superagent": "^4.1.15",
     "core-js": "^3.21.1",
     "csv-parse": "^5.0.4",
-    "d3": "^7.2.1",
+    "d3": "^7.4.0",
     "moment": "^2.29.1",
     "papaparse": "^5.3.1",
     "superagent": "^7.1.1",
