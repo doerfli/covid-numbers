@@ -1,7 +1,7 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.154.0/containers/javascript-node/.devcontainer/base.Dockerfile
 
 # [Choice] Node.js version: 14, 12, 10
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:16-bullseye
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -13,3 +13,6 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node modules
 # RUN sudo -u node npm install -g <your-package-list-here>
+
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes 
+RUN echo "eval \"\$(starship init bash)\"" >> /home/node/.bashrc && echo "eval \"\$(starship init zsh)\"" >> /home/node/.zshrc

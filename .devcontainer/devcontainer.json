@@ -16,8 +16,15 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
-		"johnpapa.vscode-peacock",
 		"bradlc.vscode-tailwindcss",
+		"github.codespaces",
+		"mhutchie.git-graph",
+		"eamodio.gitlens",
+		"github.copilot",
+		"oderwat.indent-rainbow",
+		"2gua.rainbow-brackets",
+        "mechatroner.rainbow-csv",
+		"johnpapa.vscode-peacock",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
