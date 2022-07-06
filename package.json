@@ -13,7 +13,7 @@
     "@types/d3": "^7.4.0",
     "@types/papaparse": "^5.3.2",
     "@types/superagent": "^4.1.15",
-    "core-js": "^3.22.8",
+    "core-js": "^3.23.3",
     "csv-parse": "^5.1.0",
     "d3": "^7.4.4",
     "moment": "^2.29.3",
