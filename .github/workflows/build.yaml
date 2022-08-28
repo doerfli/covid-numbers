@@ -43,7 +43,6 @@ jobs:
   container:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
       - uses: rlespinasse/github-slug-action@v2.x
