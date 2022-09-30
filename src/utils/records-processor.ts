@@ -24,7 +24,7 @@ export  default class RecordsProcessor {
       }
 
       const canton = val.abbreviation_canton_and_fl;
-      if (canton === "FL") {
+      if (canton === '' || canton === "FL") {
         return;
       }
 
