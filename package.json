@@ -11,7 +11,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.2.0",
     "@types/d3": "^7.4.0",
-    "@types/papaparse": "^5.3.5",
+    "@types/papaparse": "^5.3.7",
     "@types/superagent": "^4.1.15",
     "core-js": "^3.25.3",
     "csv-parse": "^5.3.3",
