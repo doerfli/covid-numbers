@@ -49,7 +49,7 @@
     "sass": "^1.57.1",
     "sass-loader": "^10.3.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "typescript": "~4",
+    "typescript": "~5",
     "vue-cli-plugin-sitemap": "~2.3.0",
     "vue-template-compiler": "^2.7.13"
   }
